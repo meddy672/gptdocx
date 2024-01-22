@@ -1,0 +1,27 @@
+{
+  "name": "gptdocx",
+  "version": "1.0.0",
+  "description": "Create word documents with ChatGPT.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openai",
+    "docx",
+    "chatgpt"
+  ],
+  "author": "meddy672",
+  "license": "MIT",
+  "dependencies": {
+    "docx": "^8.5.0",
+    "dotenv": "^16.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  }
+}
