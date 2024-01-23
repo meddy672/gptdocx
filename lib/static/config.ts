@@ -27,6 +27,6 @@ export const  CONFIG = {
           },
         },
     },
-    FILE_PATH: '../../../files',
+    FILE_PATH: 'files',
     EXT: ".docx",
 }

@@ -56,7 +56,7 @@ class WordDocument {
     };
 
     _filePath(name: string) {
-        return join(__dirname, CONFIG.FILE_PATH, name + CONFIG.EXT);
+        return join(process.cwd(), CONFIG.FILE_PATH, name + CONFIG.EXT);
     }
 
     add(pages: any[]){

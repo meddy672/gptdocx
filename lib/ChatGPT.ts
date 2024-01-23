@@ -1,16 +1,6 @@
 require('dotenv').config();
-const { 
-    TRUE,
-    JSON_V,
-    OBJECT,
-    SYSTEM,
-    USER,
-    MODEL,
-    DEFAULT_MESSAGE,
-    SYSTEM_FORMAT,  
-} = require("./static/constants");
-const OpenAI = require('openai');
-const Mock = require('./Mock/Mock');
+import OpenAI from 'openai';
+import Static from "./static/constants";
 
 type ChatGPTArgs = {
     prompt: string;
@@ -35,12 +25,9 @@ class ChatGPT {
     private requestBody: any;
 
   constructor({prompt, format, responseFormat, model, max_tokens, config}: ChatGPTArgs) {
-    if (process.env["MOCK_OPENAI_RESPONSE"] === TRUE) {
-      return  Mock.request('word');
-    }
     this.openai = new OpenAI({ apiKey: process.env["OPENAI_API_KEY"], ...config });
     this.response = null;
-    this.responseFormat = responseFormat || JSON_V;
+    this.responseFormat = responseFormat || Static.json;
     this.prompt = prompt;
     this.requestBody = this._buildRequestBody({
       format,
@@ -57,10 +44,10 @@ class ChatGPT {
    * @param {*} param0 
    * @returns 
    */
-  _buildRequestBody({format, model, max_tokens}: RequestBodyParams){
+  _buildRequestBody({format, model, max_tokens}: RequestBodyParams): any {
     const message = this._prepareMessages(format);
     return { 
-      model:  model || MODEL,
+      model:  model || Static.MODEL,
       messages: message, 
       max_tokens: max_tokens || undefined
     };
@@ -73,11 +60,11 @@ class ChatGPT {
    * @param {*} format 
    * @returns 
    */
-  _prepareMessages(format: any){
+  _prepareMessages(format: any): any[] {
     const systemFormat = this._getFormat(format);
     return [
-      { role: SYSTEM, content: systemFormat},
-      { role: USER, content: this.prompt }
+      { role: Static.SYSTEM, content: systemFormat},
+      { role: Static.USER, content: this.prompt }
     ];
   }
 
@@ -87,7 +74,7 @@ class ChatGPT {
    * 
    * @returns 
    */
-  async send() {
+  async send(): Promise<string> {
     try {
       console.log("Sending resquest...");
       this.response = await this.openai.chat.completions.create(this.requestBody);
@@ -105,8 +92,8 @@ class ChatGPT {
    * 
    * @returns 
    */
-  _getResponse(){
-    if (this.responseFormat === JSON_V) {
+  _getResponse(): string {
+    if (this.responseFormat === Static.json) {
       return JSON.parse(this.response.choices[0].message.content);
     }
     return this.response.choices[0].message.content;
@@ -116,17 +103,17 @@ class ChatGPT {
 
   /**
    * 
-   * @param {*} format 
-   * @returns 
+   * @param {object} format 
+   * @returns {String} requestFormat as a string appended to the system format
    */
-  _getFormat(format: any) { 
+  _getFormat(format: any): string { 
     console.debug("format()");
     let systemFormat;
-    if (format && typeof format === OBJECT) {
+    if (format && typeof format === Static.object) {
       const stringifiedFormat = JSON.stringify(format);
-      systemFormat = SYSTEM_FORMAT + stringifiedFormat;
+      systemFormat = Static.SYSTEM_FORMAT + stringifiedFormat;
     } else {
-      systemFormat = DEFAULT_MESSAGE;
+      systemFormat = Static.DEFAULT_MESSAGE;
     }
     return systemFormat;
   }
