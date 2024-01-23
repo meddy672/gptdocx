@@ -16,15 +16,15 @@ type ChatGPTArgs = {
     prompt: string;
     format: any;
     responseFormat: string;
-    model: string;
-    max_tokens: number;
-    config: any;
+    model?: string;
+    max_tokens?: number;
+    config?: any;
 }
 
 type RequestBodyParams = {
     format: any;
-    model: string;
-    max_tokens: number;
+    model: string | undefined;
+    max_tokens: number | undefined;
 }
 
 class ChatGPT {
@@ -62,7 +62,7 @@ class ChatGPT {
     return { 
       model:  model || MODEL,
       messages: message, 
-      [max_tokens]: max_tokens || undefined
+      max_tokens: max_tokens || undefined
     };
   }
 
@@ -132,4 +132,4 @@ class ChatGPT {
   }
 } // End of Class
 
-module.exports = ChatGPT;
+export default ChatGPT;

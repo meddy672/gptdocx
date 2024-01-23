@@ -12,8 +12,8 @@ import { CONFIG } from './static/config';
 
 type WordDocumentArgs = {
     name: string;
-    pages: [];
-    options: {
+    pages: any[];
+    options?: {
         pageHeader: {};
         pageFooter: {};
     }
@@ -35,7 +35,7 @@ class WordDocument {
         this.sections = [];
         this._name = this._sanitize(name);
         if (pages.length) this.add(pages);
-        this._setup(options.pageHeader, options.pageFooter);
+        this._setup(options?.pageHeader, options?.pageFooter);
     }
 
     _sanitize(name: string) {
@@ -59,7 +59,7 @@ class WordDocument {
         return join(__dirname, CONFIG.FILE_PATH, name + CONFIG.EXT);
     }
 
-    add(pages: []){
+    add(pages: any[]){
         if (!pages) {
             console.warn('Page is empty! Check you response and make sure it was parsed correctly.');
             return;
@@ -114,4 +114,4 @@ class WordDocument {
 
 }
 
-module.exports = WordDocument;
+export default WordDocument;
