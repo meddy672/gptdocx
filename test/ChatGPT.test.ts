@@ -2,38 +2,24 @@ import ChatGPT from "../lib/ChatGPT";
 import Mock from "../lib/Mock/Mock";
 import WordDocument from "../lib/Document";
 import OpenAI from "openai";
-const { basicExample } = require("../lib/docx/basicExample");
+const  basicExample  = require("../lib/docx/basicExample");
 // jest.mock("openai");
 
 describe("ChatGpt", () => {
-    let consoleLogSpy: any;
-    let consoleWarnSpy: any;
-    let consoleErrorSpy: any;
-    let consoleDebugSpy: any;
+
     let openaiSpy: any;
     let wordDocumentSpy: any;
-    let response: any;
-
     beforeEach(() => {
-      // Spy on console.log, console.warn, and console.error
       openaiSpy = jest.spyOn(OpenAI.Chat.Completions.prototype, "create");
       wordDocumentSpy = jest.spyOn(WordDocument.prototype, "saveFile");
       wordDocumentSpy.mockResolvedValue("HowToTypeFaster.docx");
-      consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      consoleDebugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
     });
   
     afterEach(() => {
-      // Restore the original console methods after each test
       openaiSpy.mockRestore();
       wordDocumentSpy.mockRestore();
-      consoleLogSpy.mockRestore();
-      consoleWarnSpy.mockRestore();
-      consoleErrorSpy.mockRestore();
-      consoleDebugSpy.mockRestore();
-    });    
+    });  
+
   test("returns correct a response", async () => {
     openaiSpy.mockResolvedValue({
       id: "123",

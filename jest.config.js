@@ -1,6 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'ts-jest',
+  setupFilesAfterEnv: ["<rootDir>/jest.globalSetup.js"],
   testEnvironment: 'node',
   setupFiles: ['./jest.setup.js'],
   collectCoverage: true,
