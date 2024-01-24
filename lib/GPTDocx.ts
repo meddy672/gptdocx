@@ -10,7 +10,6 @@ import Table from "./Table";
 import Image from "./Image";
 import  WordDocument  from "./Document";
 import ChatGPT from "./ChatGPT";
-import Mock from './Mock/Mock';
 import Static from "./static/constants";
 
 type GPTDocxsArgs = {
@@ -82,9 +81,6 @@ class GPTDocx {
     return this;
   }
 
-
-
-
   /**
    * @description
    * Determines and returns the service to be used.
@@ -100,9 +96,6 @@ class GPTDocx {
     }
   }
 
-
-
-
   /**
    * @description
    * Imports the service object to be used in the request. 
@@ -114,9 +107,8 @@ class GPTDocx {
    */
   _getService(service: string): Service {
     console.log("Selected Service: ", service);
-     // Consider exporting all available services as an object
     let requestedService
-    if (process.env["NODE_ENV"] === "development") {
+    if (process.env["NODE_ENV"] === "development" || "test") {
       requestedService = require(
         join(__dirname, Static.DOCX_DIR, service, Static.INDEX_TS)
       );
@@ -128,9 +120,6 @@ class GPTDocx {
     console.log("Requested Service: ", requestedService);
     return requestedService;
   }
-
-
-
 
   /**
    * @description
@@ -146,12 +135,9 @@ class GPTDocx {
       this.requestFormat = this.service.requestFormat;
       this.styles = this.service.styles; // should we apply a defualt style if styles is not defined
     } else{
-      throw new Error(`Service is not valid. ${"PARSE_SERVICE_REQUEST_ERROR"}`);
+      throw new Error(`Service is not valid. ${this.service} ${"PARSE_SERVICE_REQUEST_ERROR"}`);
     }
   }
-
-
-
 
   /**
    * @description
@@ -164,9 +150,6 @@ class GPTDocx {
     return this.service && this.service.name && this.service.requestFormat?.pages ? true : false;
   }
 
-
-
-
   /**
    * @description
    * Sends request to OpenAI for a context. Uses ```this.response```
@@ -176,21 +159,13 @@ class GPTDocx {
    * @returns {Promise<string>} Filename of the document.
    */
   async createFile(): Promise<string> {
-    if (process.env["MOCK_OPENAI_RESPONSE"] === Static.true) {
-      this.response =  Mock.request('word').send();
-      return this._buildPages();
-    }
     this.response = await new ChatGPT({
       prompt: this.prompt,
       format: this.requestFormat,
-      responseFormat: "json", // default
     }).send();
     console.log("Building Pages...");
     return this._buildPages();
   }
-
-
-
 
   /** 
    * @description
@@ -208,9 +183,6 @@ class GPTDocx {
   
       return prompt;
   }
-
-
-
 
   /**
    * @description
@@ -231,9 +203,6 @@ class GPTDocx {
     return this._create(); // async
   }
 
-
-
-
   /**
    * @description
    * Gets the page ```value``` and maps it to its use case.
@@ -253,9 +222,6 @@ class GPTDocx {
       }
     }
   }
-
-
-
 
   /**
    * @description
@@ -281,9 +247,6 @@ class GPTDocx {
         throw new Error(`Cannot Parse Key: ${key} Error Code: PARSE_KEY_ERROR`);
     }
   }
-
-
-
 
   /**
    * @description
@@ -311,9 +274,6 @@ class GPTDocx {
     }
   }
 
-
-
-
   /**
    * @description
    * Determines the type from ```value``` and returns it.
@@ -325,9 +285,6 @@ class GPTDocx {
   _getValueType(value: any): any {
     return Array.isArray(value) ? Static.array : typeof value;
   }
-
-
-
 
   /**
    * @description
@@ -354,9 +311,6 @@ class GPTDocx {
     );
   }
 
-
-  
-
   /**
    * @description
    * Sets the correct ```key``` to be used 
@@ -369,9 +323,6 @@ class GPTDocx {
   _getValidKey(key: string): string {
     return this.styles[key] ? key : this.tempKey;
   }
-
-
-
 
   /**
    * @description
@@ -403,9 +354,6 @@ class GPTDocx {
     });
   }
 
-
-
-
   /**
    * @description
    * Adds a new Image to the document.
@@ -422,9 +370,6 @@ class GPTDocx {
     );
   }
 
-
-
-
   /**
    * @description Adds a new table to the document with table headers
    * and data
@@ -439,8 +384,6 @@ class GPTDocx {
     )
   }
 
-
-
   /**
    * @description
    * Checks to see if the ```key``` is a mapped key.
@@ -452,8 +395,6 @@ class GPTDocx {
   _isMapped(key: string): Boolean {
     return [Static.links, Static.table, Static.image].includes(key);
   }
-
-
 
   /**
    * @description
@@ -470,8 +411,6 @@ class GPTDocx {
     }
     this._parse(value);
   }
-
-
 
   /**
    * @description
@@ -494,9 +433,7 @@ class GPTDocx {
     }
     return filename;
   }
-
   
-
   /**
    * @description
    * Creates a ChatGPTDocx.json file.

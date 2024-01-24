@@ -15,7 +15,7 @@ const Static = {
   json : "json",
   SYSTEM : "system",
   USER : "user",
-  MODEL : "gpt-4",
+  MODEL : "gpt-3.5-turbo-1106",
   DEFAULT_MESSAGE : "You are a helpful assistant.",
   SYSTEM_FORMAT: 'Return the message content as a json object so that it can be parsed using the JSON.parse static method. The json object needs to be in the in the following format: ',
   APPEND_TO_STRING:{

@@ -1,11 +1,11 @@
 require('dotenv').config();
 import OpenAI from 'openai';
 import Static from "./static/constants";
+import Mock from './Mock/Mock';
 
 type ChatGPTArgs = {
     prompt: string;
     format: any;
-    responseFormat: string;
     model?: string;
     max_tokens?: number;
     config?: any;
@@ -20,14 +20,12 @@ type RequestBodyParams = {
 class ChatGPT {
     private openai: any;
     private response: any;
-    private responseFormat = "";
     private prompt = "";
     private requestBody: any;
 
-  constructor({prompt, format, responseFormat, model, max_tokens, config}: ChatGPTArgs) {
+  constructor({prompt, format, model, max_tokens, config}: ChatGPTArgs) {
     this.openai = new OpenAI({ apiKey: process.env["OPENAI_API_KEY"], ...config });
     this.response = null;
-    this.responseFormat = responseFormat || Static.json;
     this.prompt = prompt;
     this.requestBody = this._buildRequestBody({
       format,
@@ -49,7 +47,8 @@ class ChatGPT {
     return { 
       model:  model || Static.MODEL,
       messages: message, 
-      max_tokens: max_tokens || undefined
+      max_tokens: max_tokens || undefined,
+      response_format: { "type": "json_object" }
     };
   }
 
@@ -64,7 +63,7 @@ class ChatGPT {
     const systemFormat = this._getFormat(format);
     return [
       { role: Static.SYSTEM, content: systemFormat},
-      { role: Static.USER, content: this.prompt }
+      { role: Static.USER, content: this.prompt+'. Use json as the response format.' },
     ];
   }
 
@@ -74,11 +73,10 @@ class ChatGPT {
    * 
    * @returns 
    */
-  async send(): Promise<string> {
+  async send(): Promise<any> {
     try {
       console.log("Sending resquest...");
       this.response = await this.openai.chat.completions.create(this.requestBody);
-      console.log("Loading Response...");
       return this._getResponse();
     } catch (err) {
       console.error("Unable to complete Open A.I request: ", err);
@@ -92,11 +90,8 @@ class ChatGPT {
    * 
    * @returns 
    */
-  _getResponse(): string {
-    if (this.responseFormat === Static.json) {
-      return JSON.parse(this.response.choices[0].message.content);
-    }
-    return this.response.choices[0].message.content;
+  _getResponse(): any {
+    return JSON.parse(this.response.choices[0].message.content);
   }
 
 
@@ -106,7 +101,7 @@ class ChatGPT {
    * @param {object} format 
    * @returns {String} requestFormat as a string appended to the system format
    */
-  _getFormat(format: any): string { 
+  _getFormat(format: any): string { // typeof service
     console.debug("format()");
     let systemFormat;
     if (format && typeof format === Static.object) {
