@@ -8,7 +8,7 @@ import {
 } from 'docx';
 import { writeFileSync } from 'fs';
 import { join }  from 'path';
-import { CONFIG } from './static/config';
+import { DOCUMENT } from './static/config';
 
 type WordDocumentArgs = {
     name: string;
@@ -23,7 +23,7 @@ class WordDocument {
     private _name = "";
     private options = {};
     private sections:any[] = [];
-    private static instance: WordDocument | null = null
+    private static instance: WordDocument;
 
     constructor({name, pages, options}: WordDocumentArgs) {
         if (WordDocument.instance) {
@@ -31,11 +31,10 @@ class WordDocument {
             return WordDocument.instance;
         }
         WordDocument.instance = this;
-        this.options = CONFIG.BASIC;
+        this.options = DOCUMENT.BASIC;
         this.sections = [];
         this._name = this._sanitize(name);
         if (pages.length) this.add(pages);
-        this._setup(options?.pageHeader, options?.pageFooter);
     }
 
     _sanitize(name: string) {
@@ -56,7 +55,7 @@ class WordDocument {
     };
 
     _filePath(name: string) {
-        return join(process.cwd(), CONFIG.FILE_PATH, name + CONFIG.EXT);
+        return join(process.cwd(), DOCUMENT.FILE_PATH, name + DOCUMENT.EXT);
     }
 
     add(pages: any[]){
@@ -80,37 +79,10 @@ class WordDocument {
         const newDocument = new Document({...this.options, sections: this.sections});
         const filePath = this._filePath(this._name);
         await this._save(filePath, newDocument);
-        return this._name + CONFIG.EXT;
+        return this._name + DOCUMENT.EXT;
     }
 
-    _getName() { return this._name; }
-    
-    _setup(headerText: any, footerText: any){
-        let headers, footers;
-        if (headerText){
-            headers = this._header(headerText);
-        } 
-        if (footerText) {
-            footers = this._footer(footerText);
-        }
-    }
-
-    _header(text: string) {
-        return {  
-            headers: {
-                default: new Header({ children: [new Paragraph(text)] })
-            }
-        }
-    }
-
-
-    _footer(text: string) {
-        return { 
-            footers: { 
-                default: new Footer({ children: [new Paragraph(text)] })
-            } 
-        }
-    }    
+    _getName() { return this._name; }    
 
 }
 

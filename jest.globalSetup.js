@@ -6,6 +6,7 @@ let consoleErrorSpy;
 let consoleDebugSpy;
 
 beforeEach(() => {
+  jest.clearAllMocks()
   consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
   consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

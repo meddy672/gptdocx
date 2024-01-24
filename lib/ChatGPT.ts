@@ -1,13 +1,13 @@
 require('dotenv').config();
 import OpenAI from 'openai';
 import Static from "./static/constants";
-import Mock from './Mock/Mock';
 
 type ChatGPTArgs = {
     prompt: string;
     format: any;
     model?: string;
     max_tokens?: number;
+    apiKeyEnv?: string;
     config?: any;
 }
 

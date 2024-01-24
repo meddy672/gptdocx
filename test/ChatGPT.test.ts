@@ -1,26 +1,19 @@
+import OpenAI from "openai";
 import ChatGPT from "../lib/ChatGPT";
 import Mock from "../lib/Mock/Mock";
-import WordDocument from "../lib/Document";
-import OpenAI from "openai";
 const  basicExample  = require("../lib/docx/basicExample");
-// jest.mock("openai");
 
 describe("ChatGpt", () => {
-
     let openaiSpy: any;
-    let wordDocumentSpy: any;
     beforeEach(() => {
       openaiSpy = jest.spyOn(OpenAI.Chat.Completions.prototype, "create");
-      wordDocumentSpy = jest.spyOn(WordDocument.prototype, "saveFile");
-      wordDocumentSpy.mockResolvedValue("HowToTypeFaster.docx");
     });
   
     afterEach(() => {
       openaiSpy.mockRestore();
-      wordDocumentSpy.mockRestore();
     });  
 
-  test("returns correct a response", async () => {
+  test("should return correct a response", async () => {
     openaiSpy.mockResolvedValue({
       id: "123",
       created: 1677652288,
@@ -54,7 +47,8 @@ describe("ChatGpt", () => {
     
   });
 
-  test("throws OPENAI_REQUEST_ERROR when response is invalid", async () => {
+  
+  test("should throw OPENAI_REQUEST_ERROR when response is invalid", async () => {
     openaiSpy.mockImplementation(() => {
       throw new Error("An error occured");
     });
@@ -70,7 +64,8 @@ describe("ChatGpt", () => {
     
   });
 
-  test("throws OPENAI_REQUEST_ERROR when format is invalid", async () => {
+
+  test("should throw OPENAI_REQUEST_ERROR when format is invalid", async () => {
     openaiSpy.mockImplementation(() => {
       throw new Error("An error occured");
     });

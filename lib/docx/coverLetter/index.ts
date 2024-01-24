@@ -18,4 +18,4 @@ const coverLetter = {
   styles: {},
 };
 
-module.exports = coverLetter
+module.exports = coverLetter;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc jest --runInBand",
-    "test:case": "nyc jest --runInBand ./test/ChatGPT.test.ts",
+    "test:case": "nyc jest --runInBand ./test/docx/basicExample.test.ts",
     "lint": "eslint .",
     "compile": "tsc"
   },

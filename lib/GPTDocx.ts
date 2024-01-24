@@ -106,18 +106,19 @@ class GPTDocx {
    * @returns {Object} an object with requestFormnat and styles.
    */
   _getService(service: string): Service {
-    console.log("Selected Service: ", service);
     let requestedService
-    if (process.env["NODE_ENV"] === "development" || "test") {
-      requestedService = require(
-        join(__dirname, Static.DOCX_DIR, service, Static.INDEX_TS)
-      );
-    } else {
-      requestedService = require(
-        join(__dirname, Static.DOCX_DIR, service, Static.INDEX_JS)
-      );
+    try {
+      if (process.env["NODE_ENV"] === "development" || "test") {
+        requestedService = require(
+          join(__dirname, Static.DOCX_DIR, service, Static.INDEX_TS)
+        );
+      } else {
+        requestedService = require(
+          join(__dirname, Static.DOCX_DIR, service, Static.INDEX_JS)
+        );
+      }      
+    } catch (error) {
     }
-    console.log("Requested Service: ", requestedService);
     return requestedService;
   }
 
@@ -135,7 +136,7 @@ class GPTDocx {
       this.requestFormat = this.service.requestFormat;
       this.styles = this.service.styles; // should we apply a defualt style if styles is not defined
     } else{
-      throw new Error(`Service is not valid. ${this.service} ${"PARSE_SERVICE_REQUEST_ERROR"}`);
+      throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
   }
 
@@ -179,7 +180,7 @@ class GPTDocx {
   _isValidPrompt(prompt: string): string {
       console.debug("_isValidPrompt()", prompt);
       const validPrompt = typeof prompt === Static.string && prompt.trim() !== "";
-      if (!validPrompt) throw new Error("Invalid Prompt!");
+      if (!validPrompt) throw new Error("Error: INVALID_PROMPT");
   
       return prompt;
   }
@@ -255,7 +256,7 @@ class GPTDocx {
    * 
    * @private
    * @param {String} key 
-   * @param {String | Object} value 
+   * @param {*} value 
    */
   _switchByType(key: string, value: any) {
     const type = this._getValueType(value);
@@ -433,7 +434,7 @@ class GPTDocx {
     }
     return filename;
   }
-  
+
   /**
    * @description
    * Creates a ChatGPTDocx.json file.

@@ -1,4 +1,4 @@
-export const  CONFIG = {
+export const  DOCUMENT = {
     BASIC: { // Change BASIC to DOCUMENT
         creator: "Office A.I.",
         subject: "Word Document A.I.",
