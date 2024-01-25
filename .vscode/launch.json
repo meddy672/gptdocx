@@ -34,6 +34,18 @@
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+          },
+          {
+            "name": "Debug Current File",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
+            "args": [
+              "${relativeFile}"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
           }
     ]
 }

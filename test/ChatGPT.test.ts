@@ -6,6 +6,7 @@ const  basicExample  = require("../lib/docx/basicExample");
 describe("ChatGpt", () => {
     let openaiSpy: any;
     beforeEach(() => {
+      process.env["MOCK_OPENAI_RESPONSE"] = "false";
       openaiSpy = jest.spyOn(OpenAI.Chat.Completions.prototype, "create");
     });
   
@@ -43,7 +44,7 @@ describe("ChatGpt", () => {
     expect(response.pages[0].title).toEqual("How to Type Faster");
     expect(response.pages[0].author).toEqual("John Smith");
     expect(response.pages[0].content).toBeDefined();
-    expect(response.pages[1].links[0].text).toEqual('Example.com');
+    expect(response.pages[2].links[0].text).toEqual('Example.com');
     
   });
 

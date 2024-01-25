@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc jest --runInBand",
-    "test:case": "nyc jest --runInBand ./test/docx/basicExample.test.ts",
+    "test:case": "nyc jest --runInBand ./test/Image.test.ts",
     "lint": "eslint .",
     "compile": "tsc"
   },

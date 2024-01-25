@@ -1,6 +1,7 @@
 require('dotenv').config();
 import OpenAI from 'openai';
 import Static from "./static/constants";
+import Mock from './Mock/Mock';
 
 type ChatGPTArgs = {
     prompt: string;
@@ -76,7 +77,9 @@ class ChatGPT {
   async send(): Promise<any> {
     try {
       console.log("Sending resquest...");
-      this.response = await this.openai.chat.completions.create(this.requestBody);
+      const content: any = await this.openai.chat.completions.create(this.requestBody);
+      this.response = content.choices[0].message.content;
+      console.log(this.response)
       return this._getResponse();
     } catch (err) {
       console.error("Unable to complete Open A.I request: ", err);
@@ -91,7 +94,7 @@ class ChatGPT {
    * @returns 
    */
   _getResponse(): any {
-    return JSON.parse(this.response.choices[0].message.content);
+    return JSON.parse(this.response);
   }
 
 

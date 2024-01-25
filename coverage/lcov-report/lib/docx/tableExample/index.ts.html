@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for lib/static/constants.ts</title>
+    <title>Code coverage report for lib/docx/tableExample/index.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">lib/static</a> constants.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">lib/docx/tableExample</a> index.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -84,11 +84,7 @@
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -108,37 +104,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const Static = {
-  links : "links",
-  table : "table",
-  image : "image",
-  INDEX_JS : "index.js",
-  INDEX_TS: "index.ts",
-  array : "array",
-  object : "object",
-  string : "string",
-  service: "service",
-  HYPERLINK : "Hyperlink",
-  DOCX_DIR : "docx",
-  SCHEMA_JSON : "schema.json",
-  "true":  "true",
-  json : "json",
-  SYSTEM : "system",
-  USER : "user",
-  MODEL : "gpt-3.5-turbo-1106",
-  DEFAULT_MESSAGE : "You are a helpful assistant.",
-  SYSTEM_FORMAT: 'Return the message content as a json object so that it can be parsed using the JSON.parse static method. The json object needs to be in the in the following format: ',
-  APPEND_TO_STRING:{
-      pptx: '. For the slides array, create only one object with the type "TitleSlide". For the slides array, create as many "NewSlides" objects as possible. The content for the new slides must contain at least three objects. For each new subject found from the query, in the slides array create a "SectionHead" object.',
-      csv: ". Return only the csv data and title for a csv file in the message content. Include a title and headers for the csv data. The message content must not contain any additional characters which may prevent the csv data from being saved into a database."
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const tableExample = {
+  name: "tableExample",
+  requestFormat: {
+    pages: [
+      {
+        title: "",
+        content: [
+          {
+            heading: "",
+            body: "",
+          },
+        ],
+        table: {
+          headers: [],
+          data: [],
+        },
+      },
+    ],
   },
-}
-export default Static;</pre></td></tr></table></pre>
+};
+module.exports = tableExample;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
@@ -147,14 +135,14 @@ export default Static;</pre></td></tr></table></pre>
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2024-01-25T18:57:30.616Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     

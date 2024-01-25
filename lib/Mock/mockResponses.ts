@@ -65,6 +65,32 @@ const mockResponse: any = {
           ],
         },
         {
+          "title": "iPhones",
+          "content": [
+            {
+              "heading": "Introduction",
+              "body": "The iPhone is a line of smartphones designed and marketed by Apple Inc. It runs on Apple's iOS mobile operating system, and the first iPhone was released on June 29, 2007."
+            },
+            {
+              "heading": "Features",
+              "body": "iPhones are known for their sleek design, high-quality cameras, and integration with Apple's ecosystem of apps and services. They also feature Face ID for secure authentication and come with a variety of storage options."
+            },
+            {
+              "heading": "Market Impact",
+              "body": "The iPhone has had a significant impact on the smartphone industry and has been a major driver of Apple's financial success."
+            }
+          ],
+          "table": {
+            "headers": ["Model", "Release Date", "Display Size", "Camera", "Storage Options"],
+            "data": [
+              ["iPhone 12", "October 23, 2020", "6.1 inches", "Dual 12MP Ultra Wide and Wide cameras", "64GB, 128GB, 256GB"],
+              ["iPhone 11", "September 20, 2019", "6.1 inches", "Dual 12MP Ultra Wide and Wide cameras", "64GB, 128GB, 256GB"],
+              ["iPhone XR", "October 26, 2018", "6.1 inches", "12MP camera", "64GB, 128GB, 256GB"],
+              ["iPhone 8", "September 22, 2017", "4.7 inches", "12MP camera", "64GB, 256GB"]
+            ]
+          }
+        },
+        {
           links: [ {text: "Example.com", link: "https://example.com" }]
         }
       ]
@@ -207,7 +233,37 @@ const mockResponse: any = {
             }
          }
       ]
-   }
+   },
+   table: {
+    "pages": [
+      {
+        "title": "iPhones",
+        "content": [
+          {
+            "heading": "Introduction",
+            "body": "The iPhone is a line of smartphones designed and marketed by Apple Inc. It runs on Apple's iOS mobile operating system, and the first iPhone was released on June 29, 2007."
+          },
+          {
+            "heading": "Features",
+            "body": "iPhones are known for their sleek design, high-quality cameras, and integration with Apple's ecosystem of apps and services. They also feature Face ID for secure authentication and come with a variety of storage options."
+          },
+          {
+            "heading": "Market Impact",
+            "body": "The iPhone has had a significant impact on the smartphone industry and has been a major driver of Apple's financial success."
+          }
+        ],
+        "table": {
+          "headers": ["Model", "Release Date", "Display Size", "Camera", "Storage Options"],
+          "data": [
+            ["iPhone 12", "October 23, 2020", "6.1 inches", "Dual 12MP Ultra Wide and Wide cameras", "64GB, 128GB, 256GB"],
+            ["iPhone 11", "September 20, 2019", "6.1 inches", "Dual 12MP Ultra Wide and Wide cameras", "64GB, 128GB, 256GB"],
+            ["iPhone XR", "October 26, 2018", "6.1 inches", "12MP camera", "64GB, 128GB, 256GB"],
+            ["iPhone 8", "September 22, 2017", "4.7 inches", "12MP camera", "64GB, 256GB"]
+          ]
+        }
+      }
+    ]
+  }
 }
 
 export default mockResponse;

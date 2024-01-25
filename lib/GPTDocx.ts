@@ -20,17 +20,17 @@ type GPTDocxsArgs = {
 }
 
 type RequestFormat = {
-  pages: []
+  pages: any[]
 }
 
 type Service = {
     name: string;
     requestFormat: RequestFormat,
-    styles: {}
+    styles?: {}
 }
 
 type TableArgs = {
-    table_headers: any[],
+    headers: any[],
     data: any[]
 }
 
@@ -77,6 +77,7 @@ class GPTDocx {
     this.saveSchema = saveSchema || false;  
     this.prompt = this._isValidPrompt(prompt);
     this.service = this._parseService(service)
+    this.styles = {};
     this._prepareService();
     return this;
   }
@@ -88,7 +89,7 @@ class GPTDocx {
    * @private
    * @param {String} service of a service to be used in the request
    */
-  _parseService(service: string | Service): Service {
+  private _parseService(service: string | Service): Service {
     if (typeof service === Static.string) {
       return this._getService(service.toString());
     } else {
@@ -105,7 +106,7 @@ class GPTDocx {
    * @private
    * @returns {Object} an object with requestFormnat and styles.
    */
-  _getService(service: string): Service {
+  private _getService(service: string): Service {
     let requestedService
     try {
       if (process.env["NODE_ENV"] === "development" || "test") {
@@ -130,11 +131,11 @@ class GPTDocx {
    * 
    * @private
    */
-  _prepareService(){
+  private _prepareService(){
     if (this._isValidService()) {
       this.name = this.service.name;
       this.requestFormat = this.service.requestFormat;
-      this.styles = this.service.styles; // should we apply a defualt style if styles is not defined
+      this.styles = this.service.styles ? this.service.styles : this.styles; // should we apply a defualt style if styles is not defined
     } else{
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
@@ -147,7 +148,7 @@ class GPTDocx {
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  _isValidService(): Boolean{
+  private _isValidService(): Boolean{
     return this.service && this.service.name && this.service.requestFormat?.pages ? true : false;
   }
 
@@ -177,7 +178,7 @@ class GPTDocx {
    * @param {String} prompt Required constructor parameter
    * @returns {String} prompt
    */
-  _isValidPrompt(prompt: string): string {
+  private _isValidPrompt(prompt: string): string {
       console.debug("_isValidPrompt()", prompt);
       const validPrompt = typeof prompt === Static.string && prompt.trim() !== "";
       if (!validPrompt) throw new Error("Error: INVALID_PROMPT");
@@ -194,7 +195,7 @@ class GPTDocx {
    * @private
    * @returns {Promise<string>} Filename of the document that was created.
    */
-  async _buildPages(): Promise<string> {
+  private async _buildPages(): Promise<string> {
     this.response.pages.forEach( (page: object) => {
       this._parse(page);
       this.pages.push(this.children);
@@ -211,7 +212,7 @@ class GPTDocx {
    * @private
    * @param {Object} page 
    */
-  _parse(page: any) {
+  private _parse(page: any) {
     for (const key in page) {
       if (page.hasOwnProperty(key)) {
         const value:any = page[key] as string;
@@ -233,7 +234,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {*} value 
    */
-  _switchByMappedKey(key: string, value: any) {
+  private _switchByMappedKey(key: string, value: any) {
     switch (key) {
       case Static.links:
         this._caseLinks(value);
@@ -258,7 +259,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {*} value 
    */
-  _switchByType(key: string, value: any) {
+  private _switchByType(key: string, value: any) {
     const type = this._getValueType(value);
     switch (type) {
       case Static.array:
@@ -283,7 +284,7 @@ class GPTDocx {
    * @param {*} value 
    * @returns {String} the primitive type of the value.
    */
-  _getValueType(value: any): any {
+  private _getValueType(value: any): any {
     return Array.isArray(value) ? Static.array : typeof value;
   }
 
@@ -297,7 +298,7 @@ class GPTDocx {
    * @param {String} _key 
    * @param {String} text 
    */
-  _caseText(_key: string, text: string) {
+  private _caseText(_key: string, text: string) {
     const key = this._getValidKey(_key);
     this.children.push(
       new Paragraph({
@@ -321,7 +322,7 @@ class GPTDocx {
    * @param {String} key 
    * @returns {String} The valid key.
    */
-  _getValidKey(key: string): string {
+  private _getValidKey(key: string): string {
     return this.styles[key] ? key : this.tempKey;
   }
 
@@ -335,7 +336,7 @@ class GPTDocx {
    * @private
    * @param {Array} links 
    */
-  _caseLinks(links: []) {
+  private _caseLinks(links: []) {
     links.forEach(({ text, link }) => {
       this.children.push(
         new Paragraph({
@@ -362,7 +363,7 @@ class GPTDocx {
    * @param {Buffer} content - ImageBuffer i.e 
    * .jpg, .png, .svg, .gif, .bmp, data:image/png
    */
-  _caseImage(content: any) {
+  private _caseImage(content: any) {
     this.children.push(
       new Image({
         content,
@@ -376,10 +377,10 @@ class GPTDocx {
    * and data
    * @param {object} table_headers - The header for each column
    */
-  _caseTable({table_headers, data}: TableArgs) {
+  private _caseTable({headers, data}: TableArgs) {
     this.children.push(
       Table({
-        table_headers,
+        headers,
         data
       })
     )
@@ -393,7 +394,7 @@ class GPTDocx {
    * @param {String} key 
    * @returns {Boolean} True if the key is a mappedKey otherwise false.
    */
-  _isMapped(key: string): Boolean {
+  private _isMapped(key: string): Boolean {
     return [Static.links, Static.table, Static.image].includes(key);
   }
 
@@ -406,7 +407,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {Array} value 
    */
-  _handleArrayCase(key: string, value: []) {
+  private _handleArrayCase(key: string, value: []) {
     if (this.styles[key]) {
       this.tempKey = key;
     }
@@ -423,7 +424,7 @@ class GPTDocx {
    * @async
    * @returns {Promise<string>} filename that is created by the Document Object
    */
-  async _create(): Promise<string> {
+  private async _create(): Promise<string> {
     const wordDocument = new WordDocument({
       name: this.response.pages[0].title,
       pages: this.pages,
@@ -443,7 +444,7 @@ class GPTDocx {
    * @private
    * @param {String} filename the name of the document that was created.
    */
-  async _createSchema(filename: string) {
+  private async _createSchema(filename: string) {
     console.log("Filename: ", filename);
     try {
       const ChatGPTDocx = {

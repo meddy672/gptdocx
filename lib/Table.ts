@@ -8,12 +8,12 @@ import {
 } from 'docx';
 
 type DocxTableArgs = {
-    table_headers: any[];
+    headers: any[];
     data: any;
 }
-function DocxTable({table_headers, data}: DocxTableArgs) {
+function DocxTable({headers, data}: DocxTableArgs) {
     let dataTypeIsObject = false;
-    const tableHeaders = table_headers.map((text: string) => {
+    const tableHeaders = headers.map((text: string) => {
       return new TableCell({
         width: {
           size: 4535,
@@ -24,7 +24,7 @@ function DocxTable({table_headers, data}: DocxTableArgs) {
             heading: "Heading2",
             children: [
               new TextRun({
-                text: capitalizeFirstLetter(text), // Clean make configurable
+                text: capitalizeFirstLetter(text.toString()), // Clean make configurable
                 bold: true,
                 size: 34,
               }),
@@ -62,15 +62,16 @@ function DocxTable({table_headers, data}: DocxTableArgs) {
             ],
         });
     } else {
+      const dataResults: any[] = []
         let result = [];
-        for (let i = 0; i < tableData.length / table_headers.length; i++) {
+        for (let i = 0; i < tableData.length / headers.length; i++) {
             const rowData: any = {};
-            for (let j = 0; j < table_headers.length; j++) {
-                const dataIndex = i * table_headers.length + j;
-                rowData[table_headers[j]] = tableData[dataIndex];
-                result.push(rowData[table_headers[j]]);
+            for (let j = 0; j < headers.length; j++) {
+                const dataIndex = i * headers.length + j;
+                rowData[headers[j]] = tableData[dataIndex];
+                result.push(rowData[headers[j]]);
             }
-            data.push(new TableRow({ children: [...result]}));
+            dataResults.push(new TableRow({ children: [...result]}));
             result = [];
         }
         return new Table({
@@ -79,20 +80,12 @@ function DocxTable({table_headers, data}: DocxTableArgs) {
                 tableHeader: true,
                 children: [...tableHeaders],
               }),
-              ...data,
+              ...dataResults,
             ],
         });
     }
 
-      function capitalizeFirstLetter(inputString: string) {
-          if (typeof inputString !== 'string') {
-            throw new Error('Input must be a string');
-          }
-        
-          if (inputString.length === 0) {
-            return inputString; // Return the original string if it's empty
-          }
-        
+      function capitalizeFirstLetter(inputString: string) {        
           return inputString.charAt(0).toUpperCase() + inputString.slice(1);
       }
 }
