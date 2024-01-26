@@ -21,12 +21,11 @@ class ChatGPT {
     private prompt = "";
     private requestBody: ChatCompletionCreateParams;
 
-  constructor({prompt, format, model, config}: ChatGPTArgs) {
+  constructor({prompt, format, config}: ChatGPTArgs) {
     this.openai = new OpenAI({ apiKey: process.env["OPENAI_API_KEY"], ...config });
     this.prompt = prompt;
     this.requestBody = this._buildRequestBody({
       format,
-      model,
     });
     return this;
   }
@@ -38,10 +37,10 @@ class ChatGPT {
    * @param {*} param0 
    * @returns 
    */
-  private _buildRequestBody({format, model}: RequestBodyParams): ChatCompletionCreateParams {
+  private _buildRequestBody({format}: RequestBodyParams): ChatCompletionCreateParams {
     const message = this._prepareMessages(format);
     return { 
-      model:  model || Static.MODEL,
+      model: Static.MODEL,
       messages: message, 
       response_format: { "type": "json_object" }
     };
@@ -51,14 +50,14 @@ class ChatGPT {
 
   /**
    * 
-   * @param {*} format 
+   * @param {Format} format 
    * @returns 
    */
   private _prepareMessages(format: Format): Message[] {
     const systemFormat = this._getFormat(format);
     return [
-      { role: Static.SYSTEM as Role, content: systemFormat},
-      { role: Static.USER as Role, content: this.prompt+'. Use json as the response format.' },
+      { role: Static.SYSTEM as Role, content: systemFormat },
+      { role: Static.USER as Role, content: this.prompt },
     ];
   }
 

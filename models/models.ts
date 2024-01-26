@@ -8,9 +8,7 @@ export type ChatGPTArgs = {
 };
 
 export type RequestBodyParams = {
-  format: any;
-  model: string | undefined;
-  max_tokens?: number | undefined;
+  format: Format;
 };
 
 export type WordDocumentArgs = {
