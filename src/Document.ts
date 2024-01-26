@@ -42,7 +42,7 @@ class WordDocument {
   }
 
   private _filePath(name: string) {
-    return join(process.cwd(), DOCUMENT.FILE_PATH, name + DOCUMENT.EXT);
+    return join(process.cwd(), name + DOCUMENT.EXT);
   }
 
   private _sanitize(name: string) {
