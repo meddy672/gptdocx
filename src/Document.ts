@@ -5,16 +5,13 @@ import {
 import { writeFileSync } from 'fs';
 import { join }  from 'path';
 import { DOCUMENT } from './static/config';
+import { WordDocumentArgs } from '@types';
 
-type WordDocumentArgs = {
-    name: string;
-    pages: any[];
-    options?: {
-        pageHeader: {};
-        pageFooter: {};
-    }
-}
-
+/**
+ * @description
+ * 
+ * @async
+ */
 class WordDocument {
   private _name = "";
   private options = {};
@@ -29,7 +26,7 @@ class WordDocument {
     }
   }
 
-  async _save(fileName: string, newDocument: any): Promise<string> {
+  private async _save(fileName: string, newDocument: any): Promise<string> {
       const blob = await Packer.toBlob(newDocument);
       const arrayBuffer = await blob.arrayBuffer();
       const file = Buffer.from(arrayBuffer);
@@ -46,11 +43,11 @@ class WordDocument {
     return this._save(filePath, newDocument);
   }
 
-  _filePath(name: string) {
+  private _filePath(name: string) {
     return join(process.cwd(), DOCUMENT.FILE_PATH, name + DOCUMENT.EXT);
   }
 
-  _sanitize(name: string) {
+  private _sanitize(name: string) {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
     return name.replace(pattern, "").trim(); // replaceAll
   }

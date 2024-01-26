@@ -1,4 +1,4 @@
-import WordDocument from "../lib/Document";
+import WordDocument from "../src/Document";
 import fs from 'fs';
 import path from 'path';
 

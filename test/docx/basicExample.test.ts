@@ -1,8 +1,8 @@
 import { AlignmentType } from 'docx';
+import { format } from '../../src/docx/basicExample'
 describe("Basic Example", () => {
   test("should return basicExample service with properties of mockService", () => {
-    const service = require("../../lib/docx/basicExample");
-    expect(service).toEqual({
+    expect(format).toEqual({
       name: "basicExample",
       requestFormat: {
         pages: [

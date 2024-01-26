@@ -1,4 +1,4 @@
-const updateNotice = {
+export const format = {
     name: "updateNotice",
     requestFormat: {
       pages: [
@@ -79,6 +79,4 @@ const updateNotice = {
       },
     },
   };
-  
-  module.exports = updateNotice;
   

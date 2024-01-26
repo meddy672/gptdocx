@@ -1,6 +1,4 @@
-const { Paragraph, TextRun } = require("docx");
-
-const jobApp = {
+export const format = {
   name: "jobApp",
   requestFormat: {
     pages: [
@@ -116,4 +114,3 @@ const jobApp = {
   },
 };
 
-module.exports = jobApp;

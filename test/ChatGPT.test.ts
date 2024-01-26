@@ -1,7 +1,7 @@
 import OpenAI from "openai";
-import ChatGPT from "../lib/ChatGPT";
-import Mock from "../lib/Mock/Mock";
-const  basicExample  = require("../lib/docx/basicExample");
+import ChatGPT from "../src/ChatGPT";
+import Mock from "./Mock/Mock";
+const  basicExample  = require("../src/docx/basicExample");
 
 describe("ChatGpt", () => {
     let openaiSpy: any;

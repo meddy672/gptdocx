@@ -11,33 +11,14 @@ import Image from "./Image";
 import  WordDocument  from "./Document";
 import ChatGPT from "./ChatGPT";
 import Static from "./static/constants";
+import { GPTDocxsArgs, RequestFormat, Format, DocxTableArgs } from "@types";
 
-type GPTDocxsArgs = {
-    service: string | Service;
-    prompt: string;
-    saveSchema?: boolean;
-    documentConfig?: any;
-}
 
-type RequestFormat = {
-  pages: any[]
-}
-
-type Service = {
-    name: string;
-    requestFormat: RequestFormat,
-    styles?: {}
-}
-
-type TableArgs = {
-    headers: any[],
-    data: any[]
-}
 
 /**
  * @description
- *
- * @param {*} service  A **string** which is a name of a service or a **Service** object.
+ * @async
+ * @param {*} format  A **string** which is a name of a service or a **Service** object.
  * @param {String} prompt that is sent to OpenAI to build the document context. Required
  * @param {Boolean} saveSchema used to save a json file of the request and response objects. Optional.
  * @param {Object} documentConfig used to apply additional configuration word document. Optional.
@@ -50,7 +31,7 @@ class GPTDocx {
     private response: any;
 
     /** Contains the service object. Initializes ```this.requestFormat``` and ```this.styles```. See parse format.*/
-    private service: Service;
+    private service: Format;
 
     /**The name of the service used in the request. ```this.name = this.service.name```*/
     private name: string | undefined;
@@ -73,10 +54,10 @@ class GPTDocx {
     /**The prompt sent to OpenAI for context. ```await new ChatGPT({prompt: this.prompt})```*/
     private prompt: string;
 
-  constructor({ service, prompt, saveSchema, documentConfig }: GPTDocxsArgs) {
+  constructor({ format, prompt, saveSchema, documentConfig }: GPTDocxsArgs) {
     this.saveSchema = saveSchema || false;  
     this.prompt = this._isValidPrompt(prompt);
-    this.service = this._parseService(service)
+    this.service = this._parseService(format)
     this.styles = {};
     this._prepareService();
     return this;
@@ -89,11 +70,11 @@ class GPTDocx {
    * @private
    * @param {String} service of a service to be used in the request
    */
-  private _parseService(service: string | Service): Service {
+  private _parseService(service: string | Format): Format {
     if (typeof service === Static.string) {
-      return this._getService(service.toString());
+      return this._getFormat(service.toString());
     } else {
-      return service as Service;
+      return service as Format;
     }
   }
 
@@ -106,8 +87,8 @@ class GPTDocx {
    * @private
    * @returns {Object} an object with requestFormnat and styles.
    */
-  private _getService(service: string): Service {
-    let requestedService
+  private _getFormat(service: string): Format {
+    let requestedService: any;
     try {
       if (process.env["NODE_ENV"] === "development" || "test") {
         requestedService = require(
@@ -117,10 +98,11 @@ class GPTDocx {
         requestedService = require(
           join(__dirname, Static.DOCX_DIR, service, Static.INDEX_JS)
         );
-      }      
+      }  
     } catch (error) {
-    }
-    return requestedService;
+      throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
+    }    
+    return requestedService.format;
   }
 
   /**
@@ -377,7 +359,7 @@ class GPTDocx {
    * and data
    * @param {object} table_headers - The header for each column
    */
-  private _caseTable({headers, data}: TableArgs) {
+  private _caseTable({headers, data}: DocxTableArgs) {
     this.children.push(
       Table({
         headers,

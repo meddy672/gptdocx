@@ -1,23 +1,11 @@
 require('dotenv').config();
 import OpenAI from 'openai';
 import Static from "./static/constants";
-import Mock from './Mock/Mock';
+import { ChatGPTArgs, RequestBodyParams } from '@types';
 
-type ChatGPTArgs = {
-    prompt: string;
-    format: any;
-    model?: string;
-    max_tokens?: number;
-    apiKeyEnv?: string;
-    config?: any;
-}
-
-type RequestBodyParams = {
-    format: any;
-    model: string | undefined;
-    max_tokens: number | undefined;
-}
-
+/**
+ * @async
+ */
 class ChatGPT {
     private openai: any;
     private response: any;
@@ -43,7 +31,7 @@ class ChatGPT {
    * @param {*} param0 
    * @returns 
    */
-  _buildRequestBody({format, model, max_tokens}: RequestBodyParams): any {
+  private _buildRequestBody({format, model, max_tokens}: RequestBodyParams): any {
     const message = this._prepareMessages(format);
     return { 
       model:  model || Static.MODEL,
@@ -60,7 +48,7 @@ class ChatGPT {
    * @param {*} format 
    * @returns 
    */
-  _prepareMessages(format: any): any[] {
+  private _prepareMessages(format: any): any[] {
     const systemFormat = this._getFormat(format);
     return [
       { role: Static.SYSTEM, content: systemFormat},
@@ -93,7 +81,7 @@ class ChatGPT {
    * 
    * @returns 
    */
-  _getResponse(): any {
+  private _getResponse(): any {
     return JSON.parse(this.response);
   }
 
@@ -104,7 +92,7 @@ class ChatGPT {
    * @param {object} format 
    * @returns {String} requestFormat as a string appended to the system format
    */
-  _getFormat(format: any): string { // typeof service
+  private _getFormat(format: any): string { // typeof service
     console.debug("format()");
     let systemFormat;
     if (format && typeof format === Static.object) {

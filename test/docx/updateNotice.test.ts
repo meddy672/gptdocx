@@ -1,7 +1,8 @@
+import { format } from "../../src/docx/updateNotice";
+
 describe("Basic Example", () => {
     test("should return service object with properties of mockService", () => {
-      const service = require("../../lib/docx/updateNotice");
-      expect(service).toEqual({
+      expect(format).toEqual({
         name: "updateNotice",
         requestFormat: {
           pages: [

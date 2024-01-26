@@ -1,5 +1,5 @@
-const { AlignmentType } = require("docx");
-const basicExample = {
+import { AlignmentType } from "docx";
+export const format = {
   name: "basicExample",
   requestFormat: {
     pages: [
@@ -87,4 +87,3 @@ const basicExample = {
   }
 };
 
-module.exports = basicExample;

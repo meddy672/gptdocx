@@ -1,9 +1,6 @@
 import { Paragraph, ImageRun, TextWrappingType, TextWrappingSide } from "docx";
+import { DocxImageArgs } from "@types";
 
-type DocxImageArgs = {
-  data: Buffer;
-  styles: any;
-};
 class DocxImage {
   constructor({ data, styles }: DocxImageArgs) {
     return new Paragraph({

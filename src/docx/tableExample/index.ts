@@ -1,4 +1,4 @@
-const tableExample = {
+export const format = {
   name: "tableExample",
   requestFormat: {
     pages: [
@@ -18,4 +18,3 @@ const tableExample = {
     ],
   },
 };
-module.exports = tableExample;

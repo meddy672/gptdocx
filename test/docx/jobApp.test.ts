@@ -1,7 +1,7 @@
+import { format } from "../../src/docx/jobApp";
 describe("Basic Example", () => {
     test("should return basicExample service with properties of mockService", () => {
-      const service = require("../../lib/docx/jobApp");
-      expect(service).toEqual({
+      expect(format).toEqual({
         name: "jobApp",
         requestFormat: {
           pages: [

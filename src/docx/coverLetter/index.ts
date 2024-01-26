@@ -1,4 +1,4 @@
-const coverLetter = {
+export const format = {
   name: "coverLetter",
   requestFormat: {
     pages: [
@@ -17,5 +17,3 @@ const coverLetter = {
   },
   styles: {},
 };
-
-module.exports = coverLetter;

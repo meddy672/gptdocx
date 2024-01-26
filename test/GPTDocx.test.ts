@@ -1,10 +1,9 @@
-import GPTDocx from "../lib/GPTDocx";
-import ChatGPT from "../lib/ChatGPT";
-import WordDocument from "../lib/Document";
-import Mock from "../lib/Mock/Mock";
-import DocxTable from "../lib/Table";
-const basicExample  = require("../lib/docx/basicExample");
-const tableExample = require('../lib/docx/tableExample');
+import GPTDocx from "../src/GPTDocx";
+import ChatGPT from "../src/ChatGPT";
+import WordDocument from "../src/Document";
+import Mock from "./Mock/Mock";
+import { format as basicFormat } from "../src/docx/basicExample";
+import { format as tableFormat } from '../src/docx/tableExample';
 
 describe("GPTDocx", () => {
   let chatGPTSpy: any;
@@ -26,34 +25,34 @@ describe("GPTDocx", () => {
     wordDocumentSpy.mockRestore();
   });
 
-  test("should return a response when service is a string", async () => {
+  test("should return a response when format is a string", async () => {
     const response = await new GPTDocx({
-      service: "basicExample",
+      format: "basicExample",
       prompt: "Write a paper about Whales.",
     }).createFile();
     expect(response).toBeDefined();
   });
-  test("should return response when service is an object", async () => {
+  test("should return response when format is an object", async () => {
     const response = await new GPTDocx({
-      service: basicExample,
+      format: basicFormat,
       prompt: "Write a paper about Whales.",
     }).createFile();
     expect(response).toBeDefined();
   });
   test("should save schema when saveSchema is true", async () => {
     const response = await new GPTDocx({
-      service: basicExample,
+      format: basicFormat,
       prompt: "Write a paper about Whales.",
       saveSchema: true
     }).createFile();
     expect(createSchemaSpy).toHaveBeenCalledTimes(1);
     expect(response).toBeDefined();
   });
-  test("should throw error when prompt is not empty", async () => {
-    let response;
+  test("should throw error when prompt is empty", async () => {
+    let response: any;
     try {
           await new GPTDocx({
-            service: basicExample,
+            format: basicFormat,
             prompt: "",
           }).createFile();
     } catch (error: any) {
@@ -62,10 +61,10 @@ describe("GPTDocx", () => {
     expect(createSchemaSpy).toHaveBeenCalledTimes(0);
     expect(response).toEqual("Error: INVALID_PROMPT");
   });
-  test('should call _caseTable when requestFormat has propeerty table.', async () => { 
+  test('should call _caseTable when requestFormat has property table.', async () => { 
     const pushSpy = jest.spyOn(GPTDocx.prototype as any, '_caseTable');
     await new GPTDocx({
-      service: tableExample,
+      format: tableFormat,
       prompt: "Write a paper about Whales.",
     }).createFile();
     const tableRef = {
@@ -80,11 +79,11 @@ describe("GPTDocx", () => {
     expect(pushSpy).toHaveBeenCalledWith(tableRef);
     pushSpy.mockRestore();
   })
-  test("should throw error when service is not empty", async () => {
-    let response;
+  test("should throw error when format is not found", async () => {
+    let response: any;
     try {
           await new GPTDocx({
-            service: "",
+            format: "",
             prompt: "Write a paper on hot to type faster.",
           }).createFile();
     } catch (error: any) {

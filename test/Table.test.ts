@@ -1,4 +1,4 @@
-import DocxTable from "../lib/Table";
+import DocxTable from "../src/Table";
 describe('DocxTable', () => { 
     test('should return a table object data is an array of strings', () => { 
         const response: any = DocxTable({

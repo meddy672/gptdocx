@@ -1,4 +1,4 @@
-import DocxImage from "../lib/Image";
+import DocxImage from "../src/Image";
 import { readFileSync } from 'fs';
 describe("Image", () => {
     test('should return an Image object', () => { 
