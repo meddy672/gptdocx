@@ -1,41 +1,39 @@
-import { 
-    Document, 
-    Packer, 
-} from 'docx';
-import { writeFileSync } from 'fs';
-import { join }  from 'path';
-import { DOCUMENT } from './static/config';
-import { WordDocumentArgs } from '@types';
+import { Document, Packer, ISectionOptions, Paragraph } from "docx";
+import { writeFileSync } from "fs";
+import { join } from "path";
+import { DOCUMENT } from "./static/config";
+// eslint-disable-next-line import/no-unresolved
+import { WordDocumentArgs } from "@models";
 
 /**
  * @description
- * 
+ *
  * @async
  */
 class WordDocument {
   private _name = "";
   private options = {};
-  private sections: any[] = [];
+  private sections: ISectionOptions[] = [];
 
   constructor({ name, pages, options }: WordDocumentArgs) {
-    this.options    = DOCUMENT.BASIC;
-    this.sections   = [];
-    this._name  = this._sanitize(name);
+    this.options = options || DOCUMENT.BASIC;
+    this.sections = [];
+    this._name = this._sanitize(name);
     if (pages.length) {
-        this.add(pages);
+      this.add(pages);
     }
   }
 
-  private async _save(fileName: string, newDocument: any): Promise<string> {
-      const blob = await Packer.toBlob(newDocument);
-      const arrayBuffer = await blob.arrayBuffer();
-      const file = Buffer.from(arrayBuffer);
-      writeFileSync(fileName, file);
-      return this._name + DOCUMENT.EXT;
+  private async _save(fileName: string, newDocument: Document): Promise<string> {
+    const blob = await Packer.toBlob(newDocument);
+    const arrayBuffer = await blob.arrayBuffer();
+    const file = Buffer.from(arrayBuffer);
+    writeFileSync(fileName, file);
+    return this._name + DOCUMENT.EXT;
   }
 
   async saveFile() {
-    const newDocument = new Document({
+    const newDocument: Document = new Document({
       ...this.options,
       sections: this.sections,
     });
@@ -52,10 +50,10 @@ class WordDocument {
     return name.replace(pattern, "").trim(); // replaceAll
   }
 
-  add(pages: any[]) {
-    pages.forEach((page: any[]) => {
+  add(pages: Paragraph[][]) {
+    pages.forEach((page: Paragraph[]) => {
       this.sections.push({
-        children: [...page],
+        children: [...page] ,
       });
     });
   }

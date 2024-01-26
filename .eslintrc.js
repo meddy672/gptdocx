@@ -4,16 +4,32 @@ module.exports = {
         "commonjs": true,
         "es2021": true
     },
-    "extends": "eslint:recommended",
+    "plugins": ["@typescript-eslint", "import"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
+          }
+        }
+      },
     "ignorePatterns": ["test/"],
     "overrides": [
         {
-            "files": ['lib/**/.ts']
+            "files": ['src/**/.ts']
         }
     ],
+    
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "sourceType": "module",
     },
     "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
     }
 }

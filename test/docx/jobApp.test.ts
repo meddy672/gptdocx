@@ -1,6 +1,6 @@
 import { format } from "../../src/docx/jobApp";
-describe("Basic Example", () => {
-    test("should return basicExample service with properties of mockService", () => {
+describe("Job App Format", () => {
+    test("should return format with properties", () => {
       expect(format).toEqual({
         name: "jobApp",
         requestFormat: {

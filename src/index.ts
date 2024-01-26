@@ -1,17 +1,17 @@
 import GPTDocx from "./GPTDocx";
-const BASIC_SERVICE = require('./docx/basicExample')
-const COVER_LETTER_SERVICE = require('./docx/coverLetter');
-const JOB_APP_SERVICE = require('./docx/jobApp');
-const TABLE_SERVICE = require('./docx/tableExample');
-const UPDATE_NOTICE_SERVICE = require('./docx/updateNotice');
+import { format as BASIC } from './docx/basicExample';
+import { format as COVER_LETTER } from './docx/coverLetter';
+import { format as JOB_APP } from './docx/jobApp';
+import { format as TABLE } from './docx/tableExample';
+import { format as UPDATE_NOTICE } from './docx/updateNotice';
 
 module.exports = {
     GPTDocx,
-    SERVICE: {
-        BASIC: BASIC_SERVICE,
-        COVER_LETTER: COVER_LETTER_SERVICE,
-        JOB_APP: JOB_APP_SERVICE,
-        TABLE: TABLE_SERVICE,
-        UPDATE_NOTICE: UPDATE_NOTICE_SERVICE
+    FORMATS: {
+        BASIC,
+        COVER_LETTER,
+        JOB_APP,
+        TABLE,
+        UPDATE_NOTICE
     }
 }

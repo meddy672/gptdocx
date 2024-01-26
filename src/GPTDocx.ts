@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config'
 import {
   Paragraph,
   TextRun,
@@ -11,8 +11,16 @@ import Image from "./Image";
 import  WordDocument  from "./Document";
 import ChatGPT from "./ChatGPT";
 import Static from "./static/constants";
-import { GPTDocxsArgs, RequestFormat, Format, DocxTableArgs } from "@types";
 
+import {
+  GPTDocxsArgs,
+  RequestFormat,
+  Format,
+  DocxTableArgs,
+  Response,
+  Styles,
+  DocOptions, // eslint-disable-next-line import/no-unresolved
+} from "@models";
 
 
 /**
@@ -28,16 +36,16 @@ class GPTDocx {
     private requestFormat: RequestFormat | undefined;
 
     /**The response received from ```ChatGPT Object```*/
-    private response: any;
+    private response: Response | undefined;
 
     /** Contains the service object. Initializes ```this.requestFormat``` and ```this.styles```. See parse format.*/
     private service: Format;
 
     /**The name of the service used in the request. ```this.name = this.service.name```*/
-    private name: string | undefined;
+    private name = "";
 
     /**The styles for each format in ```this.requestFormat.pages``` */
-    private styles: any = {};
+    private styles: Styles = {};
 
     /**A container to hold the context for each page```this.response.pages.forEach((page))```.*/
     private children: any[] = [];
@@ -46,19 +54,22 @@ class GPTDocx {
     private pages: any[] = [];
 
     /**A toogle flag to save the schema.*/
-    private saveSchema: boolean;
+    private saveSchema =  false;
 
     /**Used to handle array cases.```this._handleArrayCases(key)```*/
     private tempKey = "";
 
     /**The prompt sent to OpenAI for context. ```await new ChatGPT({prompt: this.prompt})```*/
-    private prompt: string;
+    private prompt = "";
+
+    /** The WordDocuemnt configuration properties ``` */
+    private docConfig: DocOptions = {};
 
   constructor({ format, prompt, saveSchema, documentConfig }: GPTDocxsArgs) {
     this.saveSchema = saveSchema || false;  
+    this.docConfig = documentConfig;
     this.prompt = this._isValidPrompt(prompt);
     this.service = this._parseService(format)
-    this.styles = {};
     this._prepareService();
     return this;
   }
@@ -90,7 +101,7 @@ class GPTDocx {
   private _getFormat(service: string): Format {
     let requestedService: any;
     try {
-      if (process.env["NODE_ENV"] === "development" || "test") {
+      if (process.env["NODE_ENV"] === "development" || process.env["NODE_ENV"] === "test") {
         requestedService = require(
           join(__dirname, Static.DOCX_DIR, service, Static.INDEX_TS)
         );
@@ -102,6 +113,7 @@ class GPTDocx {
     } catch (error) {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }    
+    
     return requestedService.format;
   }
 
@@ -113,7 +125,7 @@ class GPTDocx {
    * 
    * @private
    */
-  private _prepareService(){
+  private _prepareService(): void {
     if (this._isValidService()) {
       this.name = this.service.name;
       this.requestFormat = this.service.requestFormat;
@@ -130,7 +142,7 @@ class GPTDocx {
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  private _isValidService(): Boolean{
+  private _isValidService(): boolean{
     return this.service && this.service.name && this.service.requestFormat?.pages ? true : false;
   }
 
@@ -178,13 +190,13 @@ class GPTDocx {
    * @returns {Promise<string>} Filename of the document that was created.
    */
   private async _buildPages(): Promise<string> {
-    this.response.pages.forEach( (page: object) => {
+    this.response?.pages.forEach( (page: object) => {
       this._parse(page);
       this.pages.push(this.children);
       this.children = []; // fix this to use map
     });
     console.log("Creating Document...")
-    return this._create(); // async
+    return this._create();
   }
 
   /**
@@ -194,10 +206,10 @@ class GPTDocx {
    * @private
    * @param {Object} page 
    */
-  private _parse(page: any) {
+  private _parse(page: Response): void {
     for (const key in page) {
-      if (page.hasOwnProperty(key)) {
-        const value:any = page[key] as string;
+      if (Object.hasOwn(page, key)) {
+        const value = page[key];
         if (this._isMapped(key)) {
           this._switchByMappedKey(key, value);
         } else {
@@ -216,7 +228,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {*} value 
    */
-  private _switchByMappedKey(key: string, value: any) {
+  private _switchByMappedKey(key: string, value: any): void {
     switch (key) {
       case Static.links:
         this._caseLinks(value);
@@ -241,7 +253,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {*} value 
    */
-  private _switchByType(key: string, value: any) {
+  private _switchByType(key: string, value: any): void {
     const type = this._getValueType(value);
     switch (type) {
       case Static.array:
@@ -266,7 +278,7 @@ class GPTDocx {
    * @param {*} value 
    * @returns {String} the primitive type of the value.
    */
-  private _getValueType(value: any): any {
+  private _getValueType(value: any): string {
     return Array.isArray(value) ? Static.array : typeof value;
   }
 
@@ -280,7 +292,7 @@ class GPTDocx {
    * @param {String} _key 
    * @param {String} text 
    */
-  private _caseText(_key: string, text: string) {
+  private _caseText(_key: string, text: string): void {
     const key = this._getValidKey(_key);
     this.children.push(
       new Paragraph({
@@ -318,7 +330,7 @@ class GPTDocx {
    * @private
    * @param {Array} links 
    */
-  private _caseLinks(links: []) {
+  private _caseLinks(links: []): void {
     links.forEach(({ text, link }) => {
       this.children.push(
         new Paragraph({
@@ -345,7 +357,7 @@ class GPTDocx {
    * @param {Buffer} content - ImageBuffer i.e 
    * .jpg, .png, .svg, .gif, .bmp, data:image/png
    */
-  private _caseImage(content: any) {
+  private _caseImage(content: Buffer): void {
     this.children.push(
       new Image({
         content,
@@ -355,11 +367,11 @@ class GPTDocx {
   }
 
   /**
-   * @description Adds a new table to the document with table headers
-   * and data
+   * @description Adds a new table to the document with table
+   *  headers and data
    * @param {object} table_headers - The header for each column
    */
-  private _caseTable({headers, data}: DocxTableArgs) {
+  private _caseTable({headers, data}: DocxTableArgs): void {
     this.children.push(
       Table({
         headers,
@@ -376,7 +388,7 @@ class GPTDocx {
    * @param {String} key 
    * @returns {Boolean} True if the key is a mappedKey otherwise false.
    */
-  private _isMapped(key: string): Boolean {
+  private _isMapped(key: string): boolean {
     return [Static.links, Static.table, Static.image].includes(key);
   }
 
@@ -389,7 +401,7 @@ class GPTDocx {
    * @param {String} key 
    * @param {Array} value 
    */
-  private _handleArrayCase(key: string, value: []) {
+  private _handleArrayCase(key: string, value: []): void {
     if (this.styles[key]) {
       this.tempKey = key;
     }
@@ -408,8 +420,9 @@ class GPTDocx {
    */
   private async _create(): Promise<string> {
     const wordDocument = new WordDocument({
-      name: this.response.pages[0].title,
+      name: this.response?.pages[0].title,
       pages: this.pages,
+      options: this.docConfig
     });
     const filename = await wordDocument.saveFile();
     if (this.saveSchema) {
@@ -426,7 +439,7 @@ class GPTDocx {
    * @private
    * @param {String} filename the name of the document that was created.
    */
-  private async _createSchema(filename: string) {
+  private async _createSchema(filename: string): Promise<void> {
     console.log("Filename: ", filename);
     try {
       const ChatGPTDocx = {

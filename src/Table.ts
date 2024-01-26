@@ -6,7 +6,8 @@ import {
   TextRun,
   WidthType,
 } from "docx";
-import { DocxTableArgs } from "@types";
+// eslint-disable-next-line import/no-unresolved
+import { DocxTableArgs } from "@models";
 
 function DocxTable({ headers, data }: DocxTableArgs) {
   let dataTypeIsObject = false;
@@ -21,7 +22,7 @@ function DocxTable({ headers, data }: DocxTableArgs) {
           heading: "Heading2",
           children: [
             new TextRun({
-              text: capitalizeFirstLetter(text.toString()), // Clean make configurable
+              text: capitalizeFirstLetter(text.toString()),
               bold: true,
               size: 34,
             }),

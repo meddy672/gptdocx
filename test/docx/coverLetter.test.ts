@@ -1,6 +1,6 @@
 import { format } from "../../src/docx/coverLetter";
-describe("Cover Letter", () => {
-  test("should return coverLetter service with properties of mockService", () => {
+describe("Cover Letter Format", () => {
+  test("should return format with properties", () => {
     expect(format).toEqual({
       name: "coverLetter",
       requestFormat: {

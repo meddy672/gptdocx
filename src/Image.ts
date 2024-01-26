@@ -1,5 +1,6 @@
 import { Paragraph, ImageRun, TextWrappingType, TextWrappingSide } from "docx";
-import { DocxImageArgs } from "@types";
+// eslint-disable-next-line import/no-unresolved
+import { DocxImageArgs } from "@models";
 
 class DocxImage {
   constructor({ data, styles }: DocxImageArgs) {

@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import ChatGPT from "../src/ChatGPT";
 import Mock from "./Mock/Mock";
-const  basicExample  = require("../src/docx/basicExample");
+import { format } from "../src/docx/basicExample";
 
 describe("ChatGpt", () => {
     let openaiSpy: any;
@@ -33,9 +33,9 @@ describe("ChatGpt", () => {
       ],
     });
     
-    const response = await new ChatGPT({
+    const response: any = await new ChatGPT({
       prompt: "Write a paper about how to type faster.",
-      format: basicExample,
+      format: format,
     }).send();
     const type = typeof response;
 
@@ -57,7 +57,7 @@ describe("ChatGpt", () => {
     try {
       await new ChatGPT({
         prompt: "Write a paper about how to type faster.",
-        format: basicExample,
+        format: format,
       }).send();
     } catch (error: any) {
       expect(error.message).toEqual("Error: OPENAI_REQUEST_ERROR");

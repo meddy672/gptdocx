@@ -1,7 +1,8 @@
 import { AlignmentType } from 'docx';
-import { format } from '../../src/docx/basicExample'
-describe("Basic Example", () => {
-  test("should return basicExample service with properties of mockService", () => {
+import { format } from '../../src/docx/basicExample';
+
+describe("Basic Example Format", () => {
+  test("should return a format with properties", () => {
     expect(format).toEqual({
       name: "basicExample",
       requestFormat: {
