@@ -159,7 +159,7 @@ class GPTDocx {
       prompt: this.prompt,
       format: this.requestFormat,
     }).send();
-    console.log("Building Pages...");
+    console.debug("Building Pages...");
     return this._buildPages();
   }
 
@@ -195,7 +195,7 @@ class GPTDocx {
       this.pages.push(this.children);
       this.children = []; // fix this to use map
     });
-    console.log("Creating Document...")
+    console.debug("Creating Document...")
     return this._create();
   }
 
@@ -440,7 +440,7 @@ class GPTDocx {
    * @param {String} filename the name of the document that was created.
    */
   private async _createSchema(filename: string): Promise<void> {
-    console.log("Filename: ", filename);
+    console.debug("Filename: ", filename);
     try {
       const ChatGPTDocx = {
         requestFormat: this.requestFormat,
@@ -452,7 +452,7 @@ class GPTDocx {
       const schema = join(__dirname, Static.DOCX_DIR, this.name!, Static.SCHEMA_JSON);
       await writeFile(schema, JSON.stringify(ChatGPTDocx));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 } // End of Class
