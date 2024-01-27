@@ -8,7 +8,7 @@ export const format = {
         date: "",
         content: [
           {
-            heading: "",
+            heading: "", //document does not know that this is a heading unless styles defines it
             body: "",
           },
         ],

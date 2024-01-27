@@ -25,7 +25,12 @@ class DocxTable {
     return this._getTable(this.headers, this.data);
   }
 
-  private _getHeaders(headers: string[]): any {
+  /**
+   * 
+   * @param headers 
+   * @returns 
+   */
+  private _getHeaders(headers: string[]): TableCell[] {
     return headers.map((text: string) => {
       return new TableCell({
         width: {
@@ -48,12 +53,17 @@ class DocxTable {
     });
   }
 
-  private _getData(data: any[]): any {
+  /**
+   * 
+   * @param data 
+   * @returns 
+   */
+  private _getData(data: any[]): any[] {
     return data.map((element: any) => {
       if (typeof element !== "object") {
         return new TableCell({
           children: [new Paragraph(element.toString())],
-        });
+        }) as TableCell;
       } else {
         this.dataTypeIsObject = true;
         return new TableRow({
@@ -62,21 +72,33 @@ class DocxTable {
               children: [new Paragraph(value.toString())],
             });
           }),
-        });
+        }) as TableRow;
       }
     });
   }
 
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
   private _getTable(headers: any, data: any): any {
     if (this.dataTypeIsObject) {
-      return this._Table(headers, data)
+      return this._table(headers, data)
     } else {
       const parsedData = this._dataTypeIsArrayOfStrings(headers, data);
-      return this._Table(headers, parsedData);
+      return this._table(headers, parsedData);
     }
   }
 
-  private _dataTypeIsArrayOfStrings(headers: any, data: any) {
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
+  private _dataTypeIsArrayOfStrings(headers: any, data: any): TableRow[] {
     const dataResults: any[] = [];
     let result = [];
     for (let i = 0; i < data.length / headers.length; i++) {
@@ -92,7 +114,13 @@ class DocxTable {
     return dataResults;
   }
 
-  private _Table(headers: any, data: any) {
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
+  private _table(headers: any, data: any): any {
     return new Table({
       rows: [
         new TableRow({
@@ -104,7 +132,12 @@ class DocxTable {
     });
   }
 
-  private capitalizeFirstLetter(inputString: string) {
+  /**
+   * 
+   * @param inputString 
+   * @returns 
+   */
+  private capitalizeFirstLetter(inputString: string): string {
     return inputString.charAt(0).toUpperCase() + inputString.slice(1);
   }
 }

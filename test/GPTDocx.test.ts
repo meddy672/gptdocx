@@ -24,6 +24,15 @@ describe("GPTDocx", () => {
     createSchemaSpy.mockRestore()
     wordDocumentSpy.mockRestore();
   });
+  // test('should call _isValidPrompt once with args', () => { second })
+  // test('should call _parseService method once with args:', () => { second })
+  // test('should call _prepareService method once:', () => { second })
+  // test('should create new ChatGPT with args:', () => { second })
+  // test('should call ChatGPT send method once', () => { second })
+  // test('should call _buildPages and return a string', async () => { second })
+  // test('should create new WordDocument with args: ', () => { second })
+  // test('should call WordDocument saveFile method', () => { second })
+  // test('should call ChatGPT send method', () => { second })
 
   test("should return a response when format is a string", async () => {
     const response = await new GPTDocx({
