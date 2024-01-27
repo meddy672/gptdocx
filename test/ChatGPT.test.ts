@@ -36,6 +36,7 @@ describe("ChatGpt", () => {
     const response: any = await new ChatGPT({
       prompt: "Write a paper about how to type faster.",
       format: format,
+      apiKeyEnv: "",
     }).send();
     const type = typeof response;
 
@@ -58,6 +59,7 @@ describe("ChatGpt", () => {
       await new ChatGPT({
         prompt: "Write a paper about how to type faster.",
         format: format,
+        apiKeyEnv: "",
       }).send();
     } catch (error: any) {
       expect(error.message).toEqual("Error: OPENAI_REQUEST_ERROR");
@@ -74,6 +76,7 @@ describe("ChatGpt", () => {
        new ChatGPT({
         prompt: "Write a paper about how to type faster.",
         format: "",
+        apiKeyEnv: "",
       });
     } catch (error: any) {
       expect(error.message).toEqual("Error: OPENAI_REQUEST_ERROR");

@@ -65,9 +65,13 @@ class GPTDocx {
     /** The WordDocuemnt configuration properties ``` */
     private docConfig: DocOptions = {};
 
-  constructor({ format, prompt, saveSchema, documentConfig }: GPTDocxsArgs) {
+    /**  */
+    private apiKeyEnv: string;
+
+  constructor({ format, prompt, apiKeyEnv, saveSchema, documentConfig }: GPTDocxsArgs) {
     this.saveSchema = saveSchema || false;  
     this.docConfig = documentConfig;
+    this.apiKeyEnv = apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
     this.service = this._parseService(format)
     this._prepareService();
@@ -158,6 +162,7 @@ class GPTDocx {
     this.response = await new ChatGPT({
       prompt: this.prompt,
       format: this.requestFormat,
+      apiKeyEnv: this.apiKeyEnv
     }).send();
     console.debug("Building Pages...");
     return this._buildPages();
@@ -373,7 +378,7 @@ class GPTDocx {
    */
   private _caseTable({headers, data}: DocxTableArgs): void {
     this.children.push(
-      Table({
+      new Table({
         headers,
         data
       })

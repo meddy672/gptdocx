@@ -34,7 +34,7 @@ describe("Word Document", () =>{
     });
     test('should call join once with arguments', () => {
         const spyArgs = pathSpy.mock.calls[0];
-        expect(pathSpy).toHaveBeenCalledWith(spyArgs[0], spyArgs[1], spyArgs[2]);
+        expect(pathSpy).toHaveBeenCalledWith(spyArgs[0], spyArgs[1]);
     });
     test('should call add once with arguments', () => {
         expect(addSpy).toHaveBeenCalledWith([[]]);

@@ -15,14 +15,16 @@ import {
 
 /**
  * @async
+ * Class ChatGPT
  */
 class ChatGPT {
     private openai: OpenAI;
     private prompt = "";
     private requestBody: ChatCompletionCreateParams;
 
-  constructor({prompt, format, config}: ChatGPTArgs) {
-    this.openai = new OpenAI({ apiKey: process.env["OPENAI_API_KEY"], ...config });
+  constructor({prompt, format, apiKeyEnv,  config}: ChatGPTArgs) {
+    const apiKey = process.env[apiKeyEnv] || process.env["OPENAI_API_KEY"];
+    this.openai = new OpenAI({ apiKey, ...config });
     this.prompt = prompt;
     this.requestBody = this._buildRequestBody({
       format,

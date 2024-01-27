@@ -3,7 +3,7 @@ export type ChatGPTArgs = {
   format: any;
   model?: string;
   max_tokens?: number;
-  apiKeyEnv?: string;
+  apiKeyEnv: string;
   config?: any;
 };
 
@@ -25,6 +25,7 @@ export type DocOptions = {
 export type GPTDocxsArgs = {
   format: string | Format;
   prompt: string;
+  apiKeyEnv?: string | undefined; 
   saveSchema?: boolean;
   documentConfig?: any;
 };
@@ -41,7 +42,7 @@ export type Format = {
 
 export type DocxTableArgs = {
   headers: any[];
-  data: any;
+  data: any[];
 };
 
 export type DocxImageArgs = {
