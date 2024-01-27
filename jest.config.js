@@ -19,7 +19,7 @@ module.exports = {
     },
   },
   collectCoverageFrom: [
-    './lib/**/*.ts',
+    './src/**/*.ts',
     '**/*.{ts}',
     '!**/node_modules/**',
     '!**/vendor/**',
