@@ -2,12 +2,19 @@
   "name": "gptdocx",
   "version": "1.0.0",
   "description": "Create word documents with ChatGPT.",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "assets"
+  ],
   "scripts": {
     "test": "nyc jest --runInBand",
-    "case": "nyc jest --runInBand ./test/Image.test.ts",
+    "case": "nyc jest --runInBand ./test/formats/coverLetter.test.ts",
     "lint": "eslint ./src/**/*.ts",
-    "build": "tsc"
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "prepublishOnly": "npm run build"
   },
   "nyc": {
     "reporter": [
@@ -21,7 +28,7 @@
       "coverage/**"
     ],
     "include": [
-      "lib/**/*.ts"
+      "src/**/*.ts"
     ]
   },
   "keywords": [
@@ -33,8 +40,10 @@
   "license": "MIT",
   "dependencies": {
     "docx": "^8.5.0",
+    "docxtemplater": "^3.44.0",
     "dotenv": "^16.3.2",
-    "openai": "^4.25.0"
+    "openai": "^4.25.0",
+    "pizzip": "^3.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
@@ -49,6 +58,7 @@
     "jest-environment-node": "^29.7.0",
     "nyc": "^15.1.0",
     "prettier": "^3.2.4",
+    "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

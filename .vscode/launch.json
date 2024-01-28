@@ -46,6 +46,6 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
-          }
+          },
     ]
 }

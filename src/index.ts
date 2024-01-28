@@ -1,17 +1,6 @@
-import GPTDocx from "./GPTDocx";
-import { format as BASIC } from './docx/basicExample';
-import { format as COVER_LETTER } from './docx/coverLetter';
-import { format as JOB_APP } from './docx/jobApp';
-import { format as TABLE } from './docx/tableExample';
-import { format as UPDATE_NOTICE } from './docx/updateNotice';
+// export * as GPTDocx from "./GPTDocx";
+// export * as BASIC from './formats/basicExample';
+// export * as COVER_LETTER from './formats/coverLetter';
+// export * as JOB_APP  from './formats/jobApp';
+// export * as UPDATE_NOTICE  from './formats/updateNotice';
 
-module.exports = {
-    GPTDocx,
-    FORMATS: {
-        BASIC,
-        COVER_LETTER,
-        JOB_APP,
-        TABLE,
-        UPDATE_NOTICE
-    }
-}
