@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Static from "static/constants";
+import Static from "./static/constants";
 
 const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
@@ -29,7 +29,7 @@ export default class DocxTemplater {
     const content = fs.readFileSync(
       path.resolve(
         __dirname,
-        Static.DOCX_DIR + this.service,
+        Static.DOCX_DIR,
         this.service + Static.DOCX
       ),
       "binary"

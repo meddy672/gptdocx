@@ -96,9 +96,9 @@ class GPTDocx {
           join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_JS)
         );
       }  
-    } catch (error) {
-      console.error(`Unable to find service: ${service}`);
-    }    
+    } catch(error){
+      console.error(`Unable to find service :${service}`)
+    }
     
     return requestedService?.format;
   }

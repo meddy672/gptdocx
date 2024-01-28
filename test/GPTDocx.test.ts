@@ -1,7 +1,13 @@
-import GPTDocx from "GPTDocx";
+import GPTDocx from "../src/GPTDocx";
 import ChatGPT from "../src/ChatGPT";
 import DocxTemplater from "../src/DocxTemplater";
-import path from 'path'
+import path from 'path';
+
+function replaceLastDirectory(inputPath: string, replacement: string): string {
+    const parts = inputPath.split(path.sep);
+    parts[parts.length - 1] = replacement;
+    return parts.join(path.sep);
+  }
 
 describe("GPTDocx", () => {
     let chatGptSpy: any;
@@ -9,6 +15,14 @@ describe("GPTDocx", () => {
     beforeEach(() => {
         chatGptSpy =  jest.spyOn(ChatGPT.prototype, 'send')
         docTemplaterSpy = jest.spyOn(DocxTemplater.prototype, 'create');
+        chatGptSpy.mockImplementation(() =>{
+            return {
+                title: "A Paper About Whales"
+            }
+        })
+        docTemplaterSpy.mockImplementation(() => {
+            return "APaperAboutWhales.docx"
+        })
     });
 
     afterEach(()  => {
@@ -16,14 +30,13 @@ describe("GPTDocx", () => {
         docTemplaterSpy.mockRestore();
     })
 
-    test.only('should return filePath with .docx extension', async () => { 
-        const filePath: any = await new GPTDocx({
+    test('should return filePath with .docx extension', async () => { 
+        const filename: any = await new GPTDocx({
             format: "basicExample",
             prompt: "Write a paper about Whales."
         }).createFile()
-        const { name, ext } = path.parse(filePath);
-        expect(name).toEqual("HowToTypeFaster");
-        expect(ext).toEqual(".docx")
+        
+        expect(filename).toEqual("APaperAboutWhales.docx");
      });
 
      test('should throw Parse error is undefined', async () => { 
@@ -33,8 +46,8 @@ describe("GPTDocx", () => {
                 format: "",
                 prompt: "Write a paper about Whales."
             }).createFile()
-        } catch (error) {
-            response = error;
+        } catch (error: any) {
+            response = error.message;
         }
         expect(response).toEqual("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
      });
@@ -46,10 +59,24 @@ describe("GPTDocx", () => {
                 format: "basicExample",
                 prompt: ""
             }).createFile()
-        } catch (error) {
-            response = error;
+        } catch (error: any) {
+            response = error.message;
         }
         expect(response).toEqual("Error: INVALID_PROMPT");
+     });
+
+     test('should use index.js when env not delopment or test', async () => { 
+        process.env["NODE_ENV"] = "staging";
+        const joinSpy = jest.spyOn(path, 'join');
+        const srcPath = replaceLastDirectory(__dirname, "src")
+        try {
+             await new GPTDocx({
+                format: "basicExample",
+                prompt: "Write a paper about Whales."
+            }).createFile()
+        } catch (error: any) {}
+
+        expect(joinSpy).toHaveBeenCalledWith(srcPath, "formats", "basicExample", "index.js");
      });
 
 })

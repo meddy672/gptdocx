@@ -1,5 +1,5 @@
 export const format = {
-    name: "baicExample",
+    name: "basicExample",
     requestFormat: {
         title: "",
         author: "",
