@@ -2,21 +2,29 @@ import { format } from '../../src/formats/jobApp'
 describe('format', () => {
     test('should match format', () => { 
         expect(format).toEqual({
-            name: "updateNotice",
+            name: "jobApp",
             requestFormat: {
                 title: "",
-                notice: "",
+                jobName: "",
                 overview: "",
                 content: [
                     {
                         heading: "",
-                        actionsRequired: []
+                        whatWeOffer: []
                     },
                     {
                         heading: "",
-                        assistance: ""
+                        responsibilities: []
+                    },
+                    {
+                        heading: "",
+                        qulifications: []
+                    },
+                    {
+                        heading: "",
+                        salary: ""
                     }
-                ],
+                ]
             }
         })
      })
