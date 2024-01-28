@@ -1,4 +1,4 @@
-const responseFormats = {
+export const responseFormats = {
     basicExample: {
         title: "",
         author: "",
