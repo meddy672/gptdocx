@@ -97,7 +97,7 @@ class GPTDocx {
         );
       }  
     } catch(error){
-      console.error(`Unable to find service :${service}`)
+      console.error(`Unable to find service: ${service}`)
     }
     
     return requestedService?.format;
