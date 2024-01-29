@@ -6,7 +6,7 @@ describe('format', () => {
             requestFormat: {
                 title: "",
                 author: "",
-                date: "",
+                created: "",
                 content: [
                     {
                         heading: "",

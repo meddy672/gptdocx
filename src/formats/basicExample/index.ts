@@ -3,7 +3,7 @@ export const format = {
     requestFormat: {
         title: "",
         author: "",
-        date: "",
+        created: "",
         content: [
             {
                 heading: "",
