@@ -51,6 +51,16 @@ export default class DocxTemplater {
 
   /**
    * 
+   * @param name 
+   * @returns 
+   */
+  _sanitize(name: string): string {
+    const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
+    return name.replace(pattern, "").trim(); // replaceAll
+  }
+
+  /**
+   * 
    * @returns 
    */
   create(): string {
@@ -66,7 +76,8 @@ export default class DocxTemplater {
 
     // buf is a nodejs Buffer, you can either write it to a
     // file or res.send it with express for example.
-    const filePath = path.resolve(process.cwd(),  Static.FILES, this.docName + Static.DOCX_EXT)
+    const fileName = this._sanitize(this.docName);
+    const filePath = path.resolve(process.cwd(),  Static.FILES, fileName + Static.DOCX_EXT)
     fs.writeFileSync(filePath, buf);
 
     return filePath;

@@ -9,14 +9,14 @@ jest.mock("fs", () => ({
 }));
 
 describe("DocxTemplater", () => {
-  test("should call writeFileSync and return a filename with a .docx extension", () => {
-    const filename: any = new DocxTemplater({
-      docName: "A paper about Whales.docx",
+  test("should return a filePath with a name and .docx extension", () => {
+    const filePath: any = new DocxTemplater({
+      docName: "A Paper About Whales",
       service: "basicExample",
       response: responseFormats["basicExample"],
     }).create();
-    const { ext } = path.parse(filename);
-    expect(filename).toBeDefined();
+    const { name, ext } = path.parse(filePath);
+    expect(name).toEqual("APaperAboutWhales");
     expect(ext).toEqual(".docx");
     expect(fs.writeFileSync).toHaveBeenCalled();
   });
