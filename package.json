@@ -7,7 +7,7 @@
   "scripts": {
     "test": "nyc jest --runInBand",
     "dev": "git add . && git commit -m \"Automated commit message\"",
-    "case": "nyc jest --runInBand ./test/DocxTemplater.test.ts",
+    "case": "nyc jest --runInBand ./test/index.test.ts",
     "lint": "eslint ./src/**/*.ts",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc && webpack",
