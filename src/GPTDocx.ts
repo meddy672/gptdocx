@@ -147,7 +147,7 @@ class GPTDocx {
     }).send();
     console.debug("Building Pages...");
     return new DocxTemplater({
-      docName: this.response.title,
+      docName: this.response.title || this.name,
       service: this.name,
       response: this.response
     }).create();

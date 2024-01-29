@@ -37,6 +37,7 @@
   "author": "meddy672",
   "license": "MIT",
   "dependencies": {
+    "angular-expressions": "^1.2.1",
     "docx": "^8.5.0",
     "docxtemplater": "^3.44.0",
     "dotenv": "^16.3.2",
