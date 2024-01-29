@@ -26,14 +26,8 @@ export default class DocxTemplater {
     this.docName = docName;
     this.service = service;
     this.response = response;
-    const content = fs.readFileSync(
-      path.resolve(
-        __dirname,
-        Static.DOCX_DIR,
-        this.service + Static.DOCX
-      ),
-      "binary"
-    );
+    const filePath = path.resolve( __dirname, Static.DOCX_DIR, this.service + Static.DOCX)
+    const content = fs.readFileSync(filePath, "binary");
 
     // Unzip the content of the file
     const zip = new PizZip(content);
@@ -61,7 +55,7 @@ export default class DocxTemplater {
 
     // buf is a nodejs Buffer, you can either write it to a
     // file or res.send it with express for example.
-    fs.writeFileSync(path.resolve(__dirname, "output.docx"), buf);
+    fs.writeFileSync(path.resolve(process.cwd(),  Static.FILES, this.docName), buf);
 
     return this.docName;
   }

@@ -1,3 +1,20 @@
-describe('Pass', ()=> {
-    test('should first', () => { expect(true).toBe(true) })
-  })
+import DocxTemplater from "../src/DocxTemplater";
+import { responseFormats } from "./Mock/responseFormats";
+import * as fs from "fs";
+
+jest.mock("fs", () => ({
+  ...jest.requireActual("fs"),
+  writeFileSync: jest.fn(),
+}));
+
+describe("DocxTemplater", () => {
+  test("should call writeFileSync and return a filename", () => {
+    const filename = new DocxTemplater({
+      docName: "A paper about Whales.docx",
+      service: "basicExample",
+      response: responseFormats["basicExample"],
+    }).create();
+    expect(filename).toBeDefined();
+    expect(fs.writeFileSync).toHaveBeenCalled();
+  });
+});
