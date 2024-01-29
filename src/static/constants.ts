@@ -4,7 +4,7 @@ const Static = {
   image : "image",
   INDEX_JS : "index.js",
   INDEX_TS: "index.ts",
-  DOCX: ".docx",
+  DOCX_EXT: ".docx",
   array : "array",
   object : "object",
   string : "string",
