@@ -4,17 +4,14 @@
   "description": "Create word documents with ChatGPT.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "assets"
-  ],
   "scripts": {
     "test": "nyc jest --runInBand",
     "dev": "git add . && git commit -m \"Automated commit message\"",
     "case": "nyc jest --runInBand ./test/DocxTemplater.test.ts",
     "lint": "eslint ./src/**/*.ts",
     "clean": "rimraf dist",
-    "build": "npm run clean && webpack",
+    "build": "npm run clean && tsc && webpack",
+    "local": "npm run build && npm link",
     "prepublishOnly": "npm run build"
   },
   "nyc": {

@@ -5,10 +5,10 @@ module.exports = {
   target: 'node',
   entry: './src/index.ts', // Specify the entry point
   mode: 'development',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
+//   output: {
+//     filename: 'bundle.js',
+//     path: path.resolve(__dirname, 'dist'),
+//   },
   resolve: {
     extensions: ['.ts', '.js']
   },

@@ -1,6 +1,6 @@
 import GPTDocx from "./GPTDocx";
 export = {
-    GPTDocx,
+    GPTDocx: GPTDocx,
     BASIC: "basicExample",
     COVER_LETTER: "coverLetter",
     JOB_APP: "jobApp",

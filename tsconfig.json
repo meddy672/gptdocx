@@ -10,7 +10,7 @@
     "forceConsistentCasingInFileNames": true, 
     "strictNullChecks": true,
     "declaration": true,
-    "declarationDir": "./dist",                           
+    "declarationDir": "./dist/types",                           
     "esModuleInterop": true,                                                                       
     "skipLibCheck": true,                              
     "sourceMap": true, 
@@ -22,5 +22,5 @@
     },                                       
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "test"]
 }
