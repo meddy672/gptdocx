@@ -14,12 +14,13 @@
     "esModuleInterop": true,                                                                       
     "skipLibCheck": true,                              
     "sourceMap": true, 
-    "rootDir": "./",                                     
+    "rootDir": "./src",                                     
     "baseUrl": "./src",                                                        
     "outDir": "./dist", 
     "paths": {
       "@models":   ["./models/models"],
     },                                       
   },
-  "exclude": ["node_modules","test"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
