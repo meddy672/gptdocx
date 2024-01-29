@@ -78,5 +78,48 @@ export const responseFormats = {
                 assistance: ""
             }
         ],
-    }
+    },
+    resume: {
+        title: "",
+        userName: "Matthew Eddy",
+        jobTitle: "Seasoned Software Engineer",
+        phoneNumber: "123456789",
+        email: "test@email.com",
+        website: "meddy672.com",
+        overview: "",
+        experience: [
+          {
+            company: "Amazon",
+            date: "2016 - Present",
+            position: "Senior Software Engineer",
+            achievements: [
+              "Led the development of several critical projects on AWS",
+              "Implemented innovative solutions for scalability and performance improvement",
+            ],
+          },
+          {
+            company: "Google",
+            date: "2014 - 2016",
+            position: "Software Engineer",
+            achievements: [
+              "Developed key features for a widely used web application",
+              "Collaborated with cross-functional teams to deliver high-quality products",
+            ],
+          },
+        ],
+        education: {
+          university: "Kennsaw University",
+          gradDate: "May 19 2019",
+          degree: "Bachelors in Science",
+          details: "",
+        },
+        skills: [
+          "AWS",
+          "JavaScript",
+          "Python",
+          "Software Development",
+          "Scalability",
+          "Performance Improvement",
+        ],
+      }
 }
