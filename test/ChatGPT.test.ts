@@ -15,7 +15,7 @@ describe("ChatGPT", () => {
     openAISpy.mockRestore()
   });
 
-  test('should call openai create method once with args:', async () => { 
+  test('should call openai create method once with chatCreateArgs:', async () => { 
     openAISpy.mockImplementation(() => { 
       return {
         choices: [
@@ -35,7 +35,7 @@ describe("ChatGPT", () => {
     }).send()
     expect(response).toBeDefined();
     expect(response).toEqual(responseFormats["basicExample"])
-    expect(openAISpy).toHaveBeenCalledWith(chatCreateArgs)
+    expect(openAISpy).toHaveBeenCalledWith(chatCreateArgs);
    })
 
   test("should throw OPENAI_REQUEST_ERROR", async () => {

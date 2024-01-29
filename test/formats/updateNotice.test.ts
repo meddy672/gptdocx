@@ -7,16 +7,9 @@ describe('format', () => {
                 title: "",
                 notice: "",
                 overview: "",
-                content: [
-                    {
-                        heading: "",
-                        actionsRequired: []
-                    },
-                    {
-                        heading: "",
-                        assistance: ""
-                    }
-                ],
+                actionsRequired: [],
+                assistanceHeading: "",
+                assistance: ""
             }
         })
      })
