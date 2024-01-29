@@ -5,6 +5,8 @@ import Static from "./static/constants";
 const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 
+const expressionParser = require("docxtemplater/expressions.js");
+
 /**
  * 
  */
@@ -44,6 +46,7 @@ export default class DocxTemplater {
     this.doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
+      parser: expressionParser
     });
 
     return this;

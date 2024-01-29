@@ -1,12 +1,11 @@
 export const format = {
     name: "todos",
     requestFormat: {
-        todoTitle: "",
-        dayMonthYear: "",
+        created: "",
         todos: [
             {
-                heading: "",
-                todosList: []
+                todoHeading: "",
+                todoInstructions: ""
             }
         ]
     }
