@@ -2,6 +2,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+  target: 'node',
   entry: './src/index.ts', // Specify the entry point
   mode: 'development',
   output: {
@@ -9,12 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.js'],
-    fallback: {
-        path: require.resolve('path-browserify'),
-        crypto: require.resolve("crypto-browserify"),
-        os: require.resolve("os-browserify")
-    }
+    extensions: ['.ts', '.js']
   },
   module: {
     rules: [
