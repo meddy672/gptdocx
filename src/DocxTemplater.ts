@@ -66,7 +66,7 @@ export default class DocxTemplater {
 
     // buf is a nodejs Buffer, you can either write it to a
     // file or res.send it with express for example.
-    const filePath = path.resolve(process.cwd(),  Static.FILES, this.docName + Static.DOCX_EXT)
+    const filePath = path.resolve(process.cwd(),  Static.FILES, this.docName)
     fs.writeFileSync(filePath, buf);
 
     return filePath;

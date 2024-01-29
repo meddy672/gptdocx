@@ -3,10 +3,11 @@ export const format = {
     requestFormat: {
         title: "",
         subTitle: "",
+        address: "",
         email: "",
         phoneNumber: "",
         date: "",
-        hiringManger: "",
+        hiringManager: "",
         company: "",
         companyAddress: "",
         content: [

@@ -16,6 +16,7 @@ describe("DocxTemplater", () => {
       response: responseFormats["basicExample"],
     }).create();
     const { name, ext } = path.parse(filename);
+    console.log(path.parse(filename))
     expect(name).toEqual("A paper about Whales");
     expect(ext).toEqual(".docx");
     expect(fs.writeFileSync).toHaveBeenCalled();
