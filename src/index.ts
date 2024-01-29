@@ -1,6 +1,9 @@
-// export * as GPTDocx from "./GPTDocx";
-// export * as BASIC from './formats/basicExample';
-// export * as COVER_LETTER from './formats/coverLetter';
-// export * as JOB_APP  from './formats/jobApp';
-// export * as UPDATE_NOTICE  from './formats/updateNotice';
+import GPTDocx from "./GPTDocx";
+module.exports = {
+    GPTDocx,
+    BASIC: "basicExample",
+    COVER_LETTER: "coverLetter",
+    JOB_APP: "jobApp",
+    UPDATE_NOTICE: "updateNotice"
+}
 

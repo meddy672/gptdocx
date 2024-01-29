@@ -20,5 +20,6 @@
     "paths": {
       "@models":   ["./models/models"],
     },                                       
-  }
+  },
+  "exclude": ["node_modules","test"]
 }
