@@ -1,9 +1,8 @@
 import OpenAI from "openai";
 import ChatGPT from "../src/ChatGPT";
 import { responseFormats } from "./Mock/responseFormats";
-import { Response } from '@models'
 import { format } from "../src/formats/basicExample";
-
+import { chatCreateArgs } from "./Mock/responseFormats";
 describe("ChatGPT", () => {
   let openAISpy: any;
 
@@ -22,7 +21,7 @@ describe("ChatGPT", () => {
         choices: [
           {
             message: {
-              content: JSON.stringify(responseFormats["basicExample"] as Response)
+              content: JSON.stringify(responseFormats["basicExample"])
             }
           }
         ]
@@ -36,6 +35,7 @@ describe("ChatGPT", () => {
     }).send()
     expect(response).toBeDefined();
     expect(response).toEqual(responseFormats["basicExample"])
+    expect(openAISpy).toHaveBeenCalledWith(chatCreateArgs)
    })
 
   test("should throw OPENAI_REQUEST_ERROR", async () => {

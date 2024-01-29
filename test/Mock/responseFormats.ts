@@ -123,3 +123,16 @@ export const responseFormats = {
         ],
       }
 }
+
+export const chatCreateArgs = {
+    messages: [
+      {
+        content:
+          'Return the message content as a json object so that it can be parsed using the JSON.parse static method. The json object needs to be in the in the following format: {"name":"basicExample","requestFormat":{"title":"","author":"","created":"","content":[{"heading":"","prargraph":""}]}}',
+        role: "system",
+      },
+      { content: "Write a paper about Whales.", role: "user" },
+    ],
+    model: "gpt-3.5-turbo-1106",
+    response_format: { type: "json_object" },
+  };

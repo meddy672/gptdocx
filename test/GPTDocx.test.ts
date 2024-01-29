@@ -7,7 +7,7 @@ function replaceLastDirectory(inputPath: string, replacement: string): string {
     const parts = inputPath.split(path.sep);
     parts[parts.length - 1] = replacement;
     return parts.join(path.sep);
-  }
+}
 
 describe("GPTDocx", () => {
     let chatGptSpy: any;
@@ -39,7 +39,7 @@ describe("GPTDocx", () => {
         expect(filename).toEqual("APaperAboutWhales.docx");
      });
 
-     test('should throw Parse error is undefined', async () => { 
+     test('should throw Parse error if format is an empty string', async () => { 
         let response: any;
         try {
              await new GPTDocx({
@@ -52,7 +52,7 @@ describe("GPTDocx", () => {
         expect(response).toEqual("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
      });
 
-     test('should throw invalid prompt error when prompt is undefined', async () => { 
+     test('should throw invalid prompt error when prompt is any empty string', async () => { 
         let response: any;
         try {
              await new GPTDocx({
@@ -65,7 +65,7 @@ describe("GPTDocx", () => {
         expect(response).toEqual("Error: INVALID_PROMPT");
      });
 
-     test('should use index.js when env not delopment or test', async () => { 
+     test('should use index.js when NODE_ENV not in development or test', async () => { 
         process.env["NODE_ENV"] = "staging";
         const joinSpy = jest.spyOn(path, 'join');
         const srcPath = replaceLastDirectory(__dirname, "src")
