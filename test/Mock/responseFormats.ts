@@ -46,28 +46,30 @@ export const responseFormats = {
         ]
     },
     coverLetter: {
-        title: "",
-        subTitle: "",
-        email: "",
-        phoneNumber: "",
+        title: "Cover Letter for Matthew Eddy",
+        subTitle: "Seasoned Software Engineer with Expertise in AWS, JavaScript, and Python",
+        address: "",
+        email: "test@email.com",
+        phoneNumber: "123456789",
         date: "",
-        hiringManger: "",
-        company: "",
+        hiringManager: "Zina Eddy",
+        company: "Netflix",
         companyAddress: "",
         content: [
-            {
-                heading: "",
-                introduction: ""
-            },
-            {
-                heading: "",
-                experience: ""
-            },
-            {
-                conclusion: ""
-            }
-        ]
-    },
+          {
+            heading: "Introduction",
+            introduction: "I am writing to express my strong interest in the Software Engineer position at Netflix. With a proven track record of success and expertise in AWS, JavaScript, and Python, I am confident in my ability to contribute to the continued success of your team.",
+          },
+          {
+            heading: "Experience",
+            experience: "As a seasoned software engineer, I have successfully delivered numerous high-impact projects utilizing my skills in AWS, JavaScript, and Python. My ability to design scalable and efficient systems has been instrumental in driving business objectives and enhancing user experiences.",
+          },
+          {
+            heading: "Conclusion",
+            conclusion: "I am eager to bring my technical expertise and dedication to excellence to the talented team at Netflix. I am looking forward to the opportunity to discuss how my background, skills, and enthusiasm for software engineering can contribute to the ongoing success of your team.",
+          },
+        ],
+      },
     updateNotice: {
         title: "",
         notice: "",
