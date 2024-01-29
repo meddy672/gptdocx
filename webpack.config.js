@@ -26,7 +26,7 @@ module.exports = {
       patterns: [
         {
           from: 'src/docx',
-          to: 'dist/docx',
+          to: './docx',
           globOptions: {
             ignore: ['*.ts'],
           },
