@@ -1,5 +1,5 @@
 import GPTDocx from "./GPTDocx";
-module.exports = {
+export = {
     GPTDocx,
     BASIC: "basicExample",
     COVER_LETTER: "coverLetter",
