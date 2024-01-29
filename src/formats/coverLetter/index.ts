@@ -1,25 +1,18 @@
 export const format = {
-    name: "coverLetter",
+    name: "coverLetter", // required property
     requestFormat: {
-      title: "",
-      subTitle: "",
+      title: "", // required property
+      jobTitle: "",
+      forUser: "",
       email: "",
       phoneNumber: "",
       toDaysDate: "",
       hiringManager: "",
       company: "",
-      introduction: [
-        {
-          heading: "",
-          body: "",
-        },
-      ],
-      achievements: [
-        {
-          heading: "",
-          body: "",
-        },
-      ],
+      introductionHeading: "",
+      introductionContent: "",
+      achievementsHeading: "",
+      achievements: [],
       conclusion: "",
     },
   }

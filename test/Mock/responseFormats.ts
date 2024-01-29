@@ -46,29 +46,23 @@ export const responseFormats = {
         ]
     },
     coverLetter: {
-        title: "Cover Letter for Matthew Eddy",
-        subTitle: "Seasoned Software Engineer with Expertise in AWS, JavaScript, and Python",
-        address: "",
+        title: "Cover Letter for Software Engineer Position",
+        jobTitle: "Software Engineer",
+        forUser: "Matthew Eddy",
         email: "test@email.com",
         phoneNumber: "123456789",
-        date: "",
+        toDaysDate: "",
         hiringManager: "Zina Eddy",
         company: "Netflix",
-        companyAddress: "",
-        content: [
-          {
-            heading: "Introduction",
-            introduction: "I am writing to express my strong interest in the Software Engineer position at Netflix. With a proven track record of success and expertise in AWS, JavaScript, and Python, I am confident in my ability to contribute to the continued success of your team.",
-          },
-          {
-            heading: "Experience",
-            experience: "As a seasoned software engineer, I have successfully delivered numerous high-impact projects utilizing my skills in AWS, JavaScript, and Python. My ability to design scalable and efficient systems has been instrumental in driving business objectives and enhancing user experiences.",
-          },
-          {
-            heading: "Conclusion",
-            conclusion: "I am eager to bring my technical expertise and dedication to excellence to the talented team at Netflix. I am looking forward to the opportunity to discuss how my background, skills, and enthusiasm for software engineering can contribute to the ongoing success of your team.",
-          },
+        introductionHeading: "Application for Software Engineer Position at Netflix",
+        introductionContent: "Dear Zina Eddy,\nI am writing to express my strong interest in the Software Engineer position at Netflix. With over [number] years of experience as a seasoned software engineer, specializing in AWS, JavaScript, and Python, I am confident in my ability to contribute effectively to your team and help enhance the innovative projects at Netflix.",
+        achievementsHeading: "Key Achievements:",
+        achievements: [
+          "- Successfully led the development of a scalable AWS infrastructure resulting in a 30% improvement in application performance.",
+          "- Spearheaded the implementation of a new JavaScript framework, leading to a 40% reduction in page load times and an enhanced user experience.",
+          "- Developed and launched a Python-based data processing tool that streamlined internal data analysis processes, saving over 100 man-hours per month.",
         ],
+        conclusion: "I am excited about the opportunity to further discuss how my technical expertise and achievements can contribute to the continued success of Netflix. Thank you for considering my application. I look forward to the possibility of contributing to the dynamic team at Netflix.\nSincerely,\nMatthew Eddy",
       },
     updateNotice: {
         title: "",
