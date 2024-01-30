@@ -39,6 +39,15 @@ class GPTDocx {
     /**  */
     private apiKeyEnv: string;
 
+
+
+  /**
+   * 
+   * @param format a string that represents how the document is created.
+   * @param prompt a string that represents the request message to send to OPenAI
+   * @param apiKeyEnv a string that be used as the API Key ENV i.e process.env[apiKeyEnv]
+   * @returns GPTDocx
+   */  
   constructor({ format, prompt, apiKeyEnv }: GPTDocxsArgs) {
     this.apiKeyEnv = apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
