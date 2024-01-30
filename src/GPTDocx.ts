@@ -2,6 +2,10 @@ import 'dotenv/config'
 import { join } from "path";
 import ChatGPT from "./ChatGPT";
 import DocxTemplater from './DocxTemplater';
+import WordDocument from './Document';
+import { Paragraph, TextRun, ExternalHyperlink } from 'docx';
+import DocxTable from './Table';
+import DocxImage from 'Image';
 import Static from "./static/constants";
 
 import {
@@ -10,7 +14,8 @@ import {
   Service,
   Format,
   Response,
-  GPTDocxArgsOptions, // eslint-disable-next-line import/no-unresolved
+  GPTDocxArgsOptions,
+  DocxTableArgs, // eslint-disable-next-line import/no-unresolved
 } from "@models";
 
 
@@ -44,7 +49,14 @@ class GPTDocx {
     /** */
     private children: any[] = [];
 
+    /** */
     private options: GPTDocxArgsOptions | undefined;
+
+    /** */
+    private service = "";
+
+    /** */
+    private tempKey: string = "";
 
 
 
@@ -91,8 +103,10 @@ class GPTDocx {
     let requestedService: Service;
     if (typeof service === Static.string) {
       requestedService = this._getFormat(service.toString());
+      this.service = "templater";
     } else {
       requestedService = service as Service;
+      this.service = "docx";
     }
     this._prepareService(requestedService);
   }
@@ -149,7 +163,7 @@ class GPTDocx {
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  private _isValid(service: Service): boolean{
+  private _isValid(service: Service): boolean {
     return service && service.name && service.requestFormat ? true : false;
   }
 
@@ -271,10 +285,10 @@ class GPTDocx {
     const key = this._getValidKey(_key);
     this.children.push(
       new Paragraph({
-        ...this.styles[key]?.paragraph,
+        ...this.requestFormat?.styles[key]?.paragraph,
         children: [
           new TextRun({
-            ...this.styles[key]?.text,
+            ...this.requestFormat?.styles[key]?.text,
             text,
           }),
         ],
@@ -292,7 +306,7 @@ class GPTDocx {
    * @returns {String} The valid key.
    */
   private _getValidKey(key: string): string {
-    return this.styles[key] ? key : this.tempKey;
+    return this.requestFormat?.styles[key] ? key : this.tempKey;
   }
 
   /**
@@ -334,9 +348,9 @@ class GPTDocx {
    */
   private _caseImage(content: any) {
     this.children.push(
-      new Image({
+      new DocxImage({
         content,
-        ...this.styles.image
+        ...this.requestFormat?.styles.image
       })
     );
   }
@@ -346,9 +360,9 @@ class GPTDocx {
    * and data
    * @param {object} table_headers - The header for each column
    */
-  private _caseTable({headers, data}: TableArgs) {
+  private _caseTable({headers, data}: DocxTableArgs) {
     this.children.push(
-      Table({
+      DocxTable({
         headers,
         data
       })
@@ -377,7 +391,7 @@ class GPTDocx {
    * @param {Array} value 
    */
   private _handleArrayCase(key: string, value: []) {
-    if (this.styles[key]) {
+    if (this.requestFormat?.styles[key]) {
       this.tempKey = key;
     }
     this._parse(value);
@@ -400,12 +414,30 @@ class GPTDocx {
       apiKeyEnv: this.apiKeyEnv
     }).send();
     console.debug("Building Pages...");
+    if (this.service === "templater") {
+      return this._useTemplater()
+    } else {
+      return this._useDocx();
+    }
+  }
+
+  private _useTemplater() {
     return new DocxTemplater({
-      docName: this.response.title || this.name,
+      docName: this.response?.title || this.name,
       service: this.name,
       response: this.response,
-      useAngularParser
+      useAngularParser: this.options?.useAngularParser || false
     }).create();
+  }
+
+  private async _useDocx() {
+    const wordDocument = new WordDocument({
+      name: this.response?.pages[0].title,
+      pages: this.pages,
+    });
+    const filename = await wordDocument.saveFile();
+
+    return filename;
   }
 
 } // End of Class

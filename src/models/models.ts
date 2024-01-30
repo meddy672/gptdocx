@@ -41,6 +41,7 @@ export type ChatGPTArgs = {
   
   export type RequestFormat = {
     pages: any[];
+    styles?: any;
   };
   
   export type Format = {
