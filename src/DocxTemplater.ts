@@ -29,12 +29,12 @@ export default class DocxTemplater {
     response,
     useAngularParser
   }: {
-    docName: string;
+    docName?: string;
     service: string;
     response: any;
-    useAngularParser: boolean;
+    useAngularParser?: boolean;
   }) {
-    this.docName = docName;
+    this.docName = docName || service;
     this.service = service;
     this.response = response;
     const filePath = path.resolve( __dirname, Static.DOCX_DIR, this.service + Static.DOCX_EXT)
@@ -48,7 +48,7 @@ export default class DocxTemplater {
     this.doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
-      parser: useAngularParser ? expressionParser : null
+      parser: useAngularParser ? expressionParser : undefined
     });
 
     return this;
@@ -61,7 +61,7 @@ export default class DocxTemplater {
    */
   _sanitize(name: string): string {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
-    return name.replace(pattern, "").trim(); // replaceAll
+    return name.replace(pattern, "").trim();
   }
 
   /**

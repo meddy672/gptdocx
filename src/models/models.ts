@@ -41,13 +41,13 @@ export type ChatGPTArgs = {
   
   export type RequestFormat = {
     pages: any[];
+    responseMapper?: ResponseMapper;
     styles?: any;
   };
   
   export type Format = {
     name: string;
     requestFormat: RequestFormat;
-    responseMapper: ResponseMapper;
   };
 
   export type ResponseMapper = {

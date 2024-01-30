@@ -10,7 +10,7 @@ class DocxImage {
       children: [
         new ImageRun({
           data,
-          ...styles.image,
+          ...styles?.image,
           transformation: {
             width: styles.image?.width || 200,
             height: styles.image?.height || 200,

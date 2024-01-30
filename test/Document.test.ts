@@ -12,7 +12,7 @@ describe("Word Document", () =>{
         writeFileSpy = jest.spyOn(fs, 'writeFileSync');
         pathSpy      = jest.spyOn(path, 'join');
         addSpy       = jest.spyOn(WordDocument.prototype, 'add');
-        document     = new WordDocument({ name: "New Document", pages:[[]] });
+        document     = new WordDocument({ docName: "New Document", pages:[[]] });
         filename     = await document.saveFile();
     });
     afterEach(() => {

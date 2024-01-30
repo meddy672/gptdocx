@@ -5,7 +5,7 @@ import DocxTemplater from './DocxTemplater';
 import WordDocument from './Document';
 import { Paragraph, TextRun, ExternalHyperlink } from 'docx';
 import DocxTable from './Table';
-import DocxImage from 'Image';
+import DocxImage from './Image';
 import Static from "./static/constants";
 
 import {
@@ -28,78 +28,79 @@ import {
  * @param {Object} documentConfig used to apply additional configuration word document. Optional.
  */
 class GPTDocx {
-    /**The request format for each page. Sent to OpenAI with ```this.prompt``` for context.*/
-    private requestFormat: RequestFormat | undefined;
+  /**The request format for each page. Sent to OpenAI with ```this.prompt``` for context.*/
+  private requestFormat: RequestFormat;
 
-    /**The response received from ```ChatGPT Object```*/
-    private response: Response | undefined;
+  /**The response received from ```ChatGPT Object```*/
+  private response: Response | undefined;
 
-    /**The name of the service used in the request. ```this.name = this.service.name```*/
-    private name = "";
+  /**The name of the service used in the request. ```this.name = this.service.name```*/
+  private name = "";
 
-    /**The prompt sent to OpenAI for context. ```await new ChatGPT({prompt: this.prompt})```*/
-    private prompt = "";
+  /**The prompt sent to OpenAI for context. ```await new ChatGPT({prompt: this.prompt})```*/
+  private prompt = "";
 
-    /**  */
-    private apiKeyEnv: string;
+  /**  */
+  private apiKeyEnv: string;
 
-    /** */
-    private pages: any[] = [];
+  /** */
+  private pages: any[] = [];
 
-    /** */
-    private children: any[] = [];
+  /** */
+  private children: any[] = [];
 
-    /** */
-    private options: GPTDocxArgsOptions | undefined;
+  /** */
+  private options: GPTDocxArgsOptions | undefined;
 
-    /** */
-    private service = "";
+  /** */
+  private service = "";
 
-    /** */
-    private tempKey: string = "";
+  /** */
+  private tempKey: string = "";
 
-
+  private styles: any = {}
 
   /**
-   * 
+   *
    * @param format a string that represents how the document is created.
    * @param prompt a string that represents the request message to send to OPenAI
    * @param apiKeyEnv a string that be used as the API Key ENV i.e process.env[apiKeyEnv]
    * @returns GPTDocx
-   */  
+   */
   constructor({ format, prompt, options }: GPTDocxsArgs) {
     this.apiKeyEnv = options?.apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
     this.options = options;
-    this._parseService(format);
+    this.requestFormat = this._parseFormat(format);
     return this;
-  }
-
-    /** 
-   * @description
-   * Checks if the prompt is a valid prompt. If not throws
-   * Invalid Prompt Error.
-   * 
-   * @private
-   * @param {String} prompt Required constructor parameter
-   * @returns {String} prompt
-   */
-    private _isValidPrompt(prompt: string): string {
-      console.debug("_isValidPrompt()", prompt);
-      const validPrompt = typeof prompt === Static.string && prompt.trim() !== "";
-      if (!validPrompt) throw new Error("Error: INVALID_PROMPT");
-  
-      return prompt;
   }
 
   /**
    * @description
-   * Determines and returns the service to be used.
-   * 
+   * Checks if the prompt is a valid prompt. If not throws
+   * Invalid Prompt Error.
+   *
+   * @private
+   * @param {String} prompt Required constructor parameter
+   * @returns {String} prompt
+   */
+  private _isValidPrompt(prompt: string): string {
+    console.debug("_isValidPrompt()", prompt);
+    const validPrompt = typeof prompt === Static.string && prompt.trim() !== "";
+    if (!validPrompt) throw new Error("Error: INVALID_PROMPT");
+
+    return prompt;
+  }
+
+  /**
+   * @description
+   * Determines and returns the service to be used Templater or Docx.
+   * If the format is a object the Docx Object is used, else it uses the Templater
+   *
    * @private
    * @param {String} service of a service to be used in the request
    */
-  private _parseService(service: string | Format): void {
+  private _parseFormat(service: string | Format): RequestFormat {
     let requestedService: Service;
     if (typeof service === Static.string) {
       requestedService = this._getFormat(service.toString());
@@ -108,14 +109,14 @@ class GPTDocx {
       requestedService = service as Service;
       this.service = "docx";
     }
-    this._prepareService(requestedService);
+    return this._prepareService(requestedService);
   }
 
   /**
    * @description
-   * Imports the service object to be used in the request. 
+   * Imports the service object to be used in the request.
    * See ```this.service```.
-   * 
+   *
    * @param {String} service name of the service to use in the request
    * @private
    * @returns {Object} an object with requestFormnat and styles.
@@ -123,7 +124,10 @@ class GPTDocx {
   private _getFormat(service: string): Format {
     let requestedService: any;
     try {
-      if (process.env["NODE_ENV"] === "development" || process.env["NODE_ENV"] === "test") {
+      if (
+        process.env["NODE_ENV"] === "development" ||
+        process.env["NODE_ENV"] === "test"
+      ) {
         requestedService = require(
           join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_TS)
         );
@@ -131,27 +135,28 @@ class GPTDocx {
         requestedService = require(
           join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_JS)
         );
-      }  
-    } catch(error){
-      console.error(`Unable to find service: ${service}`)
+      }
+    } catch (error) {
+      console.error(`Unable to find service: ${service}`);
     }
-    
+
     return requestedService?.format;
   }
 
   /**
    * @description
-   * Validates the service and initializes properties: 
-   * ```this.name```, ```this.requestFormat``` and ```this.styles```. 
+   * Validates the service and initializes properties:
+   * ```this.name```, ```this.requestFormat``` and ```this.styles```.
    * Throws error if ```this.service``` is invalid.
-   * 
+   *
    * @private
    */
-  private _prepareService(requestedService: Service): void {
+  private _prepareService(requestedService: Service): RequestFormat {
     if (this._isValid(requestedService)) {
       this.name = requestedService.name;
-      this.requestFormat = requestedService.requestFormat;
-    } else{
+      this.styles = requestedService.requestFormat.styles ? requestedService.requestFormat.styles : {}; 
+      return  requestedService.requestFormat;
+    } else {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
   }
@@ -159,7 +164,7 @@ class GPTDocx {
   /**
    * @description
    * Checks to see if ```service``` has required properties.
-   * 
+   *
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
@@ -169,53 +174,63 @@ class GPTDocx {
 
   /**
    * @description
-   * Builds each page from ```this.response``` and 
+   * Builds each page from ```this.response``` and
    * creates a new docuemnt.
-   * 
+   *
    * @async
    * @private
    * @returns {Promise<string>} Filename of the document that was created.
    */
-  private async _buildPages(): Promise<string> { // called when response from chatgpt
-    this.response?.pages.forEach( (page: object) => {
+  private async _buildPages(): Promise<string> {
+    // called when response from chatgpt
+    this.response?.pages.forEach((page: object) => {
       this._parse(page);
       this.pages.push(this.children);
       this.children = []; // fix this to use map
     });
-    console.log("Creating Document...")
-    return this._create(); // async
+    console.log("Creating Document...");
+    return this._useDocx(); // async
   }
-
-  private async _create() {
-    return "filename";
-  } 
 
   /**
    * @description
    * Gets the page ```value``` and maps it to its use case.
-   * 
+   *
    * @private
-   * @param {Object} page 
+   * @param {Object} page
    */
   private _parse(page: any) {
     for (const key in page) {
       if (Object.hasOwn(page, key)) {
-        const value:any = page[key] as string;
-          // call the responseMapper Object
-          this.children.push("response from mapper");
-          this._parse(page)
+        const value: any = page[key] as string;
+        // requestFormat has responseMapper
+        if (this.requestFormat.responseMapper) {
+          const component: any = this.requestFormat.responseMapper[key](value);
+          const type = this._getValueType(component);
+          if (type === "array") {
+            this.children.push(...component);
+          } else {
+            this.children.push(component);
+          }
+        } else {
+          if (this._isMapped(key)) {
+            this._switchByMappedKey(key, value);
+          } else {
+            this._switchByType(key, value);
+          }
+        }
       }
     }
   }
 
-   /**
+  /**
    * @description
    * Uses ```key``` and maps the ```value``` to it's
    * correct wrapper.
-   * 
+   *
    * @private
-   * @param {String} key 
-   * @param {*} value 
+   * @param {String} key
+   * @param {*} value
    */
   private _switchByMappedKey(key: string, value: any) {
     switch (key) {
@@ -228,19 +243,17 @@ class GPTDocx {
       case Static.image:
         this._caseImage(value);
         break;
-      default:
-        throw new Error(`Cannot Parse Key: ${key} Error Code: PARSE_KEY_ERROR`);
     }
   }
 
   /**
    * @description
-   * Gets the type from the ```value``` and maps it to 
+   * Gets the type from the ```value``` and maps it to
    * the correct use case.
-   * 
+   *
    * @private
-   * @param {String} key 
-   * @param {*} value 
+   * @param {String} key
+   * @param {*} value
    */
   private _switchByType(key: string, value: any) {
     const type = this._getValueType(value);
@@ -253,42 +266,43 @@ class GPTDocx {
         break;
       case Static.string:
         this._caseText(key, value);
-        break;
-      default:
-        throw new Error("Cannot Parse Type. Error Code: PARSE_VALUE_TYPE");
+        break;    
     }
   }
 
   /**
    * @description
    * Determines the type from ```value``` and returns it.
-   * 
+   *
    * @private
-   * @param {*} value 
+   * @param {*} value
    * @returns {String} the primitive type of the value.
    */
   private _getValueType(value: any): any {
+    if (value === undefined || value === null) {
+      throw new Error("Cannot Parse Type. Error Code: PARSE_VALUE_TYPE");
+    }
     return Array.isArray(value) ? Static.array : typeof value;
   }
 
   /**
    * @description
-   * Used when a value's types is broken down to a string. 
+   * Used when a value's types is broken down to a string.
    * Takes  ```_key, text``` and builds a ```new Paragraph```.
-   * Styles the paragraph with ```this.styles```. 
-   * 
+   * Styles the paragraph with ```this.styles```.
+   *
    * @private
-   * @param {String} _key 
-   * @param {String} text 
+   * @param {String} _key
+   * @param {String} text
    */
   private _caseText(_key: string, text: string) {
     const key = this._getValidKey(_key);
     this.children.push(
       new Paragraph({
-        ...this.requestFormat?.styles[key]?.paragraph,
+        ...this.styles[key]?.paragraph,
         children: [
           new TextRun({
-            ...this.requestFormat?.styles[key]?.text,
+            ...this.styles[key]?.text,
             text,
           }),
         ],
@@ -298,30 +312,47 @@ class GPTDocx {
 
   /**
    * @description
-   * Sets the correct ```key``` to be used 
+   * Sets the correct ```key``` to be used
    * by ```this.styles```.
-   * 
+   *
    * @private
-   * @param {String} key 
+   * @param {String} key
    * @returns {String} The valid key.
    */
   private _getValidKey(key: string): string {
-    return this.requestFormat?.styles[key] ? key : this.tempKey;
+    return this.styles[key] ? key : this.tempKey;
+   
   }
 
   /**
    * @description
-   * Handle use case when a key is ```links```. 
-   * Takes the ```links``` and applies the correct 
-   * wrapper class. Adds each ```link``` to the page's 
-   * container```this.children```.
-   * 
+   * Stores the ```key``` of the array that will
+   * be parsed and saves it as a temp key.
+   *
    * @private
-   * @param {Array} links 
+   * @param {String} key
+   * @param {Array} value
+   */
+    private _handleArrayCase(key: string, value: []) {
+      if (this.styles[key]) {
+        this.tempKey = key;
+      }
+      this._parse(value);
+    }
+
+  /**
+   * @description
+   * Handle use case when a key is ```links```.
+   * Takes the ```links``` and applies the correct
+   * wrapper class. Adds each ```link``` to the page's
+   * container```this.children```.
+   *
+   * @private
+   * @param {Array} links
    */
   private _caseLinks(links: []) {
     links.forEach(({ text, link }) => {
-      this.children.push(
+      this.children.push( // apart of worddocuemnt obj
         new Paragraph({
           children: [
             new ExternalHyperlink({
@@ -342,15 +373,15 @@ class GPTDocx {
   /**
    * @description
    * Adds a new Image to the document.
-   * 
-   * @param {Buffer} content - ImageBuffer i.e 
+   *
+   * @param {Buffer} data - ImageBuffer i.e
    * .jpg, .png, .svg, .gif, .bmp, data:image/png
    */
-  private _caseImage(content: any) {
+  private _caseImage(data: any) {
     this.children.push(
-      new DocxImage({
-        content,
-        ...this.requestFormat?.styles.image
+      new DocxImage({ // apart of worddocuemnt obj
+        data,
+        styles: this.styles.image,
       })
     );
   }
@@ -360,21 +391,21 @@ class GPTDocx {
    * and data
    * @param {object} table_headers - The header for each column
    */
-  private _caseTable({headers, data}: DocxTableArgs) {
+  private _caseTable({ headers, data }: DocxTableArgs) {
     this.children.push(
-      DocxTable({
+      DocxTable({ // apart of worddocuemnt obj
         headers,
-        data
+        data,
       })
-    )
+    );
   }
 
   /**
    * @description
    * Checks to see if the ```key``` is a mapped key.
-   * 
+   *
    * @private
-   * @param {String} key 
+   * @param {String} key
    * @returns {Boolean} True if the key is a mappedKey otherwise false.
    */
   private _isMapped(key: string): Boolean {
@@ -383,27 +414,9 @@ class GPTDocx {
 
   /**
    * @description
-   * Stores the ```key``` of the array that will 
-   * be parsed and saves it as a temp key.
-   * 
-   * @private
-   * @param {String} key 
-   * @param {Array} value 
-   */
-  private _handleArrayCase(key: string, value: []) {
-    if (this.requestFormat?.styles[key]) {
-      this.tempKey = key;
-    }
-    this._parse(value);
-  }
-
-
-
-  /**
-   * @description
    * Sends request to OpenAI for a context. Uses ```this.response```
    * to build each page.
-   * 
+   *
    * @async
    * @returns {Promise<string>} Filename of the document.
    */
@@ -411,35 +424,35 @@ class GPTDocx {
     this.response = await new ChatGPT({
       prompt: this.prompt,
       format: this.requestFormat,
-      apiKeyEnv: this.apiKeyEnv
+      apiKeyEnv: this.apiKeyEnv,
     }).send();
     console.debug("Building Pages...");
     if (this.service === "templater") {
-      return this._useTemplater()
+      return this._useTemplater();
     } else {
-      return this._useDocx();
+      return this._buildPages();
     }
   }
 
   private _useTemplater() {
     return new DocxTemplater({
-      docName: this.response?.title || this.name,
+      docName: this.response?.title, // handle undefined case
       service: this.name,
       response: this.response,
-      useAngularParser: this.options?.useAngularParser || false
+      useAngularParser: this.options?.useAngularParser, // handle undefined case
     }).create();
   }
 
   private async _useDocx() {
     const wordDocument = new WordDocument({
-      name: this.response?.pages[0].title,
+      docName: this.response?.pages[0].title,
       pages: this.pages,
+      options: this.options?.documentConfig
     });
     const filename = await wordDocument.saveFile();
 
     return filename;
   }
-
 } // End of Class
 
 

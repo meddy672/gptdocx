@@ -7,7 +7,7 @@ import { join }  from 'path';
 import { DOCUMENT } from './static/config';
 
 type WordDocumentArgs = {
-    name: string;
+  docName: string;
     pages: any[];
     options?: {
         pageHeader: {};
@@ -20,10 +20,11 @@ class WordDocument {
   private options = {};
   private sections: any[] = [];
 
-  constructor({ name, pages, options }: WordDocumentArgs) {
-    this.options    = DOCUMENT.BASIC;
+  constructor({ docName, pages, options }: WordDocumentArgs) {
+    console.log()
+    this.options    = options || DOCUMENT.BASIC;
     this.sections   = [];
-    this._name  = this._sanitize(name);
+    this._name  = this._sanitize(docName);
     if (pages.length) {
         this.add(pages);
     }
