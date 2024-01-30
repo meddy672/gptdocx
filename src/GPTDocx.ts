@@ -54,11 +54,10 @@ class GPTDocx {
    * @param apiKeyEnv a string that be used as the API Key ENV i.e process.env[apiKeyEnv]
    * @returns GPTDocx
    */  
-  constructor({ format, prompt, apiKeyEnv }: GPTDocxsArgs) {
+  constructor({ format, prompt, parser, strategy, documentConfig, apiKeyEnv }: GPTDocxsArgs) {
     this.apiKeyEnv = apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
-    this.service = this._parseService(format)
-    this._prepareService();
+    this._parseService(format)
     return this;
   }
 
@@ -186,6 +185,197 @@ class GPTDocx {
       }
     }
   }
+
+   /**
+   * @description
+   * Uses ```key``` and maps the ```value``` to it's
+   * correct wrapper.
+   * 
+   * @private
+   * @param {String} key 
+   * @param {*} value 
+   */
+  private _switchByMappedKey(key: string, value: any) {
+    switch (key) {
+      case Static.links:
+        this._caseLinks(value);
+        break;
+      case Static.table:
+        this._caseTable(value);
+        break;
+      case Static.image:
+        this._caseImage(value);
+        break;
+      default:
+        throw new Error(`Cannot Parse Key: ${key} Error Code: PARSE_KEY_ERROR`);
+    }
+  }
+
+  /**
+   * @description
+   * Gets the type from the ```value``` and maps it to 
+   * the correct use case.
+   * 
+   * @private
+   * @param {String} key 
+   * @param {*} value 
+   */
+  private _switchByType(key: string, value: any) {
+    const type = this._getValueType(value);
+    switch (type) {
+      case Static.array:
+        this._handleArrayCase(key, value);
+        break;
+      case Static.object:
+        this._parse(value);
+        break;
+      case Static.string:
+        this._caseText(key, value);
+        break;
+      default:
+        throw new Error("Cannot Parse Type. Error Code: PARSE_VALUE_TYPE");
+    }
+  }
+
+  /**
+   * @description
+   * Determines the type from ```value``` and returns it.
+   * 
+   * @private
+   * @param {*} value 
+   * @returns {String} the primitive type of the value.
+   */
+  private _getValueType(value: any): any {
+    return Array.isArray(value) ? Static.array : typeof value;
+  }
+
+  /**
+   * @description
+   * Used when a value's types is broken down to a string. 
+   * Takes  ```_key, text``` and builds a ```new Paragraph```.
+   * Styles the paragraph with ```this.styles```. 
+   * 
+   * @private
+   * @param {String} _key 
+   * @param {String} text 
+   */
+  private _caseText(_key: string, text: string) {
+    const key = this._getValidKey(_key);
+    this.children.push(
+      new Paragraph({
+        ...this.styles[key]?.paragraph,
+        children: [
+          new TextRun({
+            ...this.styles[key]?.text,
+            text,
+          }),
+        ],
+      })
+    );
+  }
+
+  /**
+   * @description
+   * Sets the correct ```key``` to be used 
+   * by ```this.styles```.
+   * 
+   * @private
+   * @param {String} key 
+   * @returns {String} The valid key.
+   */
+  private _getValidKey(key: string): string {
+    return this.styles[key] ? key : this.tempKey;
+  }
+
+  /**
+   * @description
+   * Handle use case when a key is ```links```. 
+   * Takes the ```links``` and applies the correct 
+   * wrapper class. Adds each ```link``` to the page's 
+   * container```this.children```.
+   * 
+   * @private
+   * @param {Array} links 
+   */
+  private _caseLinks(links: []) {
+    links.forEach(({ text, link }) => {
+      this.children.push(
+        new Paragraph({
+          children: [
+            new ExternalHyperlink({
+              link,
+              children: [
+                new TextRun({
+                  text,
+                  style: Static.HYPERLINK,
+                }),
+              ],
+            }),
+          ],
+        })
+      );
+    });
+  }
+
+  /**
+   * @description
+   * Adds a new Image to the document.
+   * 
+   * @param {Buffer} content - ImageBuffer i.e 
+   * .jpg, .png, .svg, .gif, .bmp, data:image/png
+   */
+  private _caseImage(content: any) {
+    this.children.push(
+      new Image({
+        content,
+        ...this.styles.image
+      })
+    );
+  }
+
+  /**
+   * @description Adds a new table to the document with table headers
+   * and data
+   * @param {object} table_headers - The header for each column
+   */
+  private _caseTable({headers, data}: TableArgs) {
+    this.children.push(
+      Table({
+        headers,
+        data
+      })
+    )
+  }
+
+  /**
+   * @description
+   * Checks to see if the ```key``` is a mapped key.
+   * 
+   * @private
+   * @param {String} key 
+   * @returns {Boolean} True if the key is a mappedKey otherwise false.
+   */
+  private _isMapped(key: string): Boolean {
+    return [Static.links, Static.table, Static.image].includes(key);
+  }
+
+  /**
+   * @description
+   * Stores the ```key``` of the array that will 
+   * be parsed and saves it as a temp key.
+   * 
+   * @private
+   * @param {String} key 
+   * @param {Array} value 
+   */
+  private _handleArrayCase(key: string, value: []) {
+    if (this.styles[key]) {
+      this.tempKey = key;
+    }
+    this._parse(value);
+  }
+
+
 
   /**
    * @description
