@@ -25,10 +25,19 @@ export type ChatGPTArgs = {
   export type GPTDocxsArgs = {
     format: string | Format;
     prompt: string;
-    apiKeyEnv?: string | undefined; 
-    saveSchema?: boolean;
-    documentConfig?: any;
+    options?: GPTDocxArgsOptions;
   };
+
+  export type GPTDocxArgsOptions = {
+    apiKeyEnv?: string | undefined; 
+    documentConfig?: any;
+    useAngularParser?: boolean;
+    strategy?: {
+      greedy: {
+        wordCount: number;
+      }
+    }
+  }
   
   export type RequestFormat = {
     pages: any[];
@@ -37,8 +46,12 @@ export type ChatGPTArgs = {
   export type Format = {
     name: string;
     requestFormat: RequestFormat;
-    styles?: {};
+    responseMapper: ResponseMapper;
   };
+
+  export type ResponseMapper = {
+    [key: string]: (config: any) => {}
+  }
   
   export type DocxTableArgs = {
     headers: any[];
@@ -88,6 +101,11 @@ export type ChatGPTArgs = {
     prompt_tokens: number;
     completion_tokens: number;
     total_tokens: number;
+  }
+
+  export type Service = {
+    name: string;
+    requestFormat: RequestFormat;
   }
   
   export type Response = {

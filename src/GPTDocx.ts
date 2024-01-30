@@ -7,8 +7,10 @@ import Static from "./static/constants";
 import {
   GPTDocxsArgs,
   RequestFormat,
+  Service,
   Format,
-  Response, // eslint-disable-next-line import/no-unresolved
+  Response,
+  GPTDocxArgsOptions, // eslint-disable-next-line import/no-unresolved
 } from "@models";
 
 
@@ -27,9 +29,6 @@ class GPTDocx {
     /**The response received from ```ChatGPT Object```*/
     private response: Response | undefined;
 
-    /** Contains the service object. Initializes ```this.requestFormat``` and ```this.styles```. See parse format.*/
-    private service: Format;
-
     /**The name of the service used in the request. ```this.name = this.service.name```*/
     private name = "";
 
@@ -45,6 +44,8 @@ class GPTDocx {
     /** */
     private children: any[] = [];
 
+    private options: GPTDocxArgsOptions | undefined;
+
 
 
   /**
@@ -54,10 +55,11 @@ class GPTDocx {
    * @param apiKeyEnv a string that be used as the API Key ENV i.e process.env[apiKeyEnv]
    * @returns GPTDocx
    */  
-  constructor({ format, prompt, parser, strategy, documentConfig, apiKeyEnv }: GPTDocxsArgs) {
-    this.apiKeyEnv = apiKeyEnv || "";
+  constructor({ format, prompt, options }: GPTDocxsArgs) {
+    this.apiKeyEnv = options?.apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
-    this._parseService(format)
+    this.options = options;
+    this._parseService(format);
     return this;
   }
 
@@ -85,8 +87,14 @@ class GPTDocx {
    * @private
    * @param {String} service of a service to be used in the request
    */
-  private _parseService(service: string | Format): Format {
-      return this._getFormat(service.toString());
+  private _parseService(service: string | Format): void {
+    let requestedService: Service;
+    if (typeof service === Static.string) {
+      requestedService = this._getFormat(service.toString());
+    } else {
+      requestedService = service as Service;
+    }
+    this._prepareService(requestedService);
   }
 
   /**
@@ -125,10 +133,10 @@ class GPTDocx {
    * 
    * @private
    */
-  private _prepareService(): void {
-    if (this._isValidService()) {
-      this.name = this.service.name;
-      this.requestFormat = this.service.requestFormat;
+  private _prepareService(requestedService: Service): void {
+    if (this._isValid(requestedService)) {
+      this.name = requestedService.name;
+      this.requestFormat = requestedService.requestFormat;
     } else{
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
@@ -136,13 +144,13 @@ class GPTDocx {
 
   /**
    * @description
-   * Checks to see if ```this.service``` meets a valid service.
+   * Checks to see if ```service``` has required properties.
    * 
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  private _isValidService(): boolean{
-    return this.service && this.service.name && this.service.requestFormat ? true : false;
+  private _isValid(service: Service): boolean{
+    return service && service.name && service.requestFormat ? true : false;
   }
 
   /**
@@ -180,7 +188,7 @@ class GPTDocx {
       if (Object.hasOwn(page, key)) {
         const value:any = page[key] as string;
           // call the responseMapper Object
-          this.children.push("response from mapper")
+          this.children.push("response from mapper");
           this._parse(page)
       }
     }
@@ -395,7 +403,8 @@ class GPTDocx {
     return new DocxTemplater({
       docName: this.response.title || this.name,
       service: this.name,
-      response: this.response
+      response: this.response,
+      useAngularParser
     }).create();
   }
 

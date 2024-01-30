@@ -27,10 +27,12 @@ export default class DocxTemplater {
     docName,
     service,
     response,
+    useAngularParser
   }: {
     docName: string;
     service: string;
     response: any;
+    useAngularParser: boolean;
   }) {
     this.docName = docName;
     this.service = service;
@@ -46,7 +48,7 @@ export default class DocxTemplater {
     this.doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
-      parser: expressionParser
+      parser: useAngularParser ? expressionParser : null
     });
 
     return this;
