@@ -39,6 +39,12 @@ class GPTDocx {
     /**  */
     private apiKeyEnv: string;
 
+    /** */
+    private pages: any[] = [];
+
+    /** */
+    private children: any[] = [];
+
 
 
   /**
@@ -138,6 +144,47 @@ class GPTDocx {
    */
   private _isValidService(): boolean{
     return this.service && this.service.name && this.service.requestFormat ? true : false;
+  }
+
+  /**
+   * @description
+   * Builds each page from ```this.response``` and 
+   * creates a new docuemnt.
+   * 
+   * @async
+   * @private
+   * @returns {Promise<string>} Filename of the document that was created.
+   */
+  private async _buildPages(): Promise<string> { // called when response from chatgpt
+    this.response?.pages.forEach( (page: object) => {
+      this._parse(page);
+      this.pages.push(this.children);
+      this.children = []; // fix this to use map
+    });
+    console.log("Creating Document...")
+    return this._create(); // async
+  }
+
+  private async _create() {
+    return "filename";
+  } 
+
+  /**
+   * @description
+   * Gets the page ```value``` and maps it to its use case.
+   * 
+   * @private
+   * @param {Object} page 
+   */
+  private _parse(page: any) {
+    for (const key in page) {
+      if (Object.hasOwn(page, key)) {
+        const value:any = page[key] as string;
+          // call the responseMapper Object
+          this.children.push("response from mapper")
+          this._parse(page)
+      }
+    }
   }
 
   /**
