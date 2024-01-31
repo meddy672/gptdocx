@@ -8,7 +8,7 @@
     "test": "nyc jest --runInBand",
     "stash": "git stash save 'stash changes'",
     "dev": "git add . && git commit -m \"Automated commit message\"",
-    "case": "nyc jest --runInBand ./test/GPTDocx.test.ts",
+    "case": "nyc jest --runInBand ./test/acceptance.test.ts",
     "lint": "eslint ./src/**/*.ts",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc && webpack",

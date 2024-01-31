@@ -13,6 +13,7 @@ describe("Word Document", () =>{
         pathSpy      = jest.spyOn(path, 'join');
         addSpy       = jest.spyOn(WordDocument.prototype, 'add');
         document     = new WordDocument({ docName: "New Document", pages:[[]] });
+        writeFileSpy.mockImplementation(() => {})
         filename     = await document.saveFile();
     });
     afterEach(() => {

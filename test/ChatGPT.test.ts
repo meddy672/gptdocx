@@ -21,7 +21,7 @@ describe("ChatGPT", () => {
         choices: [
           {
             message: {
-              content: JSON.stringify(responseFormats["basicExample"])
+              content: JSON.stringify(responseFormats["basic"])
             }
           }
         ]
@@ -34,8 +34,8 @@ describe("ChatGPT", () => {
       apiKeyEnv: "",
     }).send()
     expect(response).toBeDefined();
-    expect(response).toEqual(responseFormats["basicExample"])
-    expect(openAISpy).toHaveBeenCalledWith(chatCreateArgs);
+    expect(response).toEqual(responseFormats["basic"])
+    expect(openAISpy).toHaveBeenNthCalledWith(1, chatCreateArgs);
    })
 
   test("should throw OPENAI_REQUEST_ERROR", async () => {

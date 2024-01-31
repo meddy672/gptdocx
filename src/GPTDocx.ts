@@ -203,7 +203,6 @@ class GPTDocx {
     for (const key in page) {
       if (Object.hasOwn(page, key)) {
         const value: any = page[key] as string;
-        // requestFormat has responseMapper
         if (this.requestFormat.responseMapper) {
           const component: any = this.requestFormat.responseMapper[key](value);
           const type = this._getValueType(component);
@@ -423,7 +422,7 @@ class GPTDocx {
   async createFile(): Promise<string> {
     this.response = await new ChatGPT({
       prompt: this.prompt,
-      format: this.requestFormat,
+      format: this.requestFormat.pages,
       apiKeyEnv: this.apiKeyEnv,
     }).send();
     console.debug("Building Pages...");

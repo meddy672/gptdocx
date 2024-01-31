@@ -7,24 +7,11 @@ describe('format', () => {
                 title: "",
                 jobName: "",
                 overview: "",
-                content: [
-                    {
-                        heading: "",
-                        whatWeOffer: []
-                    },
-                    {
-                        heading: "",
-                        responsibilities: []
-                    },
-                    {
-                        heading: "",
-                        qulifications: []
-                    },
-                    {
-                        heading: "",
-                        salary: ""
-                    }
-                ]
+                whatWeOffer: [],
+                qulifications: [],
+                requirements: [],
+                responsibilities: [],
+                salary: ""
             }
         })
      })
