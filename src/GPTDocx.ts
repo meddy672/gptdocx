@@ -1,11 +1,11 @@
-import 'dotenv/config'
+import "dotenv/config";
 import { join } from "path";
 import ChatGPT from "./ChatGPT";
-import DocxTemplater from './DocxTemplater';
-import WordDocument from './Document';
-import { Paragraph, TextRun, ExternalHyperlink } from 'docx';
-import DocxTable from './Table';
-import DocxImage from './Image';
+import DocxTemplater from "./DocxTemplater";
+import WordDocument from "./Document";
+import { Paragraph, TextRun, ExternalHyperlink } from "docx";
+import DocxTable from "./Table";
+import DocxImage from "./Image";
 import Static from "./static/constants";
 
 import {
@@ -17,7 +17,6 @@ import {
   GPTDocxArgsOptions,
   DocxTableArgs, // eslint-disable-next-line import/no-unresolved
 } from "@models";
-
 
 /**
  * @description
@@ -58,7 +57,7 @@ class GPTDocx {
   /** */
   private tempKey: string = "";
 
-  private styles: any = {}
+  private styles: any = {};
 
   /**
    *
@@ -154,8 +153,10 @@ class GPTDocx {
   private _prepareService(requestedService: Service): RequestFormat {
     if (this._isValid(requestedService)) {
       this.name = requestedService.name;
-      this.styles = requestedService.requestFormat.styles ? requestedService.requestFormat.styles : {}; 
-      return  requestedService.requestFormat;
+      this.styles = requestedService.requestFormat.styles
+        ? requestedService.requestFormat.styles
+        : {};
+      return requestedService.requestFormat;
     } else {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
@@ -204,12 +205,15 @@ class GPTDocx {
       if (Object.hasOwn(page, key)) {
         const value: any = page[key] as string;
         if (this.requestFormat.responseMapper) {
-          const component: any = this.requestFormat.responseMapper[key](value);
-          const type = this._getValueType(component);
-          if (type === "array") {
-            this.children.push(...component);
-          } else {
-            this.children.push(component);
+          if (this.requestFormat.responseMapper[key]) {
+            const component: any =
+              this.requestFormat.responseMapper[key](value); // if the key is undefined it will throw
+            const type = this._getValueType(component);
+            if (type === "array") {
+              this.children.push(...component);
+            } else {
+              this.children.push(component);
+            }
           }
         } else {
           if (this._isMapped(key)) {
@@ -265,7 +269,7 @@ class GPTDocx {
         break;
       case Static.string:
         this._caseText(key, value);
-        break;    
+        break;
     }
   }
 
@@ -320,7 +324,6 @@ class GPTDocx {
    */
   private _getValidKey(key: string): string {
     return this.styles[key] ? key : this.tempKey;
-   
   }
 
   /**
@@ -332,12 +335,12 @@ class GPTDocx {
    * @param {String} key
    * @param {Array} value
    */
-    private _handleArrayCase(key: string, value: []) {
-      if (this.styles[key]) {
-        this.tempKey = key;
-      }
-      this._parse(value);
+  private _handleArrayCase(key: string, value: []) {
+    if (this.styles[key]) {
+      this.tempKey = key;
     }
+    this._parse(value);
+  }
 
   /**
    * @description
@@ -351,7 +354,8 @@ class GPTDocx {
    */
   private _caseLinks(links: []) {
     links.forEach(({ text, link }) => {
-      this.children.push( // apart of worddocuemnt obj
+      this.children.push(
+        // apart of worddocuemnt obj
         new Paragraph({
           children: [
             new ExternalHyperlink({
@@ -378,7 +382,8 @@ class GPTDocx {
    */
   private _caseImage(data: any) {
     this.children.push(
-      new DocxImage({ // apart of worddocuemnt obj
+      new DocxImage({
+        // apart of worddocuemnt obj
         data,
         styles: this.styles.image,
       })
@@ -392,7 +397,8 @@ class GPTDocx {
    */
   private _caseTable({ headers, data }: DocxTableArgs) {
     this.children.push(
-      DocxTable({ // apart of worddocuemnt obj
+      DocxTable({
+        // apart of worddocuemnt obj
         headers,
         data,
       })
@@ -446,13 +452,12 @@ class GPTDocx {
     const wordDocument = new WordDocument({
       docName: this.response?.pages[0].title,
       pages: this.pages,
-      options: this.options?.documentConfig
+      options: this.options?.documentConfig,
     });
     const filename = await wordDocument.saveFile();
 
     return filename;
   }
 } // End of Class
-
 
 export default GPTDocx;

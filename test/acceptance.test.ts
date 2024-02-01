@@ -3,7 +3,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from 'path';
 import { responseFormats } from "./Mock/responseFormats";
-// import { Paragraph, ExternalHyperlink, ImageRun } from "docx";
+import { Paragraph, TextRun } from "docx";
 
 const {
   BASIC,
@@ -47,7 +47,6 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-
   test("should create a .docx file in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
@@ -148,186 +147,500 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  // test.skip("should create a .docx file in the files directory", async () => {
-  //   const filename = await new GPTDocx({
-  //     format: {
-  //       name: "documentary", // call whatever you want
-  //       requestFormat: {
-  //         pages: [
-  //           {
-  //             title: "",
-  //             introduction: "",
-  //             chapter1: [
-  //               {
-  //                 heading: "",
-  //                 paragraph1: "",
-  //                 paragraph2: "",
-  //               }
-  //             ],
-  //             chapter2: [
-  //               {
-  //                 heading: "",
-  //                 paragraph1: "",
-  //                 paragraph2: "",
-  //               }
-  //             ],
-  //             chapter3: [
-  //               {
-  //                 heading: "",
-  //                 paragraph1: "",
-  //                 paragraph2: "",
-  //               }
-  //             ],
-  //             chapter4: [
-  //               {
-  //                 heading: "",
-  //                 paragraph1: "",
-  //                 paragraph2: "",
-  //               }
-  //             ],
-  //             conclusion: "",
-  //           }
-  //         ],
-  //         responseMapper: {
-  //           title: (config: any) => {},
-  //           introduction: (config: any) => {},
-  //           chapter1: (config: any) => {},
-  //           chapter2: (config: any) => {},
-  //           chapter3: (config: any) => {},
-  //           chapter4: (config: any) => {},
-  //           conclusion: (config: any) => {},
-  //         }
-  //       }
-  //     },
-  //     prompt: "Write a documentary on Michael Jordan.",
-  //   }).createFile();
-  //   const contents = fs.readdirSync(FILE_PATH);
-  //   expect(contents).toContain(filename);
-  //   fs.rmdirSync(FILE_PATH+filename);
-  // });
-  // test.skip("should create a .docx file in the files directory", async () => {
-  //   const filename = await new GPTDocx({
-  //     format: {
-  //       name: "recipe",
-  //       requestFormat: {
-  //         pages: [
-  //           {
-  //             title: "",
-  //             totalTime: "",
-  //             preparation: "",
-  //             ingriedents: [],
-  //             cookTime: "",
-  //             cookingSteps: [],
-  //             serving: "",
-  //           },
-  //         ],
-  //         responseMapper: {
-  //           title: (config: any) => {},
-  //           totalTime: (config: any) => {},
-  //           preparation: (config: any) => {},
-  //           ingriedents: (config: any) => {},
-  //           cookTime: (config: any) => {},
-  //           cookingSteps: (config: any) => {},
-  //           serving: (config: any) => {},
-  //         },
-  //       },
-  //     },
-  //     prompt: "Create a recipe for homemade chicken nuggets.",
-  //   }).createFile();
-  //   const contents = fs.readdirSync(FILE_PATH);
-  //   expect(contents).toContain(filename);
-  // });
-  // test.skip("should create a .docx file in the files directory", async () => {
-  //   const filename = await new GPTDocx({
-  //     format: {
-  //       name: "basicExample",
-  //       requestFormat: {
-  //         pages: [
-  //           {
-  //             author: "",
-  //             created: "",
-  //             title: "",
-  //             content: [
-  //               {
-  //                 heading: "",
-  //                 body: "",
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             links: [{ text: "", link: "" }],
-  //           },
-  //         ],
-  //         styles: {
-  //           title: {
-  //             paragraph: {
-  //               heading: "Title",
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100,
-  //               },
-  //             },
-  //             text: {
-  //               color: "#000000",
-  //               bold: true,
-  //             },
-  //           },
-  //           author: {
-  //             paragraph: {
-  //               heading: "Heading4",
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10,
-  //               },
-  //             },
-  //             text: {
-  //               color: "#000000",
-  //               italics: true,
-  //             },
-  //           },
-  //           created: {
-  //             paragraph: {
-  //               heading: "Heading4",
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10,
-  //               },
-  //             },
-  //             text: {
-  //               color: "#000000",
-  //               italics: true,
-  //             },
-  //           },
-  //           heading: {
-  //             paragraph: {
-  //               heading: "Heading4",
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10,
-  //               },
-  //             },
-  //             text: {
-  //               color: "#000000",
-  //               bold: true,
-  //             },
-  //           },
-  //           body: {
-  //             paragraph: {
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100,
-  //               },
-  //             },
-  //             text: {
-  //               color: "#333333",
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //     prompt: "Write a paper on the history of sports.",
-  //   }).createFile();
-  //   const contents = fs.readdirSync(FILE_PATH);
-  //   expect(contents).toContain(filename);
-  // });
+  test("should create a .docx file in the files directory", async () => {
+    openAISpy.mockImplementation(() => {
+      return {
+        choices: [
+          {
+            message: {
+              content: JSON.stringify(responseFormats["documentary"])
+            }
+          }
+        ]
+      }
+    })
+    const filePath = await new GPTDocx({
+      format: {
+        name: "documentary", // call whatever you want
+        requestFormat: {
+          pages: [
+            {
+              introduction: {
+                title: "",
+                body: "",
+              },
+              content: [
+                {
+                  heading: "",
+                  paragraph1: "",
+                  paragraph2: "",
+                },
+                {
+                  heading: "",
+                  paragraph1: "",
+                  paragraph2: "",
+                },
+                {
+                  heading: "",
+                  paragraph1: "",
+                  paragraph2: "",
+                },
+                {
+                  heading: "",
+                  paragraph1: "",
+                  paragraph2: "",
+                }
+              ],
+              conclusion: "",
+            }
+          ],
+          responseMapper: {
+            introduction: (config: any) => {
+              return [
+                new Paragraph({
+                  heading: "Title",
+                  children: [
+                    new TextRun({
+                      color: '#000000',
+                      text: config.title
+                    })
+                  ]
+                }),
+                new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 100
+                  },
+                  children: [
+                    new TextRun({
+                      text: config.body
+                    })
+                  ]
+                })
+              ]
+            },
+            content: (config: any) => {
+              const components: any[] = [];
+               config.forEach(({heading, paragraph1, paragraph2}: {heading: string, paragraph1: string, paragraph2: string}) => {
+                const h1 = new Paragraph({
+                  heading: 'Heading1',
+                  spacing: {
+                    before: 20,
+                    after: 20,
+                  },
+                  children: [
+                    new TextRun({
+                      text: heading
+                    })
+                  ]
+                });
+                const p1 = new Paragraph({
+                  children:[
+                    new TextRun({
+                      color: '#333333',
+                      text: paragraph1
+                    })
+                  ]
+                });
+                const p2 = new Paragraph({
+                  children:[
+                    new TextRun({
+                      color: '#333333',
+                      text: paragraph2
+                    })
+                  ]
+                });
+                components.push(h1)
+                components.push(p1)
+                components.push(p2)
+              })
+              return components;
+            },
+            conclusion: (config: any) => {
+              return new Paragraph({
+                text: config.conclusion
+              })
+            },
+          }
+        }
+      },
+      prompt: "Write a documentary on Michael Jordan.",
+    }).createFile();
+    const { name, ext } = path.parse(filePath);
+    const contents = fs.readdirSync(FILE_PATH);
+    expect(contents).toContain(name+ext);
+  });
+  test("should create a .docx file in the files directory", async () => {
+    openAISpy.mockImplementation(() => {
+      return {
+        choices: [
+          {
+            message: {
+              content: JSON.stringify(responseFormats["recipe"])
+            }
+          }
+        ]
+      }
+    })
+    const filePath = await new GPTDocx({
+      format: {
+        name: "recipe",
+        requestFormat: {
+          pages: [
+            {
+              title: "",
+              totalCookTime: {
+                heading: "",
+                totalTime: ""
+              },
+              prepareTime: {
+                heading: "",
+                preparation: "",
+              },
+              components: {
+                heading: "",
+                ingredients: [],
+              },
+              cookingTime: {
+                heading: "",
+                cookTime: "",
+              },
+              steps: {
+                heading: "",
+                cookingSteps: [],
+              },
+              serving: {
+                heading: "",
+                size: ""
+              }
+            },
+          ],
+          responseMapper: {
+            title: (text: string) => {
+              return new Paragraph({
+                heading: 'Title',
+                alignment: "center",
+                spacing: {
+                  before: 100,
+                  after: 30
+                },
+                children: [
+                  new TextRun({
+                    color: '#000000',
+                    text
+                  })
+                ]
+              })
+            },
+            totalCookTime: (context: any) => {
+              return [
+                new Paragraph({
+                  heading: 'Heading2',
+                  spacing: {
+                    before: 100,
+                    after: 10
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      size: 32,
+                      bold: true,
+                      text: context.heading
+                    })
+                  ]
+                }),
+                new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 100
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text: context.totalTime
+                    })
+                  ]
+                })
+              ]
+            },
+            prepareTime: (context: any) => {
+              return [
+                new Paragraph({
+                  heading: 'Heading2',
+                  spacing: {
+                    before: 100,
+                    after: 10
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      size: 32,
+                      bold: true,
+                      text: context.heading
+                    })
+                  ]
+                }),
+                new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 100
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text: context.preparation
+                    })
+                  ]
+                })
+              ]
+            },
+            components: (context: any) => {
+              const components: any[] = [];
+              const heading = new Paragraph({
+                heading: 'Heading1',
+                spacing: {
+                  before: 100,
+                  after: 10
+                },
+                children: [
+                  new TextRun({
+                    color: '#333333',
+                    text: context.heading,
+                    size: 32,
+                    bold: true
+                  })
+                ]
+              });
+              components.push(heading);
+              context.ingredients.forEach((text: string) => {
+                const paragraph = new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 10
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text
+                    })
+                  ]
+                })
+                components.push(paragraph)
+              });
+              
+              return components;
+            },
+            cookingTime: (context: any) => {
+              return [
+                new Paragraph({
+                  heading: 'Heading2',
+                  spacing: {
+                    before: 100,
+                    after: 10
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      size: 32,
+                      bold: true,
+                      text: context.heading
+                    })
+                  ]
+                }),
+                new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 100
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text: context.cookTime
+                    })
+                  ]
+                })
+              ]
+            },
+            steps: (context: any) => {
+              const components: any[] = [];
+              const heading = new Paragraph({
+                heading: 'Heading2',
+                spacing: {
+                  before: 100,
+                  after: 10
+                },
+                children: [
+                  new TextRun({
+                    color: '#333333',
+                    size: 32,
+                    bold: true,
+                    text: context.heading
+                  })
+                ]
+              })
+              components.push(heading);
+
+              context.cookingSteps.forEach((text: string) => {
+                const paragraph = new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 30
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text
+                    })
+                  ]
+                })
+                components.push(paragraph)
+              });
+              
+              return components;
+            },
+            serving: (context: any) => {
+              return [
+                new Paragraph({
+                  heading: 'Heading2',
+                  spacing: {
+                    before: 100,
+                    after: 10
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      size: 32,
+                      bold: true,
+                      text: context.heading
+                    })
+                  ]
+                }),
+                new Paragraph({
+                  spacing: {
+                    before: 100,
+                    after: 100
+                  },
+                  children: [
+                    new TextRun({
+                      color: '#333333',
+                      text: context.size
+                    })
+                  ]
+                })
+              ] 
+            },
+          },
+        },
+      },
+      prompt: "Create a recipe for homemade chicken nuggets.",
+    }).createFile();
+    const { name, ext } = path.parse(filePath);
+    const contents = fs.readdirSync(FILE_PATH);
+    expect(contents).toContain(name+ext);
+  });
+  test("should create a .docx file in the files directory", async () => {
+    openAISpy.mockImplementation(() => {
+      return {
+        choices: [
+          {
+            message: {
+              content: JSON.stringify(responseFormats["sports"])
+            }
+          }
+        ]
+      }
+    })
+    const filePath = await new GPTDocx({
+      format: {
+        name: "basicExample",
+        requestFormat: {
+          pages: [
+            {
+              author: "",
+              created: "",
+              title: "",
+              content: [
+                {
+                  heading: "",
+                  body: "",
+                },
+              ],
+            },
+            {
+              links: [{ text: "", link: "" }],
+            },
+          ],
+          styles: {
+            title: {
+              paragraph: {
+                heading: "Title",
+                spacing: {
+                  before: 100,
+                  after: 100,
+                },
+              },
+              text: {
+                color: "#000000",
+                bold: true,
+              },
+            },
+            author: {
+              paragraph: {
+                heading: "Heading4",
+                spacing: {
+                  before: 100,
+                  after: 10,
+                },
+              },
+              text: {
+                color: "#000000",
+                italics: true,
+              },
+            },
+            created: {
+              paragraph: {
+                heading: "Heading4",
+                spacing: {
+                  before: 100,
+                  after: 10,
+                },
+              },
+              text: {
+                color: "#000000",
+                italics: true,
+              },
+            },
+            heading: {
+              paragraph: {
+                heading: "Heading4",
+                spacing: {
+                  before: 100,
+                  after: 10,
+                },
+              },
+              text: {
+                color: "#000000",
+                bold: true,
+              },
+            },
+            body: {
+              paragraph: {
+                spacing: {
+                  before: 100,
+                  after: 100,
+                },
+              },
+              text: {
+                color: "#333333",
+              },
+            },
+          },
+        },
+      },
+      prompt: "Write a paper on the history of sports.",
+    }).createFile();
+    const { name, ext } = path.parse(filePath);
+    const contents = fs.readdirSync(FILE_PATH);
+    expect(contents).toContain(name+ext);
+  });
 });

@@ -165,116 +165,141 @@ export const responseFormats: Response = {
     ],
   },
   recipe: {
-    title: "Homemade Chicken Nuggets",
-    totalTime: "30 minutes",
-    preparation: "10 minutes",
-    ingredients: [
-      "1 lb boneless, skinless chicken breasts",
-      "1 cup breadcrumbs",
-      "1/2 cup grated Parmesan cheese",
-      "1 tsp garlic powder",
-      "1 tsp onion powder",
-      "1/2 tsp paprika",
-      "1/2 tsp salt",
-      "1/4 tsp black pepper",
-      "2 eggs",
-      "2 tbsp milk",
-      "Vegetable oil for frying",
-    ],
-    cookTime: "20 minutes",
-    cookingSteps: [
-      "1. Cut the chicken breasts into bite-sized pieces.",
-      "2. In a shallow dish, mix the breadcrumbs, Parmesan cheese, garlic powder, onion powder, paprika, salt, and pepper.",
-      "3. In another shallow dish, whisk together the eggs and milk.",
-      "4. Dip each piece of chicken into the egg mixture, then coat with the breadcrumb mixture, pressing to adhere.",
-      "5. Heat the vegetable oil in a large skillet over medium-high heat.",
-      "6. Fry the chicken nuggets in batches for 4-5 minutes per side, until golden brown and cooked through.",
-      "7. Remove the nuggets from the skillet and place on a paper towel-lined plate to drain excess oil.",
-      "8. Serve the homemade chicken nuggets with your favorite dipping sauce.",
-      "9. Enjoy!",
-    ],
-    serving: "4 servings",
+    pages: [
+      {
+        title: "Homemade Chicken Nuggets",
+        totalCookTime: {
+          heading: "Total Time",
+          totalTime: "30 minutes",
+        },
+        prepareTime: {
+          heading: "Prep Time",
+          preparation: "10 minutes",
+        },
+        components: {
+        heading: "Ingredients",
+        ingredients: [
+          "1 lb boneless, skinless chicken breasts",
+          "1 cup breadcrumbs",
+          "1/2 cup grated Parmesan cheese",
+          "1 tsp garlic powder",
+          "1 tsp onion powder",
+          "1/2 tsp paprika",
+          "1/2 tsp salt",
+          "1/4 tsp black pepper",
+          "2 eggs",
+          "2 tbsp milk",
+          "Vegetable oil for frying",
+        ]
+       },
+        cookingTime: {
+          heading: "Cook Time",
+          cookTime: "20 minutes",
+        },
+        steps: {
+          heading: 'Directions',
+          cookingSteps: [
+            "1. Cut the chicken breasts into bite-sized pieces.",
+            "2. In a shallow dish, mix the breadcrumbs, Parmesan cheese, garlic powder, onion powder, paprika, salt, and pepper.",
+            "3. In another shallow dish, whisk together the eggs and milk.",
+            "4. Dip each piece of chicken into the egg mixture, then coat with the breadcrumb mixture, pressing to adhere.",
+            "5. Heat the vegetable oil in a large skillet over medium-high heat.",
+            "6. Fry the chicken nuggets in batches for 4-5 minutes per side, until golden brown and cooked through.",
+            "7. Remove the nuggets from the skillet and place on a paper towel-lined plate to drain excess oil.",
+            "8. Serve the homemade chicken nuggets with your favorite dipping sauce.",
+            "9. Enjoy!",
+          ]
+        },
+        serving: {
+          heading: "Serve Size",
+          size: "4 servings",
+        }
+      }
+    ]
+
   },
   documentary: {
-    title: "Michael Jordan: A Basketball Legend",
-    introduction:
-      "Michael Jordan is widely regarded as one of the greatest basketball players of all time. His extraordinary skills, competitive spirit, and relentless work ethic made him a global icon. This documentary explores the life, career, and impact of the legendary Michael Jordan.",
-    chapter1: [
+    pages: [
       {
-        heading: "Early Life and College Career",
-        paragraph1:
-          "Michael Jeffrey Jordan was born on February 17, 1963, in Brooklyn, New York. He showed exceptional talent in basketball from a young age and continued to excel throughout his high school and college years. In 1982, he made the game-winning shot in the NCAA Championship game as a freshman at the University of North Carolina, solidifying his reputation as a future basketball superstar.",
-        paragraph2:
-          "After three impressive seasons with the Tar Heels, Jordan entered the NBA Draft in 1984 and was selected by the Chicago Bulls as the third overall pick.",
-      },
-    ],
-    chapter2: [
-      {
-        heading: "NBA Career and Championships",
-        paragraph1:
-          "Jordan quickly established himself as a force to be reckoned with in the NBA. His scoring ability, athleticism, and competitive drive set him apart from his peers. He led the Chicago Bulls to six NBA championships and earned five regular-season MVP awards during his illustrious career.",
-        paragraph2:
-          "His impact went beyond his on-court performance, as he became a global superstar and transcended the sport of basketball.",
-      },
-    ],
-    chapter3: [
-      {
-        heading: "Retirement and Comeback",
-        paragraph1:
-          "After achieving unparalleled success with the Bulls, Jordan retired from basketball in 1993. He pursued a career in baseball but eventually returned to the NBA in 1995. His comeback reignited the Bulls' championship aspirations and further solidified his legacy as a basketball icon.",
-        paragraph2:
-          "Jordan's return to the game captivated fans worldwide and showcased his enduring impact on the sport.",
-      },
-    ],
-    chapter4: [
-      {
-        heading: "Off the Court and Business Ventures",
-        paragraph1:
-          "Beyond his basketball career, Michael Jordan became a successful entrepreneur and influential figure in the business world. He established the Jordan Brand, a subsidiary of Nike, which has become a multi-billion dollar global brand. Jordan's business acumen and marketing prowess have made him one of the most recognizable and financially successful athletes in history.",
-        paragraph2:
-          "His contributions to various philanthropic endeavors and his impact on popular culture have solidified his status as a global cultural icon.",
-      },
-    ],
-    conclusion:
-      "Michael Jordan's impact on the world of basketball and beyond is immeasurable. His unparalleled talent, relentless drive, and overarching influence have left an indelible mark on the sport, popular culture, and the global community. Through his remarkable journey, he has inspired countless individuals to pursue excellence and chase their dreams, cementing his legacy as a true legend.",
+        introduction: {
+          title: "Michael Jordan: A Basketball Legend",
+        body:
+          "Michael Jordan is widely regarded as one of the greatest basketball players of all time. His extraordinary skills, competitive spirit, and relentless work ethic made him a global icon. This documentary explores the life, career, and impact of the legendary Michael Jordan.",
+        },
+        content: [
+          {
+            heading: "Early Life and College Career",
+            paragraph1:
+              "Michael Jeffrey Jordan was born on February 17, 1963, in Brooklyn, New York. He showed exceptional talent in basketball from a young age and continued to excel throughout his high school and college years. In 1982, he made the game-winning shot in the NCAA Championship game as a freshman at the University of North Carolina, solidifying his reputation as a future basketball superstar.",
+            paragraph2:
+              "After three impressive seasons with the Tar Heels, Jordan entered the NBA Draft in 1984 and was selected by the Chicago Bulls as the third overall pick.",
+          },
+          {
+            heading: "NBA Career and Championships",
+            paragraph1:
+              "Jordan quickly established himself as a force to be reckoned with in the NBA. His scoring ability, athleticism, and competitive drive set him apart from his peers. He led the Chicago Bulls to six NBA championships and earned five regular-season MVP awards during his illustrious career.",
+            paragraph2:
+              "His impact went beyond his on-court performance, as he became a global superstar and transcended the sport of basketball.",
+          },
+          {
+            heading: "Retirement and Comeback",
+            paragraph1:
+              "After achieving unparalleled success with the Bulls, Jordan retired from basketball in 1993. He pursued a career in baseball but eventually returned to the NBA in 1995. His comeback reignited the Bulls' championship aspirations and further solidified his legacy as a basketball icon.",
+            paragraph2:
+              "Jordan's return to the game captivated fans worldwide and showcased his enduring impact on the sport.",
+          },
+          {
+            heading: "Off the Court and Business Ventures",
+            paragraph1:
+              "Beyond his basketball career, Michael Jordan became a successful entrepreneur and influential figure in the business world. He established the Jordan Brand, a subsidiary of Nike, which has become a multi-billion dollar global brand. Jordan's business acumen and marketing prowess have made him one of the most recognizable and financially successful athletes in history.",
+            paragraph2:
+              "His contributions to various philanthropic endeavors and his impact on popular culture have solidified his status as a global cultural icon.",
+          },
+        ],
+        conclusion:
+          "Michael Jordan's impact on the world of basketball and beyond is immeasurable. His unparalleled talent, relentless drive, and overarching influence have left an indelible mark on the sport, popular culture, and the global community. Through his remarkable journey, he has inspired countless individuals to pursue excellence and chase their dreams, cementing his legacy as a true legend.",
+      }
+    ]
   },
-  sports: [
-    {
-      author: "Your Name",
-      created: "2022-10-15T12:00:00",
-      title: "History of Sports",
-      content: [
-        {
-          heading: "Introduction",
-          body: "Sports have been an integral part of human history...",
-        },
-        {
-          heading: "Ancient Sports",
-          body: "In ancient civilizations such as Greece and Rome, sports were highly valued...",
-        },
-        {
-          heading: "Medieval and Renaissance Sports",
-          body: "During the medieval and renaissance periods, sports evolved in various forms...",
-        },
-        {
-          heading: "Modern Sports",
-          body: "The modern era has seen the commercialization and globalization of sports...",
-        },
-        {
-          heading: "Conclusion",
-          body: "In conclusion, the history of sports is a testament to the enduring appeal of physical competition...",
-        },
-      ],
-    },
-    {
-      links: [
-        {
-          text: "Learn more about sports history",
-          link: "https://en.wikipedia.org/wiki/History_of_sport",
-        },
-      ],
-    },
-  ],
+  sports: {
+    pages: [
+      {
+        author: "Your Name",
+        created: "2022-10-15T12:00:00",
+        title: "History of Sports",
+        content: [
+          {
+            heading: "Introduction",
+            body: "Sports have been an integral part of human history...",
+          },
+          {
+            heading: "Ancient Sports",
+            body: "In ancient civilizations such as Greece and Rome, sports were highly valued...",
+          },
+          {
+            heading: "Medieval and Renaissance Sports",
+            body: "During the medieval and renaissance periods, sports evolved in various forms...",
+          },
+          {
+            heading: "Modern Sports",
+            body: "The modern era has seen the commercialization and globalization of sports...",
+          },
+          {
+            heading: "Conclusion",
+            body: "In conclusion, the history of sports is a testament to the enduring appeal of physical competition...",
+          },
+        ],
+      },
+      {
+        links: [
+          {
+            text: "Learn more about sports history",
+            link: "https://en.wikipedia.org/wiki/History_of_sport",
+          },
+        ],
+      },
+    ]
+  },
 };
 
 export const chatCreateArgs = {

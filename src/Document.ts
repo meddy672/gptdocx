@@ -24,9 +24,9 @@ class WordDocument {
     console.log()
     this.options    = options || DOCUMENT.BASIC;
     this.sections   = [];
-    this._name  = this._sanitize(docName);
+    this._name  = docName ? this._sanitize(docName) : "NewDocument";
     if (pages.length) {
-        this.add(pages);
+        this.add(pages); // bug fix
     }
   }
 
