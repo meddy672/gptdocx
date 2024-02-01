@@ -268,6 +268,7 @@ class GPTDocx {
         this._parse(value);
         break;
       case Static.string:
+      case Static.number:
         this._caseText(key, value);
         break;
     }
@@ -306,7 +307,7 @@ class GPTDocx {
         children: [
           new TextRun({
             ...this.styles[key]?.text,
-            text,
+            text: text.toString(),
           }),
         ],
       })
@@ -423,9 +424,12 @@ class GPTDocx {
    * @returns {Promise<string>} Filename of the document.
    */
   async createFile(): Promise<string> {
+    const format = {
+      pages: this.requestFormat.pages
+    };
     this.response = await new ChatGPT({
       prompt: this.prompt,
-      format: this.requestFormat.pages,
+      format: format,
       apiKeyEnv: this.apiKeyEnv,
     }).send();
     console.debug("Building Pages...");
@@ -438,10 +442,10 @@ class GPTDocx {
 
   private _useTemplater() {
     return new DocxTemplater({
-      docName: this.response?.title, // handle undefined case
+      docName: this.response?.title,
       service: this.name,
       response: this.response,
-      useAngularParser: this.options?.useAngularParser, // handle undefined case
+      useAngularParser: this.options?.useAngularParser,
     }).create();
   }
 
