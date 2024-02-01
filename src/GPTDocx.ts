@@ -1,9 +1,9 @@
 import "dotenv/config";
+import { Paragraph, TextRun, ExternalHyperlink } from "docx";
 import { join } from "path";
 import ChatGPT from "./ChatGPT";
 import DocxTemplater from "./DocxTemplater";
 import WordDocument from "./Document";
-import { Paragraph, TextRun, ExternalHyperlink } from "docx";
 import DocxTable from "./Table";
 import DocxImage from "./Image";
 import Static from "./static/constants";
@@ -103,10 +103,10 @@ class GPTDocx {
     let requestedService: Service;
     if (typeof service === Static.string) {
       requestedService = this._getFormat(service.toString());
-      this.service = "templater";
+      this.service = Static.templater;
     } else {
       requestedService = service as Service;
-      this.service = "docx";
+      this.service = Static.docx;
     }
     return this._prepareService(requestedService);
   }
@@ -355,7 +355,6 @@ class GPTDocx {
   private _caseLinks(links: []) {
     links.forEach(({ text, link }) => {
       this.children.push(
-        // apart of worddocuemnt obj
         new Paragraph({
           children: [
             new ExternalHyperlink({
@@ -383,7 +382,6 @@ class GPTDocx {
   private _caseImage(data: any) {
     this.children.push(
       new DocxImage({
-        // apart of worddocuemnt obj
         data,
         styles: this.styles.image,
       })
@@ -398,7 +396,6 @@ class GPTDocx {
   private _caseTable({ headers, data }: DocxTableArgs) {
     this.children.push(
       DocxTable({
-        // apart of worddocuemnt obj
         headers,
         data,
       })

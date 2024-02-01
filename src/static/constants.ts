@@ -16,6 +16,8 @@ const Static = {
   SCHEMA_JSON : "schema.json",
   "true":  "true",
   json : "json",
+  templater: "templater",
+  docx: "docx",
   SYSTEM : "system",
   USER : "user",
   MODEL : "gpt-3.5-turbo-1106",
