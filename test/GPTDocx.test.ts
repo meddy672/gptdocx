@@ -78,9 +78,12 @@ describe("GPTDocx", () => {
     });
     const filename: any = await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
+          },
         },
       },
       prompt: "Write a paper about Whales.",
@@ -110,10 +113,13 @@ describe("GPTDocx", () => {
     });
     const filename: any = await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
-        },
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
+          },
+        }
       },
       prompt: "Write a paper about Whales.",
     }).createFile();
@@ -143,15 +149,18 @@ describe("GPTDocx", () => {
     });
     const filename: any = await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
-          styles: {
-            image: {
-              zIndex: 0,
-            },
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
           },
         },
+        styles: {
+          image: {
+            zIndex: 0,
+          },
+        }
       },
       prompt: "Write a paper about Whales.",
     }).createFile();
@@ -181,13 +190,16 @@ describe("GPTDocx", () => {
     try {
       await new GPTDocx({
         format: {
-          name: "testFormat",
-          requestFormat: {
-            pages: [],
-            styles: {
-              image: {
-                zIndex: 0,
-              },
+          sys: {
+            format: "json",
+            name: "testFormat",
+            values: {
+              pages: [],
+            },
+          },
+          styles: {
+            image: {
+              zIndex: 0,
             },
           },
         },
@@ -221,13 +233,16 @@ describe("GPTDocx", () => {
     });
     await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
-          styles: {
-            content: {
-              heading: "Heading1",
-            },
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
+          },
+        },
+        styles: {
+          content: {
+            heading: "Heading1",
           },
         },
       },
@@ -261,13 +276,16 @@ describe("GPTDocx", () => {
     });
     await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
-          styles: {
-            heading: "Heading1",
-            title: "Title"
-          },
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
+          }
+        },
+        styles: {
+          heading: "Heading1",
+          title: "Title"
         },
       },
       prompt: "Write a paper about Whales.",
@@ -317,11 +335,15 @@ describe("GPTDocx", () => {
     const contentSpy = jest.spyOn(mapper, "content");
     const filename: any = await new GPTDocx({
       format: {
-        name: "testFormat",
-        requestFormat: {
-          pages: [],
-          responseMapper: mapper,
+        sys: {
+          format: "json",
+          name: "testFormat",
+          values: {
+            pages: [],
+            
+          },
         },
+        responseMapper: mapper,
       },
       prompt: "Write a paper about Whales.",
     }).createFile();

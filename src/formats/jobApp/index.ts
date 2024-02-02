@@ -1,13 +1,16 @@
 export const format = {
-  name: "jobApp",
-  requestFormat: {
-    title: "",
-    jobName: "",
-    overview: "",
-    whatWeOffer: [],
-    qulifications: [],
-    requirements: [],
-    responsibilities: [],
-    salary: "",
+  sys: {
+    format: "json",
+    name: "jobApp",
+    values: {
+      title: "",
+      jobName: "",
+      overview: "",
+      whatWeOffer: [],
+      qualifications: [],
+      requirements: [],
+      responsibilities: [],
+      salary: "",
+    },
   },
 };

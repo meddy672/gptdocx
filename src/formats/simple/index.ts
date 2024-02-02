@@ -1,7 +1,10 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "simple",
-    requestFormat: {
-        title: "",
-        content: ""
-    }
-}
+    values: {
+      title: "",
+      content: "",
+    },
+  },
+};

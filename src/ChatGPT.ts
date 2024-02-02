@@ -89,9 +89,7 @@ class ChatGPT {
    */
   private _getFormat(format: Format): string {
     console.debug("format()");
-    const stringifiedFormat = JSON.stringify(format);
-    const systemFormat = Static.SYSTEM_FORMAT + stringifiedFormat;
-    return systemFormat;
+    return JSON.stringify(format);;
   }
 } // End of Class
 

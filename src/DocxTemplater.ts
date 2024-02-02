@@ -29,12 +29,12 @@ export default class DocxTemplater {
     response,
     useAngularParser
   }: {
-    docName?: string;
+    docName: string;
     service: string;
     response: any;
     useAngularParser?: boolean;
   }) {
-    this.docName = docName || service;
+    this.docName = docName;
     this.service = service;
     this.response = response;
     const filePath = path.resolve( __dirname, Static.DOCX_DIR, this.service + Static.DOCX_EXT)

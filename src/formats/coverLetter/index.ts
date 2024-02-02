@@ -1,6 +1,8 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "coverLetter", // required property
-    requestFormat: {
+    values: {
       title: "", // required property
       jobTitle: "",
       forUser: "",
@@ -15,4 +17,5 @@ export const format = {
       achievements: [],
       conclusion: "",
     },
-  }
+  },
+};

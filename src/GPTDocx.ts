@@ -10,8 +10,6 @@ import Static from "./static/constants";
 
 import {
   GPTDocxsArgs,
-  RequestFormat,
-  Service,
   Format,
   Response,
   GPTDocxArgsOptions,
@@ -28,7 +26,7 @@ import {
  */
 class GPTDocx {
   /**The request format for each page. Sent to OpenAI with ```this.prompt``` for context.*/
-  private requestFormat: RequestFormat;
+  private requestFormat: Format;
 
   /**The response received from ```ChatGPT Object```*/
   private response: Response | undefined;
@@ -49,7 +47,7 @@ class GPTDocx {
   private children: any[] = [];
 
   /** */
-  private options: GPTDocxArgsOptions | undefined;
+  private options: GPTDocxArgsOptions | null;
 
   /** */
   private service = "";
@@ -69,7 +67,7 @@ class GPTDocx {
   constructor({ format, prompt, options }: GPTDocxsArgs) {
     this.apiKeyEnv = options?.apiKeyEnv || "";
     this.prompt = this._isValidPrompt(prompt);
-    this.options = options;
+    this.options = options || null;
     this.requestFormat = this._parseFormat(format);
     return this;
   }
@@ -99,13 +97,13 @@ class GPTDocx {
    * @private
    * @param {String} service of a service to be used in the request
    */
-  private _parseFormat(service: string | Format): RequestFormat {
-    let requestedService: Service;
+  private _parseFormat(service: string | Format): Format {
+    let requestedService: Format;
     if (typeof service === Static.string) {
       requestedService = this._getFormat(service.toString());
       this.service = Static.templater;
     } else {
-      requestedService = service as Service;
+      requestedService = service as any;
       this.service = Static.docx;
     }
     return this._prepareService(requestedService);
@@ -120,7 +118,7 @@ class GPTDocx {
    * @private
    * @returns {Object} an object with requestFormnat and styles.
    */
-  private _getFormat(service: string): Format {
+  private _getFormat(service: string): any {
     let requestedService: any;
     try {
       if (
@@ -150,13 +148,11 @@ class GPTDocx {
    *
    * @private
    */
-  private _prepareService(requestedService: Service): RequestFormat {
+  private _prepareService(requestedService: Format): any {
     if (this._isValid(requestedService)) {
-      this.name = requestedService.name;
-      this.styles = requestedService.requestFormat.styles
-        ? requestedService.requestFormat.styles
-        : {};
-      return requestedService.requestFormat;
+      this.name = requestedService.sys.name;
+      this.styles = requestedService.styles ? requestedService.styles : {}
+      return requestedService;
     } else {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
@@ -169,8 +165,8 @@ class GPTDocx {
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  private _isValid(service: Service): boolean {
-    return service && service.name && service.requestFormat ? true : false;
+  private _isValid(service: Format): boolean {
+    return service && service.sys.name && service.sys.values && service.sys.format ? true : false;
   }
 
   /**
@@ -424,16 +420,13 @@ class GPTDocx {
    * @returns {Promise<string>} Filename of the document.
    */
   async createFile(): Promise<string> {
-    const format = {
-      pages: this.requestFormat.pages
-    };
     this.response = await new ChatGPT({
       prompt: this.prompt,
-      format: format,
+      format: this.requestFormat,
       apiKeyEnv: this.apiKeyEnv,
     }).send();
     console.debug("Building Pages...");
-    if (this.service === "templater") {
+    if (this.service === Static.templater) {
       return this._useTemplater();
     } else {
       return this._buildPages();
@@ -451,7 +444,7 @@ class GPTDocx {
 
   private async _useDocx() {
     const wordDocument = new WordDocument({
-      docName: this.response?.pages[0].title,
+      docName: this.response?.pages[0]?.title,
       pages: this.pages,
       options: this.options?.documentConfig,
     });

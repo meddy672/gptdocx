@@ -1,12 +1,15 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "todos",
-    requestFormat: {
-        created: "",
-        todos: [
-            {
-                todoHeading: "",
-                todoInstructions: ""
-            }
-        ]
-    }
-}
+    values: {
+      created: "",
+      todos: [
+        {
+          todoHeading: "",
+          todoInstructions: "",
+        },
+      ],
+    },
+  },
+};

@@ -1,11 +1,14 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "updateNotice",
-    requestFormat: {
-        title: "",
-        notice: "",
-        overview: "",
-        actionsRequired: [],
-        assistanceHeading: "",
-        assistance: ""
-    }
-}
+    values: {
+      title: "",
+      notice: "",
+      overview: "",
+      actionsRequired: [],
+      assistanceHeading: "",
+      assistance: "",
+    },
+  },
+};

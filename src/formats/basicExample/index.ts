@@ -1,14 +1,17 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "basicExample",
-    requestFormat: {
-        title: "",
-        author: "",
-        created: "",
-        content: [
-            {
-                heading: "",
-                prargraph: ""
-            }
-        ]
-    }
-}
+    values: {
+      title: "",
+      author: "",
+      created: "",
+      content: [
+        {
+          heading: "",
+          prargraph: "",
+        },
+      ],
+    },
+  },
+};

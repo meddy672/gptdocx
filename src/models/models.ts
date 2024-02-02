@@ -46,8 +46,14 @@ export type ChatGPTArgs = {
   };
   
   export type Format = {
-    name: string;
-    requestFormat: RequestFormat;
+    sys: {
+      format: string;
+      name: string;
+      values: any;
+    }
+    styles?: any;
+    responseMapper?: ResponseMapper
+
   };
 
   export type ResponseMapper = {

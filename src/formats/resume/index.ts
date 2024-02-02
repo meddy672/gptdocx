@@ -1,26 +1,28 @@
 export const format = {
+  sys: {
+    format: "json",
     name: "resume",
-    requestFormat: {
-        title: "",
-        userName: "",
-        jobTitle: "",
-        phoneNumber: "",
-        email: "",
-        website: "",
-        overview: "",
-        experience: [
-            {
-                company: "",
-                date: "",
-                position: "",
-                achievements: []
-            }
-        ],
-        university: "",
-        gradDate: "",
-        degree: "",
-        details: "",
-        skills: []
-
-    }
-}
+    values: {
+      title: "",
+      userName: "",
+      jobTitle: "",
+      phoneNumber: "",
+      email: "",
+      website: "",
+      overview: "",
+      experience: [
+        {
+          company: "",
+          date: "",
+          position: "",
+          achievements: [],
+        },
+      ],
+      university: "",
+      gradDate: "",
+      degree: "",
+      details: "",
+      skills: [],
+    },
+  },
+};
