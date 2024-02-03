@@ -2,7 +2,7 @@ import GPTDocx from "../src/GPTDocx";
 import ChatGPT from "../src/ChatGPT";
 import DocxTemplater from "../src/DocxTemplater";
 import WordDocument from "../src/Document";
-import { ResponseMapper } from "../src/models/models";
+// import { ResponseMapper } from "../src/models/models";
 const { BASIC } = require("../src");
 import path from "path";
 
@@ -296,69 +296,69 @@ describe("GPTDocx", () => {
     ]);
   });
 
-  test("should return filePath with .docx extension when format has responseMapper", async () => {
-    chatGptSpy.mockImplementation(() => {
-      return {
-        title: "A Paper About Whales",
-        content: [
-          {
-            heading: "Whales The Manmonth's Of The Ocean",
-            body: "Whales...",
-          },
-        ],
-        links: [
-          { text: "Whales The True Story", link: "https://whales.com" },
-        ],
-      };
-    });
-    const mapper: ResponseMapper = {
-      title: jest.fn((config: any) => {
-        console.log(config);
-        return "";
-      }),
-      content: jest.fn((config) => {
-        console.log(config);
-        return ["Whales Sleep Under Water", "Whales Drink Water"];
-      }),
-      links: jest.fn((config) => {
-        console.log(config);
-        return "";
-      }),
-    };
-    const titleSpy = jest.spyOn(mapper, "title");
-    const contentSpy = jest.spyOn(mapper, "content");
-    const filename: any = await new GPTDocx({
-      format: {
-        sys: {
-          format: "json",
-          name: "testFormat",
-          values: {
-            title: "",
-            content: [
-              {
-                heading: "", 
-                body: ""
-              }
-            ],
-            links: [{
-              text: "", link: ""
-            }]
+  // test("should return filePath with .docx extension when format has responseMapper", async () => {
+  //   chatGptSpy.mockImplementation(() => {
+  //     return {
+  //       title: "A Paper About Whales",
+  //       content: [
+  //         {
+  //           heading: "Whales The Manmonth's Of The Ocean",
+  //           body: "Whales...",
+  //         },
+  //       ],
+  //       links: [
+  //         { text: "Whales The True Story", link: "https://whales.com" },
+  //       ],
+  //     };
+  //   });
+  //   const mapper: ResponseMapper = {
+  //     title: jest.fn((config: any) => {
+  //       console.log(config);
+  //       return "";
+  //     }),
+  //     content: jest.fn((config) => {
+  //       console.log(config);
+  //       return ["Whales Sleep Under Water", "Whales Drink Water"];
+  //     }),
+  //     links: jest.fn((config) => {
+  //       console.log(config);
+  //       return "";
+  //     }),
+  //   };
+  //   const titleSpy = jest.spyOn(mapper, "title");
+  //   const contentSpy = jest.spyOn(mapper, "content");
+  //   const filename: any = await new GPTDocx({
+  //     format: {
+  //       sys: {
+  //         format: "json",
+  //         name: "testFormat",
+  //         values: {
+  //           title: "",
+  //           content: [
+  //             {
+  //               heading: "", 
+  //               body: ""
+  //             }
+  //           ],
+  //           links: [{
+  //             text: "", link: ""
+  //           }]
             
-          },
-        },
-        responseMapper: mapper,
-      },
-      prompt: "Write a paper about Whales.",
-    }).createFile();
-    expect(titleSpy).toHaveBeenCalledWith("A Paper About Whales");
-    expect(contentSpy).toHaveBeenCalledWith([
-      {
-        heading: "Whales The Manmonth's Of The Ocean",
-        body: "Whales...",
-      },
-    ]);
-    expect(filename).toEqual("APaperAboutWhales.docx");
-  });
+  //         },
+  //       },
+  //       responseMapper: mapper,
+  //     },
+  //     prompt: "Write a paper about Whales.",
+  //   }).createFile();
+  //   expect(titleSpy).toHaveBeenCalledWith("A Paper About Whales");
+  //   expect(contentSpy).toHaveBeenCalledWith([
+  //     {
+  //       heading: "Whales The Manmonth's Of The Ocean",
+  //       body: "Whales...",
+  //     },
+  //   ]);
+  //   expect(filename).toEqual("APaperAboutWhales.docx");
+  // });
 
   test("should throw Parse error if format is an empty string", async () => {
     let response: any;

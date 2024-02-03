@@ -8,7 +8,7 @@ const Docxtemplater = require("docxtemplater");
 const expressionParser = require("docxtemplater/expressions.js");
 
 /**
- * 
+ * Class DocxTemplater
  */
 export default class DocxTemplater {
   /** */
@@ -23,6 +23,11 @@ export default class DocxTemplater {
   /** */
   private doc: any;
 
+  /**
+   * 
+   * @param param0 
+   * @returns 
+   */
   constructor({
     docName,
     service,
@@ -39,12 +44,8 @@ export default class DocxTemplater {
     this.response = response;
     const filePath = path.resolve( __dirname, Static.DOCX_DIR, this.service + Static.DOCX_EXT)
     const content = fs.readFileSync(filePath, "binary");
-
-    // Unzip the content of the file
+    
     const zip = new PizZip(content);
-
-    // This will parse the template, and will throw an error if the template is
-    // invalid, for example, if the template is "{user" (no closing tag)
     this.doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,

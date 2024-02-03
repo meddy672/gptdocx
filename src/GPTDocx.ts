@@ -193,23 +193,10 @@ class GPTDocx {
     for (const key in page) {
       if (Object.hasOwn(page, key)) {
         const value: any = page[key];
-        if (this.requestFormat.responseMapper) {
-          if (this.requestFormat.responseMapper[key]) {
-            const component: any =
-              this.requestFormat.responseMapper[key](value); // if the key is undefined it will throw
-            const type = this._getValueType(component);
-            if (type === "array") {
-              this.children.push(...component);
-            } else {
-              this.children.push(component);
-            }
-          }
+        if (this._isMapped(key)) {
+          this._switchByMappedKey(key, value);
         } else {
-          if (this._isMapped(key)) {
-            this._switchByMappedKey(key, value);
-          } else {
-            this._switchByType(key, value);
-          }
+          this._switchByType(key, value);
         }
       }
     }
@@ -385,7 +372,7 @@ class GPTDocx {
    */
   private _caseTable({ headers, data }: DocxTableArgs) {
     this.children.push(
-      DocxTable({
+      new DocxTable({
         headers,
         data,
       })

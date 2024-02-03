@@ -4,6 +4,9 @@ type DocxImageArgs = {
   data: Buffer;
   styles: any;
 };
+/**
+ * Class DocxImage
+ */
 class DocxImage {
   constructor({ data, styles }: DocxImageArgs) {
     return new Paragraph({

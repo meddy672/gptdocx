@@ -15,21 +15,31 @@ type WordDocumentArgs = {
     }
 }
 
+/**
+ * Class WordDocument
+ */
 class WordDocument {
   private _name = "";
   private options = {};
   private sections: any[] = [];
 
+  /**
+   * 
+   * @param param0 
+   */
   constructor({ docName, pages, options }: WordDocumentArgs) {
-    console.log()
     this.options    = options || DOCUMENT.BASIC;
     this.sections   = [];
-    this._name  = docName ? this._sanitize(docName) : "NewDocument";
-    if (pages.length) {
-        this.add(pages); // bug fix
-    }
+    this._name  = this._sanitize(docName);
+    this.add(pages);
   }
 
+  /**
+   * 
+   * @param fileName 
+   * @param newDocument 
+   * @returns 
+   */
   async _save(fileName: string, newDocument: any): Promise<string> {
       const blob = await Packer.toBlob(newDocument);
       const arrayBuffer = await blob.arrayBuffer();
@@ -38,6 +48,10 @@ class WordDocument {
       return this._name + DOCUMENT.EXT;
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async saveFile() {
     const newDocument = new Document({
       ...this.options,
@@ -47,15 +61,29 @@ class WordDocument {
     return this._save(filePath, newDocument);
   }
 
+  /**
+   * 
+   * @param name 
+   * @returns 
+   */
   _filePath(name: string) {
     return join(process.cwd(), DOCUMENT.FILE_PATH, name + DOCUMENT.EXT);
   }
 
+  /**
+   * 
+   * @param name 
+   * @returns 
+   */
   _sanitize(name: string) {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
-    return name.replace(pattern, "").trim(); // replaceAll
+    return name.replaceAll(pattern, "").trim();
   }
 
+  /**
+   * 
+   * @param page 
+   */
   add(page: any[]) {
     this.sections.push({
       children: [...page],

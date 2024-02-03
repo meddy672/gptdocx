@@ -1,19 +1,37 @@
 import {
-    Table,
-    TableCell,
-    TableRow,
-    Paragraph,
-    TextRun,
-    WidthType,
-} from 'docx';
+  Table,
+  TableCell,
+  TableRow,
+  Paragraph,
+  TextRun,
+  WidthType,
+} from "docx";
+// eslint-disable-next-line import/no-unresolved
+import { DocxTableArgs } from "@models";
 
-type DocxTableArgs = {
-    headers: any[];
-    data: any;
-}
-function DocxTable({headers, data}: DocxTableArgs) {
-    let dataTypeIsObject = false;
-    const tableHeaders = headers.map((text: string) => {
+class DocxTable {
+  /** headers */
+  private headers: any[];
+
+  /** data */
+  private data: any[];
+
+  /** dataTypeIsObject */
+  private dataTypeIsObject: boolean = false;
+
+  constructor({headers, data}: DocxTableArgs) {
+    this.headers = this._getHeaders(headers);
+    this.data = this._getData(data);
+    return this._getTable(this.headers, this.data);
+  }
+
+  /**
+   * 
+   * @param headers 
+   * @returns 
+   */
+  private _getHeaders(headers: string[]): any[] {
+    return headers.map((text: string) => {
       return new TableCell({
         width: {
           size: 4535,
@@ -24,7 +42,7 @@ function DocxTable({headers, data}: DocxTableArgs) {
             heading: "Heading2",
             children: [
               new TextRun({
-                text: capitalizeFirstLetter(text.toString()), // Clean make configurable
+                text: this.capitalizeFirstLetter(text.toString()),
                 bold: true,
                 size: 34,
               }),
@@ -33,14 +51,21 @@ function DocxTable({headers, data}: DocxTableArgs) {
         ],
       });
     });
-    
-    const tableData = data.map((element: any) => {
+  }
+
+  /**
+   * 
+   * @param data 
+   * @returns 
+   */
+  private _getData(data: any[]): any {
+    return data.map((element: any) => {
       if (typeof element !== "object") {
         return new TableCell({
           children: [new Paragraph(element.toString())],
         });
       } else {
-        dataTypeIsObject = true;
+        this.dataTypeIsObject = true;
         return new TableRow({
           children: Object.values(element).map((value: any) => {
             return new TableCell({
@@ -50,43 +75,71 @@ function DocxTable({headers, data}: DocxTableArgs) {
         });
       }
     });
-    
-    if (dataTypeIsObject) {
-        return new Table({
-            rows: [
-              new TableRow({
-                tableHeader: true,
-                children: [...tableHeaders],
-              }),
-              ...tableData,
-            ],
-        });
-    } else {
-      const dataResults: any[] = []
-        let result = [];
-        for (let i = 0; i < tableData.length / headers.length; i++) {
-            const rowData: any = {};
-            for (let j = 0; j < headers.length; j++) {
-                const dataIndex = i * headers.length + j;
-                rowData[headers[j]] = tableData[dataIndex];
-                result.push(rowData[headers[j]]);
-            }
-            dataResults.push(new TableRow({ children: [...result]}));
-            result = [];
-        }
-        return new Table({
-            rows: [
-              new TableRow({
-                tableHeader: true,
-                children: [...tableHeaders],
-              }),
-              ...dataResults,
-            ],
-        });
-    }
+  }
 
-      function capitalizeFirstLetter(inputString: string) {        
-          return inputString.charAt(0).toUpperCase() + inputString.slice(1);
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
+  private _getTable(headers: any, data: any): any {
+    if (this.dataTypeIsObject) {
+      return this._Table(headers, data)
+    } else {
+      const parsedData = this._dataTypeIsArrayOfStrings(headers, data);
+      return this._Table(headers, parsedData);
+    }
+  }
+
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
+  private _dataTypeIsArrayOfStrings(headers: any, data: any) {
+    const dataResults: any[] = [];
+    let result = [];
+    for (let i = 0; i < data.length / headers.length; i++) {
+      const rowData: any = {};
+      for (let j = 0; j < headers.length; j++) {
+        const dataIndex = i * headers.length + j;
+        rowData[headers[j]] = data[dataIndex];
+        result.push(rowData[headers[j]]);
       }
+      dataResults.push(new TableRow({ children: [...result] }));
+      result = [];
+    }
+    return dataResults;
+  }
+
+  /**
+   * 
+   * @param headers 
+   * @param data 
+   * @returns 
+   */
+  private _Table(headers: any, data: any) {
+    return new Table({
+      rows: [
+        new TableRow({
+          tableHeader: true,
+          children: [...headers],
+        }),
+        ...data,
+      ],
+    });
+  }
+
+  /**
+   * 
+   * @param inputString 
+   * @returns 
+   */
+  private capitalizeFirstLetter(inputString: string) {
+    return inputString.charAt(0).toUpperCase() + inputString.slice(1);
+  }
 }
+
 export default DocxTable;
