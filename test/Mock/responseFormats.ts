@@ -305,7 +305,7 @@ export const responseFormats: Response = {
 export const chatCreateArgs = {
   messages: [
     {
-      content: "{\"sys\":{\"format\":\"json\",\"name\":\"basicExample\",\"values\":{\"title\":\"\",\"author\":\"\",\"created\":\"\",\"content\":[{\"heading\":\"\",\"prargraph\":\"\"}]}}}",
+      content: "{\"sys\":{\"format\":\"json\",\"name\":\"basic\",\"values\":{\"title\":\"\",\"author\":\"\",\"created\":\"\",\"content\":[{\"heading\":\"\",\"paragraph\":\"\"}]}}}",
       role: "system",
     },
     { content: "Write a paper about Whales.", role: "user" },

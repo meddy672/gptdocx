@@ -88,7 +88,6 @@ class ChatGPT {
    * @returns {String} requestFormat as a string appended to the system format
    */
   private _getFormat(format: Format): string {
-    console.debug("format()");
     return JSON.stringify(format);;
   }
 } // End of Class

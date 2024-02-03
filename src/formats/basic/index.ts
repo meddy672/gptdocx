@@ -1,7 +1,7 @@
 export const format = {
   sys: {
     format: "json",
-    name: "basicExample",
+    name: "basic",
     values: {
       title: "",
       author: "",
@@ -9,7 +9,7 @@ export const format = {
       content: [
         {
           heading: "",
-          prargraph: "",
+          paragraph: "",
         },
       ],
     },

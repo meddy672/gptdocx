@@ -41,7 +41,6 @@ class GPTDocx {
   private apiKeyEnv: string;
 
   /** */
-  private pages: any[] = [];
 
   /** */
   private children: any[] = [];
@@ -82,7 +81,6 @@ class GPTDocx {
    * @returns {String} prompt
    */
   private _isValidPrompt(prompt: string): string {
-    console.debug("_isValidPrompt()", prompt);
     const validPrompt = typeof prompt === Static.string && prompt.trim() !== "";
     if (!validPrompt) throw new Error("Error: INVALID_PROMPT");
 
@@ -178,16 +176,11 @@ class GPTDocx {
    * @private
    * @returns {Promise<string>} Filename of the document that was created.
    */
-  private async _buildPages(): Promise<string> {
-    // called when response from chatgpt
-    this.response?.pages.forEach((page: object) => {
-      this._parse(page);
-      this.pages.push(this.children);
-      this.children = []; // fix this to use map
-    });
+  async _buildPages(): Promise<string> {
+    this._parse(this.response);
     console.log("Creating Document...");
     return this._useDocx(); // async
-  }
+}
 
   /**
    * @description
@@ -199,7 +192,7 @@ class GPTDocx {
   private _parse(page: any) {
     for (const key in page) {
       if (Object.hasOwn(page, key)) {
-        const value: any = page[key] as string;
+        const value: any = page[key];
         if (this.requestFormat.responseMapper) {
           if (this.requestFormat.responseMapper[key]) {
             const component: any =
@@ -435,7 +428,7 @@ class GPTDocx {
 
   private _useTemplater() {
     return new DocxTemplater({
-      docName: this.response?.title,
+      docName: this.name,
       service: this.name,
       response: this.response,
       useAngularParser: this.options?.useAngularParser,
@@ -444,8 +437,8 @@ class GPTDocx {
 
   private async _useDocx() {
     const wordDocument = new WordDocument({
-      docName: this.response?.pages[0]?.title,
-      pages: this.pages,
+      docName: this.name,
+      pages: this.children,
       options: this.options?.documentConfig,
     });
     const filename = await wordDocument.saveFile();

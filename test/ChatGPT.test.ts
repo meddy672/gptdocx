@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import ChatGPT from "../src/ChatGPT";
 import { responseFormats } from "./Mock/responseFormats";
-import { format } from "../src/formats/basicExample";
+import { format } from "../src/formats/basic";
 import { chatCreateArgs } from "./Mock/responseFormats";
 describe("ChatGPT", () => {
   let openAISpy: any;

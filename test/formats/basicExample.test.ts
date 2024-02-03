@@ -1,10 +1,10 @@
-import { format } from "../../src/formats/basicExample";
+import { format } from "../../src/formats/basic";
 describe("format", () => {
   test("should match format", () => {
     expect(format).toEqual({
       sys: {
         format: "json",
-        name: "basicExample",
+        name: "basic",
         values: {
           title: "",
           author: "",
@@ -12,7 +12,7 @@ describe("format", () => {
           content: [
             {
               heading: "",
-              prargraph: "",
+              paragraph: "",
             },
           ],
         },

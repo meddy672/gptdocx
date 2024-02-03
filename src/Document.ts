@@ -56,11 +56,9 @@ class WordDocument {
     return name.replace(pattern, "").trim(); // replaceAll
   }
 
-  add(pages: any[]) {
-    pages.forEach((page: any[]) => {
-      this.sections.push({
-        children: [...page],
-      });
+  add(page: any[]) {
+    this.sections.push({
+      children: [...page],
     });
   }
 }

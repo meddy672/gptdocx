@@ -41,7 +41,7 @@ describe("GPTDocx", () => {
 
   test("should return filePath with .docx extension when format is a string", async () => {
     const filename: any = await new GPTDocx({
-      format: "basicExample",
+      format: "basic",
       prompt: "Write a paper about Whales.",
     }).createFile();
     expect(filename).toEqual("APaperAboutWhales.docx");
@@ -299,21 +299,15 @@ describe("GPTDocx", () => {
   test("should return filePath with .docx extension when format has responseMapper", async () => {
     chatGptSpy.mockImplementation(() => {
       return {
-        pages: [
+        title: "A Paper About Whales",
+        content: [
           {
-            title: "A Paper About Whales",
-            content: [
-              {
-                heading: "Whales The Manmonth's Of The Ocean",
-                body: "Whales...",
-              },
-            ],
+            heading: "Whales The Manmonth's Of The Ocean",
+            body: "Whales...",
           },
-          {
-            links: [
-              { text: "Whales The True Story", link: "https://whales.com" },
-            ],
-          },
+        ],
+        links: [
+          { text: "Whales The True Story", link: "https://whales.com" },
         ],
       };
     });
@@ -339,7 +333,16 @@ describe("GPTDocx", () => {
           format: "json",
           name: "testFormat",
           values: {
-            pages: [],
+            title: "",
+            content: [
+              {
+                heading: "", 
+                body: ""
+              }
+            ],
+            links: [{
+              text: "", link: ""
+            }]
             
           },
         },

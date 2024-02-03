@@ -12,7 +12,7 @@ describe("DocxTemplater", () => {
   test("should return a filePath with a name and .docx extension", () => {
     const filePath: any = new DocxTemplater({
       docName: "A Paper About Whales",
-      service: "basicExample",
+      service: "basic",
       response: responseFormats["basicExample"],
       useAngularParser: false
     }).create();
@@ -25,7 +25,7 @@ describe("DocxTemplater", () => {
   test("should return a filePath with a name and .docx extension", () => {
     const filePath: any = new DocxTemplater({
       docName: "A Paper About Whales",
-      service: "basicExample",
+      service: "basic",
       response: responseFormats["basicExample"],
       useAngularParser: true
     }).create();
