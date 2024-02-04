@@ -1,5 +1,5 @@
 export const  DOCUMENT = {
-    BASIC: { // Change BASIC to DOCUMENT
+    BASIC: {
         creator: "Office A.I.",
         subject: "Word Document A.I.",
         description: "A document created by A.I.",

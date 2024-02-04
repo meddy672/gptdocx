@@ -75,7 +75,7 @@ export default class DocxTemplater {
    * @param name of the document that will be created.
    * @returns string name.
    */
-  _sanitize(name: string): string {
+  private _sanitize(name: string): string {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
     return name.replace(pattern, "").trim();
   }

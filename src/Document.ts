@@ -16,16 +16,36 @@ type WordDocumentArgs = {
 }
 
 /**
- * Class WordDocument
+ * @description
+ * Class WordDocument creates documents with the Docx engine. and return the file path
+ * see https://docx.js.org/#/
+ * @async
+ * ```javascript
+ *  const wordDocument = new WordDocument({
+      docName: "My new document",
+      pages: array,
+      options: documentConfig,
+    });
+    const filename = await wordDocument.saveFile();
+ * ```
  */
 class WordDocument {
+  /** Name of the document */
   private _name = "";
+
+  /** an optional object used to apply additonal seetings */
   private options = {};
+
+  /**A container to hold the docuemnt components. */
   private sections: any[] = [];
 
   /**
+   * @description
+   * Initializes the class and exposes the create method.
    * 
-   * @param param0 
+   * @param docName **Required** name of the document.
+   * @param pages **Required** an array of document components to add to the document.
+   * @param options **Optional** an object add addtional styling and configuration the the document. 
    */
   constructor({ docName, pages, options }: WordDocumentArgs) {
     this.options    = options || DOCUMENT.BASIC;
@@ -36,11 +56,11 @@ class WordDocument {
 
   /**
    * 
-   * @param fileName 
-   * @param newDocument 
+   * @param fileName name of the document
+   * @param newDocument docuemnt object
    * @returns 
    */
-  async _save(fileName: string, newDocument: any): Promise<string> {
+  private async _save(fileName: string, newDocument: any): Promise<string> {
       const blob = await Packer.toBlob(newDocument);
       const arrayBuffer = await blob.arrayBuffer();
       const file = Buffer.from(arrayBuffer);
@@ -49,8 +69,10 @@ class WordDocument {
   }
 
   /**
+   * @description
+   * Saves the docuemnt and returns the file path
    * 
-   * @returns 
+   * @returns file path of the new document.
    */
   async saveFile() {
     const newDocument = new Document({
@@ -62,27 +84,33 @@ class WordDocument {
   }
 
   /**
+   * @description
+   * Takes the name of the document and creates a file path.
    * 
-   * @param name 
-   * @returns 
+   * @param name of the document.
+   * @returns file path.
    */
-  _filePath(name: string) {
+  private _filePath(name: string) {
     return join(process.cwd(), DOCUMENT.FILE_PATH, name + DOCUMENT.EXT);
   }
 
   /**
+   * @description
+   * Removes illegal characters from the document name. 
    * 
-   * @param name 
-   * @returns 
+   * @param name name of the document.
+   * @returns name
    */
-  _sanitize(name: string) {
+  private _sanitize(name: string) {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
     return name.replaceAll(pattern, "").trim();
   }
 
   /**
+   * @description
+   * Adds the document components to the document.
    * 
-   * @param page 
+   * @param page a container of document components.
    */
   add(page: any[]) {
     this.sections.push({
