@@ -1,5 +1,5 @@
-import 'dotenv/config'
-import OpenAI from 'openai';
+import "dotenv/config";
+import OpenAI from "openai";
 import Static from "./static/constants";
 
 import {
@@ -11,7 +11,6 @@ import {
   Format,
   ChatCompletionResponse, // eslint-disable-next-line import/no-unresolved
 } from "@models";
-
 
 /**
  * @description
@@ -27,28 +26,28 @@ import {
  * Class ChatGPT
  */
 class ChatGPT {
-    /**
-     * The openai object to handle request.
-    */
-    private openai: OpenAI;
-    /**
-     * The prompt to sent to OpenAI
-    */
-    private prompt = "";
-    /**
-     * The request body sent to OpenAI
-    */
-    private requestBody: ChatCompletionCreateParams;
+  /**
+   * The openai object to handle request.
+   */
+  private openai: OpenAI;
+  /**
+   * The prompt to sent to OpenAI.
+   */
+  private prompt = "";
+  /**
+   * The request body sent to OpenAI.
+   */
+  private requestBody: ChatCompletionCreateParams;
 
-    /**
-     * 
-     * @param prompt **Required** a string that represents the prompt.
-     * @param format **Required** sent to OpenAI to provide context to the prompt.
-     * @param apiKeyEnv: **Optional** a string used to represent the **apikey** used in the request. Defaults to OPENAI_API_KEY.
-     * @param config **Optional** an object to apply additonal settings to openai. 
-     * @returns 
-     */
-  constructor({prompt, format, apiKeyEnv,  config}: ChatGPTArgs) {
+  /**
+   *
+   * @param prompt **Required** a string that represents the prompt.
+   * @param format **Required** sent to OpenAI to provide context to the prompt.
+   * @param apiKeyEnv: **Optional** a string used to represent the **apikey** used in the request. Defaults to OPENAI_API_KEY.
+   * @param config **Optional** an object to apply additonal settings to openai.
+   * @returns ChatGPT instance
+   */
+  constructor({ prompt, format, apiKeyEnv, config }: ChatGPTArgs) {
     const apiKey = process.env[apiKeyEnv] || process.env["OPENAI_API_KEY"];
     this.openai = new OpenAI({ apiKey, ...config });
     this.prompt = prompt;
@@ -58,31 +57,29 @@ class ChatGPT {
     return this;
   }
 
-
-  
   /**
    * @description
    * Takes format and builds the openai request body for the request.
-   * 
-   * @param {Format} format - format used for context. 
+   *
+   * @param {Format} format - format used for context.
    * @returns ChatCompletionCreateParams
    */
-  private _buildRequestBody({format}: RequestBodyParams): ChatCompletionCreateParams {
+  private _buildRequestBody({
+    format,
+  }: RequestBodyParams): ChatCompletionCreateParams {
     const message = this._prepareMessages(format);
-    return { 
+    return {
       model: Static.MODEL,
-      messages: message, 
-      response_format: { "type": "json_object" }
+      messages: message,
+      response_format: { type: "json_object" },
     };
   }
-
-
 
   /**
    * @description
    * Takes format and prepares it to be used by the system.
-   * 
-   * @param {Format} format 
+   *
+   * @param {Format} format
    * @returns OpenAI Message
    */
   private _prepareMessages(format: Format): Message[] {
@@ -93,19 +90,18 @@ class ChatGPT {
     ];
   }
 
-
-
   /**
    * @description
    * Sends the OpenAI message for context. Gets the response
    * and returns it as a json object.
-   * 
+   *
    * @returns {Response} response
    */
   async send(): Promise<Response> {
     try {
       console.debug("Sending resquest...");
-      const response: ChatCompletionResponse  = await this.openai.chat.completions.create(this.requestBody);
+      const response: ChatCompletionResponse =
+        await this.openai.chat.completions.create(this.requestBody);
       const content = response.choices[0].message.content as string;
       return JSON.parse(content);
     } catch (err) {
@@ -114,18 +110,16 @@ class ChatGPT {
     }
   }
 
-
   /**
    * @description
    * Seriealizes the format to be used by the system.
-   * 
-   * @param {object} format 
+   *
+   * @param {object} format
    * @returns {String} format as a string
    */
   private _getFormat(format: Format): string {
-    return JSON.stringify(format);;
+    return JSON.stringify(format);
   }
 } // End of Class
 
 export default ChatGPT;
-

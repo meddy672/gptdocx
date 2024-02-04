@@ -62,7 +62,7 @@ Before using `gptdocx`, ensure that you have the following prerequisites:
 Running the code above will create a new word document in the files with context from ChatGPT on the subject coffee.
 
 ## GPTDocx Object
-The GPTDocx object uses [Docx](https://docx.js.org/#/) and [DocxTemplater](https://docxtemplater.com/) to build .docx files. If you configure `format` as an object, GPTDocx will use **Docx** to build the word document. This approach requires a little more overhead, but adds greater flexibility as you supply the format and style of the document yourself. However, if you use an exported format, GPTDocx will use **Docxtemplater** to build the document. Docxtemplater requires templates to map data to the word document. The formats exported from the gptdocx module tells GPTDocx how and what format and template to use in the request.
+The GPTDocx object uses [Docx](https://docx.js.org/#/) and [DocxTemplater](https://docxtemplater.com/) to build .docx files. If you configure `format` as an object, GPTDocx will use **Docx** to build the word document. This approach requires a little more overhead, but adds greater flexibility as you supply the format and style of the document yourself. However, if you use an exported format, GPTDocx will use **Docxtemplater** to build the document. Docxtemplater requires templates to map data to the word document. The formats exported from the gptdocx module tells the GPTDocx object what format and template to use in the request.
 
 #### Example 1: Docxtemplater Approach
 ```javascript

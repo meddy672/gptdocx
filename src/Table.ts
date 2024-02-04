@@ -114,11 +114,11 @@ class DocxTable {
    * @description
    * Adds the headers and data to the table and returns a table.
    * 
-   * @param headers response headers
-   * @param data response data
+   * @param headers response headers.
+   * @param data response data.
    * @returns table
    */
-  private _getTable(headers: any, data: any): any {
+  private _getTable(headers: any[], data: any[]): any {
     if (this.dataTypeIsObject) {
       return this._Table(headers, data)
     } else {
@@ -131,11 +131,11 @@ class DocxTable {
    * @description
    * Determines how the data should be formatted in the table.
    * 
-   * @param headers response headers
-   * @param data response data
-   * @returns table data
+   * @param headers response headers.
+   * @param data response data.
+   * @returns table data.
    */
-  private _dataTypeIsArrayOfStrings(headers: any, data: any) {
+  private _dataTypeIsArrayOfStrings(headers: any[], data: any[]) {
     const dataResults: any[] = [];
     let result = [];
     for (let i = 0; i < data.length / headers.length; i++) {
@@ -156,11 +156,11 @@ class DocxTable {
    * Returns a table to be used as document component.
    * **Docx Only**. 
    * 
-   * @param headers response headers
-   * @param data response data
+   * @param headers response headers.
+   * @param data response data.
    * @returns table
    */
-  private _Table(headers: any, data: any) {
+  private _Table(headers: any[], data: any[]) {
     return new Table({
       rows: [
         new TableRow({
@@ -174,7 +174,7 @@ class DocxTable {
 
   /**
    * @description
-   * Capitalize the first character of each header
+   * Capitalize the first character of each header.
    * 
    * @param inputString 
    * @returns string

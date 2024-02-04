@@ -24,7 +24,7 @@ import {
     format: BASIC,
     prompt: "Write  Paper on coffee.",
    }).createFile();
-  console.log(filePath)
+  console.log(filePath);
  * 
  * ```
  * @async
@@ -33,28 +33,28 @@ import {
  * @param {Object} options **Optional** used to apply additional configuration word document. [see docx](https://example.com).
  */
 class GPTDocx {
-  /** 
-   * An object that provides **ChatGPT** on the context of the document and how the document will be built.
-  */
+  /**
+   * An object that provides **ChatGPT** with context of the document and how the document will be built.
+   */
   private requestFormat: Format;
 
   /**
-   * The response received from **ChatGPT Object**
+   * The response received from **ChatGPT Object**.
    */
   private response: Response | undefined;
 
-  /** 
+  /**
    * The name of the service used in the request.
-  */
+   */
   private name = "";
 
-  /** 
+  /**
    * The prompt sent to OpenAI for context.
-  */
+   */
   private prompt = "";
 
   /**
-   * The key of the OpenAI API Key. Defaults to OPENAI_API_KEY 
+   * The key of the OpenAI API Key. Defaults to OPENAI_API_KEY.
    */
   private apiKeyEnv: string;
 
@@ -64,17 +64,17 @@ class GPTDocx {
   private children: any[] = [];
 
   /**
-   * A configuration object for the docuemnt. Docx usage only
+   * A configuration object for the docuemnt. Docx usage only.
    */
   private options: GPTDocxArgsOptions | null;
 
   /**
-   * A string that represents the service that will build the document. Either **templater** or **docx**
+   * A string that represents the service that will build the document. Either **templater** or **docx**.
    */
   private service = "";
 
   /**
-   * A placeholder key for an array. Handle the array of strings issue
+   * A placeholder key for an array. Handle the array of strings issue.
    */
   private tempKey: string = "";
 
@@ -86,9 +86,9 @@ class GPTDocx {
   /**
    *
    * @param format **Required** a format that represents the structure of the docuemnt.
-   * @param prompt **Required** a string that represents the request message to send to OPenAI
-   * @param options **Optional** an object used to enable additonal features to the for GPTDocx
-   * @returns GPTDocx
+   * @param prompt **Required** a string that represents the request message to send to OpenAI.
+   * @param options **Optional** an object used to enable additonal features to the for GPTDocx.
+   * @returns GPTDocx instance
    */
   constructor({ format, prompt, options }: GPTDocxsArgs) {
     this.apiKeyEnv = options?.apiKeyEnv || "";
@@ -137,7 +137,7 @@ class GPTDocx {
   /**
    * @description
    * Imports the format to be used in the request. **Templater Only**
-   * 
+   *
    *
    * @param {String} service name of the service to use in the request
    * @private
@@ -168,15 +168,15 @@ class GPTDocx {
   /**
    * @description
    * Validates the format and retuns the format:
-   * 
+   *
    * Throws error if format is invalid.
    *
    * @private
    */
-  private _prepareService(requestedService: Format): any {
+  private _prepareService(requestedService: Format): Format {
     if (this._isValid(requestedService)) {
       this.name = requestedService.sys.name;
-      this.styles = requestedService.styles ? requestedService.styles : {}
+      this.styles = requestedService.styles ? requestedService.styles : {};
       return requestedService;
     } else {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
@@ -191,7 +191,9 @@ class GPTDocx {
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
   private _isValid(format: Format): boolean {
-    return format && format.sys.name && format.sys.values && format.sys.format ? true : false;
+    return format && format.sys.name && format.sys.values && format.sys.format
+      ? true
+      : false;
   }
 
   /**
@@ -207,14 +209,14 @@ class GPTDocx {
     this._parse(this.response);
     console.log("Creating Document...");
     return this._useDocx(); // async
-}
+  }
 
   /**
    * @description
    * Parses ```this.response``` and builds the document components. **Docx Only**.
    *
    * @private
-   * @param {Object} page
+   * @param {Object} page the response value from ```this.response```.
    */
   private _parse(page: any) {
     for (const key in page) {
@@ -235,8 +237,8 @@ class GPTDocx {
    * correct wrapper.
    *
    * @private
-   * @param {String} key
-   * @param {*} value
+   * @param {String} key from the **response**.
+   * @param {*} value from the **response**.
    */
   private _switchByMappedKey(key: string, value: any) {
     switch (key) {
@@ -258,8 +260,8 @@ class GPTDocx {
    * the correct use case.
    *
    * @private
-   * @param {String} key
-   * @param {*} value
+   * @param {String} key from the **response**.
+   * @param {*} value from the **response**.
    */
   private _switchByType(key: string, value: any) {
     const type = this._getValueType(value);
@@ -299,8 +301,8 @@ class GPTDocx {
    * Styles the paragraph with ```this.styles```.
    *
    * @private
-   * @param {String} _key
-   * @param {String} text
+   * @param {String} _key from the **response**.
+   * @param {String} text from the **response**.
    */
   private _caseText(_key: string, text: string) {
     const key = this._getValidKey(_key);
@@ -323,7 +325,7 @@ class GPTDocx {
    * by ```this.styles```.
    *
    * @private
-   * @param {String} key
+   * @param {String} key from the **response**.
    * @returns {String} The valid key.
    */
   private _getValidKey(key: string): string {
@@ -336,8 +338,8 @@ class GPTDocx {
    * be parsed and saves it as a temp key.
    *
    * @private
-   * @param {String} key
-   * @param {Array} value
+   * @param {String} key from the **response**.
+   * @param {Array} value from the **response**.
    */
   private _handleArrayCase(key: string, value: any) {
     if (this.styles[key]) {
@@ -351,10 +353,10 @@ class GPTDocx {
    * Handle use case when a in a format key is **links** .
    * Takes the **links** and applies the correct
    * wrapper class. Adds each link to the page's
-   * container```this.children```.
+   * container```this.children```. **Docx Only**.
    *
    * @private
-   * @param {Array} links
+   * @param {Array} links A format property with key **links**.
    */
   private _caseLinks(links: any[]) {
     links.forEach(({ text, link }) => {
@@ -411,7 +413,7 @@ class GPTDocx {
    * Checks to see if the **key** is a mapped key.
    *
    * @private
-   * @param {String} key
+   * @param {String} key from the **response**.
    * @returns {Boolean} True if the key is a mappedKey otherwise false.
    */
   private _isMapped(key: string): Boolean {
@@ -440,7 +442,7 @@ class GPTDocx {
     }
   }
 
-  /** 
+  /**
    * @description
    * Create a new document with the **Templater engine**.
    * @returns file path of the new document.
@@ -457,7 +459,7 @@ class GPTDocx {
   /**
    * @description
    * Creates a new docuemnt with the **Docx** engine.
-   * 
+   *
    * @returns file path of the docuemnt.
    */
   private async _useDocx() {

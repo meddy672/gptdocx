@@ -1,19 +1,16 @@
-import { 
-    Document, 
-    Packer, 
-} from 'docx';
-import { writeFileSync } from 'fs';
-import { join }  from 'path';
-import { DOCUMENT } from './static/config';
+import { Document, Packer } from "docx";
+import { writeFileSync } from "fs";
+import { join } from "path";
+import { DOCUMENT } from "./static/config";
 
 type WordDocumentArgs = {
   docName: string;
-    pages: any[];
-    options?: {
-        pageHeader: {};
-        pageFooter: {};
-    }
-}
+  pages: any[];
+  options?: {
+    pageHeader: {};
+    pageFooter: {};
+  };
+};
 
 /**
  * @description
@@ -30,12 +27,12 @@ type WordDocumentArgs = {
  * ```
  */
 class WordDocument {
-  /** 
+  /**
    * Name of the document.
    */
   private _name = "";
 
-  /** 
+  /**
    * An optional object used to apply additonal setings.
    */
   private options = {};
@@ -48,36 +45,39 @@ class WordDocument {
   /**
    * @description
    * Initializes the class and exposes the create method.
-   * 
+   *
    * @param docName **Required** name of the document.
    * @param pages **Required** an array of document components to add to the document.
-   * @param options **Optional** an object add addtional styling and configuration the the document. 
+   * @param options **Optional** an object add addtional styling and configuration the the document.
    */
   constructor({ docName, pages, options }: WordDocumentArgs) {
-    this.options    = options || DOCUMENT.BASIC;
-    this.sections   = [];
-    this._name  = this._sanitize(docName);
+    this.options = options || DOCUMENT.BASIC;
+    this.sections = [];
+    this._name = this._sanitize(docName);
     this.add(pages);
   }
 
   /**
-   * 
-   * @param fileName name of the document
-   * @param newDocument docuemnt object
-   * @returns 
+   * @description
+   * Saves the word document to files and returns the filename with .docx extension.
+   *
+   * @async
+   * @param fileName name of the document.
+   * @param newDocument docuemnt object.
+   * @returns string
    */
   private async _save(fileName: string, newDocument: any): Promise<string> {
-      const blob = await Packer.toBlob(newDocument);
-      const arrayBuffer = await blob.arrayBuffer();
-      const file = Buffer.from(arrayBuffer);
-      writeFileSync(fileName, file);
-      return this._name + DOCUMENT.EXT;
+    const blob = await Packer.toBlob(newDocument);
+    const arrayBuffer = await blob.arrayBuffer();
+    const file = Buffer.from(arrayBuffer);
+    writeFileSync(fileName, file);
+    return this._name + DOCUMENT.EXT;
   }
 
   /**
    * @description
    * Saves the docuemnt and returns the file path
-   * 
+   *
    * @returns file path of the new document.
    */
   async saveFile() {
@@ -92,7 +92,7 @@ class WordDocument {
   /**
    * @description
    * Takes the name of the document and creates a file path.
-   * 
+   *
    * @param name of the document.
    * @returns file path.
    */
@@ -102,8 +102,8 @@ class WordDocument {
 
   /**
    * @description
-   * Removes illegal characters from the document name. 
-   * 
+   * Removes illegal characters from the document name.
+   *
    * @param name name of the document.
    * @returns name
    */
@@ -115,7 +115,7 @@ class WordDocument {
   /**
    * @description
    * Adds the document components to the document.
-   * 
+   *
    * @param page a container of document components.
    */
   add(page: any[]) {
