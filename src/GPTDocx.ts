@@ -108,7 +108,7 @@ class GPTDocx {
       requestedService = this._getFormat(service.toString());
       this.service = Static.templater;
     } else {
-      requestedService = service as any;
+      requestedService = service as Format;
       this.service = Static.docx;
     }
     return this._prepareService(requestedService);
@@ -123,7 +123,7 @@ class GPTDocx {
    * @private
    * @returns {Object} an object with requestFormat and optional styles.
    */
-  private _getFormat(service: string): any {
+  private _getFormat(service: string): Format {
     let requestedService: any;
     try {
       if (
@@ -211,7 +211,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Uses ```key``` and maps the ```value``` to it's
+   * Uses **key** and maps the **value** to it's
    * correct wrapper.
    *
    * @private
@@ -234,7 +234,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Gets the type from the ```value``` and maps it to
+   * Gets the type from the **value** and maps it to
    * the correct use case.
    *
    * @private
