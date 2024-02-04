@@ -2,7 +2,7 @@ import GPTDocx from "../src/GPTDocx";
 import ChatGPT from "../src/ChatGPT";
 import DocxTemplater from "../src/DocxTemplater";
 import WordDocument from "../src/Document";
-// import { ResponseMapper } from "../src/models/models";
+
 const { BASIC } = require("../src");
 import path from "path";
 
@@ -394,7 +394,7 @@ describe("GPTDocx", () => {
     const srcPath = replaceLastDirectory(__dirname, "src");
     try {
       await new GPTDocx({
-        format: "basicExample",
+        format: "basic",
         prompt: "Write a paper about Whales.",
       }).createFile();
     } catch (error: any) {}
@@ -402,7 +402,7 @@ describe("GPTDocx", () => {
     expect(joinSpy).toHaveBeenCalledWith(
       srcPath,
       "formats",
-      "basicExample",
+      "basic",
       "index.js"
     );
   });
