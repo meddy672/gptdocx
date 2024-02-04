@@ -42,7 +42,7 @@ Before using `gptdocx`, ensure that you have the following prerequisites:
    import gptdocx from 'gptdocx';
    ```
 
-3. Use the `gptdocx` functions to generate Word documents:
+3. Use the `GPTDocx` object to generate Word documents:
 
    ```javascript
    const { GPTDocx, BASIC } = gptdocx;
@@ -58,6 +58,74 @@ Before using `gptdocx`, ensure that you have the following prerequisites:
    ```bash
    node your_script.js
    ```
+
+Running the code above will create a new word document in the files with context from ChatGPT on the subject coffee.
+
+## GPTDocx Object
+The GPTDocx object uses [Docx](https://docx.js.org/#/) and [DocxTemplater](https://docxtemplater.com/) to build .docx files. If you configure `format` as an object, GPTDocx will use **Docx** to build the word document. This approach requires a little more overhead, but adds greater flexibility as you supply the format and style of the document yourself. However, if you use an exported format, GPTDocx will use **Docxtemplater** to build the document. Docxtemplater requires templates to map data to the word document. The formats exported from the gptdocx module tells GPTDocx how and what format and template to use in the request.
+
+#### Example 1: Docxtemplater Approach
+```javascript
+const gptdocx = require('gptdocx');
+
+const { GPTDocx, SIMPLE } = gptdocx;
+
+const filePath = await new GPTDocx({
+    format: SIMPLE, // format
+    prompt: "Write a paragraph.",
+}).createFile();
+```
+
+In the example above, GPTDocx creates a word document using the SIMPLE format which corresponds to a template that GPTDocx can locate and use to build the document. No styling is needed as the is already predesigned with fonts, headings, etc.
+
+#### Example 2: Docx Approach 
+```javascript
+  const filePath = await new GPTDocx({
+    format: {
+      sys: {
+        format: "json",
+        name: "demoFormat",
+        values: {
+          content: [
+            {
+              title: "",
+              body: "",
+            },
+          ],
+        },
+      },
+      styles: { // optional
+        title: {
+          paragraph: {
+            heading: "Heading4",
+            spacing: {
+              before: 100,
+              after: 10,
+            },
+          },
+          text: {
+            color: "#000000",
+            bold: true,
+          },
+        },
+        body: {
+          paragraph: {
+            spacing: {
+              before: 100,
+              after: 100,
+            },
+          },
+          text: {
+            color: "#333333",
+          },
+        },
+      },
+    },
+    prompt: "Write a paper about Whales.",
+  }).createFile();
+```
+
+In the example above, GPTDocx will send the prompt to ChatGPT with the property values for context. The styles object maps the **Docx Styles** to the properties in the **values** object. Nearly everything in **Docx** can be placed into a class Paragraph which can include a class TextRun, therefore, GPTDocx uses properties **paragraph and text** within styles and maps the styles to the respective classes. If you do not add the styles object, you will recieve a document with context that is relative to the prompt.
 
 ## Contributing
 
