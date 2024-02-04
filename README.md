@@ -125,7 +125,7 @@ In the example above, GPTDocx creates a word document using the SIMPLE format wh
   }).createFile();
 ```
 
-In the example above, GPTDocx will send the prompt to ChatGPT with the property values for context. The styles object maps the **Docx Styles** to the properties in the **values** object. Nearly everything in **Docx** can be placed into a class Paragraph which can include a class TextRun, therefore, GPTDocx uses properties **paragraph and text** within styles and maps the styles to the respective classes. If you do not add the styles object, you will recieve a document with context that is relative to the prompt.
+In the example above, GPTDocx will send the prompt to ChatGPT with the property values for context. The styles object maps the **Docx Styles** to the properties in the **values** object. Nearly everything in **Docx** can be placed into a class Paragraph which can include a class TextRun, therefore, GPTDocx uses properties **paragraph and text** within styles and maps the styles to the respective classes. If you do not add the styles object, you will recieve a document with context that is relative to the prompt. [More Examples](./examples/examples.ts).
 
 ## Contributing
 
