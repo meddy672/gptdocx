@@ -416,7 +416,7 @@ class GPTDocx {
    * @param {String} key from the **response**.
    * @returns {Boolean} True if the key is a mappedKey otherwise false.
    */
-  private _isMapped(key: string): Boolean {
+  private _isMapped(key: string): boolean {
     return [Static.links, Static.table, Static.image].includes(key);
   }
 

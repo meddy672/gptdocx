@@ -2,7 +2,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   target: 'node',
-  entry: './src/index.ts', // Specify the entry point
+  entry: './src/index.ts',
   mode: 'development',
   resolve: {
     extensions: ['.ts', '.js']

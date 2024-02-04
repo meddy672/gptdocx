@@ -9,3 +9,6 @@ coverage
 **/.svn
 **/.hg
 **/node_modules
+.npmignore
+.vscode
+.env

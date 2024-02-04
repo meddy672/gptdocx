@@ -7,8 +7,8 @@ type WordDocumentArgs = {
   docName: string;
   pages: any[];
   options?: {
-    pageHeader: {};
-    pageFooter: {};
+    pageHeader: any;
+    pageFooter: any;
   };
 };
 

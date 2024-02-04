@@ -18,8 +18,8 @@ export type ChatGPTArgs = {
   };
   
   export type DocOptions = {
-    pageHeader?: {};
-    pageFooter?: {};
+    pageHeader?: any;
+    pageFooter?: any;
   };
   
   export type GPTDocxsArgs = {
@@ -41,7 +41,6 @@ export type ChatGPTArgs = {
   
   export type RequestFormat = {
     pages: any[];
-    responseMapper?: ResponseMapper;
     styles?: any;
   };
   
@@ -56,9 +55,6 @@ export type ChatGPTArgs = {
 
   };
 
-  export type ResponseMapper = {
-    [key: string]: (config: any) => {}
-  }
   
   export type DocxTableArgs = {
     headers: any[];
