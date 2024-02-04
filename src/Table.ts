@@ -24,17 +24,17 @@ import { DocxTableArgs } from "@models";
  * ```
  */
 class DocxTable {
-  /** 
+  /**
    * The headers for the table.
    */
   private headers: any[];
 
-  /** 
+  /**
    * The data for the table.
    */
   private data: any[];
 
-  /** 
+  /**
    * flag to determine data type
    */
   private dataTypeIsObject: boolean = false;
@@ -42,11 +42,11 @@ class DocxTable {
   /**
    * @description
    * Initialize the table object
-   * 
-   * @param config table headers and data. 
+   *
+   * @param config table headers and data.
    * @returns Table
    */
-  constructor({headers, data}: DocxTableArgs) {
+  constructor({ headers, data }: DocxTableArgs) {
     this.headers = this._getHeaders(headers);
     this.data = this._getData(data);
     return this._getTable(this.headers, this.data);
@@ -55,10 +55,10 @@ class DocxTable {
   /**
    * @description
    * Takes the headers from the ChatGPT object and builds the table headers.
-   * 
+   *
    * @param headers table headers received in the response from the ChatGPT object
-   * 
-   * @returns table headers 
+   *
+   * @returns table headers
    */
   private _getHeaders(headers: string[]): any[] {
     return headers.map((text: string) => {
@@ -85,9 +85,9 @@ class DocxTable {
 
   /**
    * @description
-   * Takes the data received from the ChatGPT object and formats the 
+   * Takes the data received from the ChatGPT object and formats the
    * data for the table.
-   * 
+   *
    * @param data received from the CHatGPT object.
    * @returns table data.
    */
@@ -113,14 +113,14 @@ class DocxTable {
   /**
    * @description
    * Adds the headers and data to the table and returns a table.
-   * 
+   *
    * @param headers response headers.
    * @param data response data.
    * @returns table
    */
   private _getTable(headers: any[], data: any[]): any {
     if (this.dataTypeIsObject) {
-      return this._Table(headers, data)
+      return this._Table(headers, data);
     } else {
       const parsedData = this._dataTypeIsArrayOfStrings(headers, data);
       return this._Table(headers, parsedData);
@@ -130,7 +130,7 @@ class DocxTable {
   /**
    * @description
    * Determines how the data should be formatted in the table.
-   * 
+   *
    * @param headers response headers.
    * @param data response data.
    * @returns table data.
@@ -154,8 +154,8 @@ class DocxTable {
   /**
    * @description
    * Returns a table to be used as document component.
-   * **Docx Only**. 
-   * 
+   * **Docx Only**.
+   *
    * @param headers response headers.
    * @param data response data.
    * @returns table
@@ -175,8 +175,8 @@ class DocxTable {
   /**
    * @description
    * Capitalize the first character of each header.
-   * 
-   * @param inputString 
+   *
+   * @param inputString
    * @returns string
    */
   private capitalizeFirstLetter(inputString: string) {

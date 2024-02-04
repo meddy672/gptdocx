@@ -151,11 +151,11 @@ class GPTDocx {
         process.env["NODE_ENV"] === "test"
       ) {
         requestedService = require(
-          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_TS)
+          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_TS),
         );
       } else {
         requestedService = require(
-          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_JS)
+          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_JS),
         );
       }
     } catch (error) {
@@ -315,7 +315,7 @@ class GPTDocx {
             text: text.toString(),
           }),
         ],
-      })
+      }),
     );
   }
 
@@ -373,7 +373,7 @@ class GPTDocx {
               ],
             }),
           ],
-        })
+        }),
       );
     });
   }
@@ -390,7 +390,7 @@ class GPTDocx {
       new DocxImage({
         data,
         styles: this.styles.image,
-      })
+      }),
     );
   }
 
@@ -404,7 +404,7 @@ class GPTDocx {
       new DocxTable({
         headers,
         data,
-      })
+      }),
     );
   }
 
