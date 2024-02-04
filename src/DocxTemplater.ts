@@ -21,16 +21,24 @@ const expressionParser = require("docxtemplater/expressions.js");
  * ```
  */
 export default class DocxTemplater {
-  /** The name of the document. */
+  /** 
+   * The name of the document.
+   */
   private docName: string;
 
-  /** The word file that will used as the template. */
+  /** 
+   * The word file that will used as the template.
+   */
   private service: string;
 
-  /** The response received from **ChatGPT** */
+  /** 
+   * The response received from **ChatGPT**
+   */
   private response: any;
 
-  /**The Docxtemplater object */
+  /**
+   * The Docxtemplater object
+   */
   private doc: any;
 
   /**

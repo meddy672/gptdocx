@@ -9,16 +9,43 @@ import {
 // eslint-disable-next-line import/no-unresolved
 import { DocxTableArgs } from "@models";
 
+/**
+ * Class **DocxTable** creates a new table for the Docx engine.
+ * ```javascript
+ * const table = new DocxTable({
+        headers: ["name", "price"], 
+        data: [
+          {name: "iPhone 15", price: "$299.99", id: "123456789"},
+          {name: "iPhone 14", price: "$259.99", id: "123456789"}, 
+          {name: "iPhone 13", price: "$199.99", id: "123456789"}
+        ]           
+    })
+ * 
+ * ```
+ */
 class DocxTable {
-  /** headers */
+  /** 
+   * The headers for the table.
+   */
   private headers: any[];
 
-  /** data */
+  /** 
+   * The data for the table.
+   */
   private data: any[];
 
-  /** dataTypeIsObject */
+  /** 
+   * flag to determine data type
+   */
   private dataTypeIsObject: boolean = false;
 
+  /**
+   * @description
+   * Initialize the table object
+   * 
+   * @param config table headers and data. 
+   * @returns Table
+   */
   constructor({headers, data}: DocxTableArgs) {
     this.headers = this._getHeaders(headers);
     this.data = this._getData(data);
@@ -26,9 +53,12 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Takes the headers from the ChatGPT object and builds the table headers.
    * 
-   * @param headers 
-   * @returns 
+   * @param headers table headers received in the response from the ChatGPT object
+   * 
+   * @returns table headers 
    */
   private _getHeaders(headers: string[]): any[] {
     return headers.map((text: string) => {
@@ -54,9 +84,12 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Takes the data received from the ChatGPT object and formats the 
+   * data for the table.
    * 
-   * @param data 
-   * @returns 
+   * @param data received from the CHatGPT object.
+   * @returns table data.
    */
   private _getData(data: any[]): any {
     return data.map((element: any) => {
@@ -78,10 +111,12 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Adds the headers and data to the table and returns a table.
    * 
-   * @param headers 
-   * @param data 
-   * @returns 
+   * @param headers response headers
+   * @param data response data
+   * @returns table
    */
   private _getTable(headers: any, data: any): any {
     if (this.dataTypeIsObject) {
@@ -93,10 +128,12 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Determines how the data should be formatted in the table.
    * 
-   * @param headers 
-   * @param data 
-   * @returns 
+   * @param headers response headers
+   * @param data response data
+   * @returns table data
    */
   private _dataTypeIsArrayOfStrings(headers: any, data: any) {
     const dataResults: any[] = [];
@@ -115,10 +152,13 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Returns a table to be used as document component.
+   * **Docx Only**. 
    * 
-   * @param headers 
-   * @param data 
-   * @returns 
+   * @param headers response headers
+   * @param data response data
+   * @returns table
    */
   private _Table(headers: any, data: any) {
     return new Table({
@@ -133,9 +173,11 @@ class DocxTable {
   }
 
   /**
+   * @description
+   * Capitalize the first character of each header
    * 
    * @param inputString 
-   * @returns 
+   * @returns string
    */
   private capitalizeFirstLetter(inputString: string) {
     return inputString.charAt(0).toUpperCase() + inputString.slice(1);

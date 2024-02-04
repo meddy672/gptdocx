@@ -5,7 +5,17 @@ type DocxImageArgs = {
   styles: any;
 };
 /**
- * Class DocxImage
+ * @description
+ * 
+ * Class DocxImage creates an image a document component
+ * to be added and displayed on the document. 
+ *  [See Docx](https://docx.js.org/#/usage/images).
+ * ```javascript
+ * const component = new DocxImage({
+ *  data: ImageBuffer
+ *  styles: {} // image styles
+ * }) 
+ * ```
  */
 class DocxImage {
   constructor({ data, styles }: DocxImageArgs) {

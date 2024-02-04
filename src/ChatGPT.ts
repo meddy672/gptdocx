@@ -27,11 +27,17 @@ import {
  * Class ChatGPT
  */
 class ChatGPT {
-    /**The openai object to handle request.*/
+    /**
+     * The openai object to handle request.
+    */
     private openai: OpenAI;
-    /**The prompt to sent to OpenAI*/
+    /**
+     * The prompt to sent to OpenAI
+    */
     private prompt = "";
-    /**The request body sent to OpenAI*/
+    /**
+     * The request body sent to OpenAI
+    */
     private requestBody: ChatCompletionCreateParams;
 
     /**

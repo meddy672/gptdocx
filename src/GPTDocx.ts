@@ -33,34 +33,54 @@ import {
  * @param {Object} options **Optional** used to apply additional configuration word document. [see docx](https://example.com).
  */
 class GPTDocx {
-  /**An object that provides **ChatGPT** on the context of the document and how the document will be built.*/
+  /** 
+   * An object that provides **ChatGPT** on the context of the document and how the document will be built.
+  */
   private requestFormat: Format;
 
-  /**The response received from **ChatGPT Object***/
+  /**
+   * The response received from **ChatGPT Object**
+   */
   private response: Response | undefined;
 
-  /**The name of the service used in the request.*/
+  /** 
+   * The name of the service used in the request.
+  */
   private name = "";
 
-  /**The prompt sent to OpenAI for context.*/
+  /** 
+   * The prompt sent to OpenAI for context.
+  */
   private prompt = "";
 
-  /**The key of the OpenAI API Key. Defaults to OPENAI_API_KEY  */
+  /**
+   * The key of the OpenAI API Key. Defaults to OPENAI_API_KEY 
+   */
   private apiKeyEnv: string;
 
-  /**Container for document components. Docx usage only. */
+  /**
+   * Container for document components. Docx usage only.
+   */
   private children: any[] = [];
 
-  /**A configuration object for the docuemnt. Docx usage only */
+  /**
+   * A configuration object for the docuemnt. Docx usage only
+   */
   private options: GPTDocxArgsOptions | null;
 
-  /**A string that represents the service that will build the document. Either **templater** or **docx** */
+  /**
+   * A string that represents the service that will build the document. Either **templater** or **docx**
+   */
   private service = "";
 
-  /**A placeholder key for an array. Handle the array of strings issue */
+  /**
+   * A placeholder key for an array. Handle the array of strings issue
+   */
   private tempKey: string = "";
 
-  /**An object used to add styles to each key. Docx usgae only. */
+  /**
+   * An object used to add styles to each key. Docx usgae only.
+   */
   private styles: any = {};
 
   /**

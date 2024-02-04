@@ -30,13 +30,19 @@ type WordDocumentArgs = {
  * ```
  */
 class WordDocument {
-  /** Name of the document */
+  /** 
+   * Name of the document.
+   */
   private _name = "";
 
-  /** an optional object used to apply additonal seetings */
+  /** 
+   * An optional object used to apply additonal setings.
+   */
   private options = {};
 
-  /**A container to hold the docuemnt components. */
+  /**
+   * A container to hold the docuemnt components.
+   */
   private sections: any[] = [];
 
   /**

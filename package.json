@@ -33,7 +33,9 @@
   "keywords": [
     "openai",
     "docx",
-    "chatgpt"
+    "chatgpt",
+    "docxtemplater",
+    "word"
   ],
   "author": "meddy672",
   "license": "MIT",
