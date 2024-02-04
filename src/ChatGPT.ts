@@ -22,6 +22,11 @@ class ChatGPT {
     private prompt = "";
     private requestBody: ChatCompletionCreateParams;
 
+    /**
+     * 
+     * @param param0 
+     * @returns 
+     */
   constructor({prompt, format, apiKeyEnv,  config}: ChatGPTArgs) {
     const apiKey = process.env[apiKeyEnv] || process.env["OPENAI_API_KEY"];
     this.openai = new OpenAI({ apiKey, ...config });

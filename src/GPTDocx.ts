@@ -18,49 +18,56 @@ import {
 
 /**
  * @description
+ * Class GPTDocx creates word documents with OpenAI by **prompt** and returns the file path.
+ * ```javascript
+ * const filePath = await new GPTDocx({
+    format: BASIC,
+    prompt: "Write  Paper on coffee.",
+   }).createFile();
+  console.log(filePath)
+ * 
+ * ```
  * @async
- * @param {*} format  A **string** which is a name of a service or a **Service** object.
- * @param {String} prompt that is sent to OpenAI to build the document context. Required
- * @param {Boolean} saveSchema used to save a json file of the request and response objects. Optional.
- * @param {Object} documentConfig used to apply additional configuration word document. Optional.
+ * @param {*} format **Required**  A static constant which is the name of a service or a **Format**.
+ * @param {String} prompt **Required** message sent to OpenAI to build the document context.
+ * @param {Object} options **Optional** used to apply additional configuration word document. [see docx](https://example.com).
  */
 class GPTDocx {
-  /**The request format for each page. Sent to OpenAI with ```this.prompt``` for context.*/
+  /**An object that provides **ChatGPT** on the context of the document and how the document will be built.*/
   private requestFormat: Format;
 
-  /**The response received from ```ChatGPT Object```*/
+  /**The response received from **ChatGPT Object***/
   private response: Response | undefined;
 
-  /**The name of the service used in the request. ```this.name = this.service.name```*/
+  /**The name of the service used in the request.*/
   private name = "";
 
-  /**The prompt sent to OpenAI for context. ```await new ChatGPT({prompt: this.prompt})```*/
+  /**The prompt sent to OpenAI for context.*/
   private prompt = "";
 
-  /**  */
+  /**The key of the OpenAI API Key. Defaults to OPENAI_API_KEY  */
   private apiKeyEnv: string;
 
-  /** */
-
-  /** */
+  /**Container for document components. Docx usage only. */
   private children: any[] = [];
 
-  /** */
+  /**A configuration object for the docuemnt. Docx usage only */
   private options: GPTDocxArgsOptions | null;
 
-  /** */
+  /**A string that represents the service that will build the document. Either **templater** or **docx** */
   private service = "";
 
-  /** */
+  /**A placeholder key for an array. Handle the array of strings issue */
   private tempKey: string = "";
 
+  /**An object used to add styles to each key. Docx usgae only. */
   private styles: any = {};
 
   /**
    *
-   * @param format a string that represents how the document is created.
-   * @param prompt a string that represents the request message to send to OPenAI
-   * @param apiKeyEnv a string that be used as the API Key ENV i.e process.env[apiKeyEnv]
+   * @param format **Required** a format that represents the structure of the docuemnt.
+   * @param prompt **Required** a string that represents the request message to send to OPenAI
+   * @param options **Optional** an object used to enable additonal features to the for GPTDocx
    * @returns GPTDocx
    */
   constructor({ format, prompt, options }: GPTDocxsArgs) {
@@ -90,7 +97,7 @@ class GPTDocx {
   /**
    * @description
    * Determines and returns the service to be used Templater or Docx.
-   * If the format is a object the Docx Object is used, else it uses the Templater
+   * If the format is a object the Docx is used, else it uses the Templater.
    *
    * @private
    * @param {String} service of a service to be used in the request
@@ -109,12 +116,12 @@ class GPTDocx {
 
   /**
    * @description
-   * Imports the service object to be used in the request.
-   * See ```this.service```.
+   * Imports the format to be used in the request. **Templater Only**
+   * 
    *
    * @param {String} service name of the service to use in the request
    * @private
-   * @returns {Object} an object with requestFormnat and styles.
+   * @returns {Object} an object with requestFormat and optional styles.
    */
   private _getFormat(service: string): any {
     let requestedService: any;
@@ -140,9 +147,9 @@ class GPTDocx {
 
   /**
    * @description
-   * Validates the service and initializes properties:
-   * ```this.name```, ```this.requestFormat``` and ```this.styles```.
-   * Throws error if ```this.service``` is invalid.
+   * Validates the format and retuns the format:
+   * 
+   * Throws error if format is invalid.
    *
    * @private
    */
@@ -158,19 +165,19 @@ class GPTDocx {
 
   /**
    * @description
-   * Checks to see if ```service``` has required properties.
+   * Checks to see if **format** has required properties.
    *
    * @private
    * @returns {Boolean} True if service is valid. False if service is invalid.
    */
-  private _isValid(service: Format): boolean {
-    return service && service.sys.name && service.sys.values && service.sys.format ? true : false;
+  private _isValid(format: Format): boolean {
+    return format && format.sys.name && format.sys.values && format.sys.format ? true : false;
   }
 
   /**
    * @description
    * Builds each page from ```this.response``` and
-   * creates a new docuemnt.
+   * calls docx to create the document. **Docx Only**.
    *
    * @async
    * @private
@@ -184,7 +191,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Gets the page ```value``` and maps it to its use case.
+   * Parses ```this.response``` and builds the document components. **Docx Only**.
    *
    * @private
    * @param {Object} page
@@ -252,10 +259,10 @@ class GPTDocx {
 
   /**
    * @description
-   * Determines the type from ```value``` and returns it.
+   * Determines the type from **value** and returns it.
    *
    * @private
-   * @param {*} value
+   * @param {*} value **object | array | string | number**
    * @returns {String} the primitive type of the value.
    */
   private _getValueType(value: any): any {
@@ -268,7 +275,7 @@ class GPTDocx {
   /**
    * @description
    * Used when a value's types is broken down to a string.
-   * Takes  ```_key, text``` and builds a ```new Paragraph```.
+   * Takes  **_key, text** and builds a **new Paragraph**.
    * Styles the paragraph with ```this.styles```.
    *
    * @private
@@ -292,7 +299,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Sets the correct ```key``` to be used
+   * Sets the correct **key** to be used
    * by ```this.styles```.
    *
    * @private
@@ -305,14 +312,14 @@ class GPTDocx {
 
   /**
    * @description
-   * Stores the ```key``` of the array that will
+   * Stores the **key** of the array that will
    * be parsed and saves it as a temp key.
    *
    * @private
    * @param {String} key
    * @param {Array} value
    */
-  private _handleArrayCase(key: string, value: []) {
+  private _handleArrayCase(key: string, value: any) {
     if (this.styles[key]) {
       this.tempKey = key;
     }
@@ -321,15 +328,15 @@ class GPTDocx {
 
   /**
    * @description
-   * Handle use case when a key is ```links```.
-   * Takes the ```links``` and applies the correct
-   * wrapper class. Adds each ```link``` to the page's
+   * Handle use case when a in a format key is **links** .
+   * Takes the **links** and applies the correct
+   * wrapper class. Adds each link to the page's
    * container```this.children```.
    *
    * @private
    * @param {Array} links
    */
-  private _caseLinks(links: []) {
+  private _caseLinks(links: any[]) {
     links.forEach(({ text, link }) => {
       this.children.push(
         new Paragraph({
@@ -367,8 +374,8 @@ class GPTDocx {
 
   /**
    * @description Adds a new table to the document with table headers
-   * and data
-   * @param {object} table_headers - The header for each column
+   * and data.
+   * @param {object} config - The headers and data for the table.
    */
   private _caseTable({ headers, data }: DocxTableArgs) {
     this.children.push(
@@ -381,7 +388,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Checks to see if the ```key``` is a mapped key.
+   * Checks to see if the **key** is a mapped key.
    *
    * @private
    * @param {String} key
@@ -394,7 +401,7 @@ class GPTDocx {
   /**
    * @description
    * Sends request to OpenAI for a context. Uses ```this.response```
-   * to build each page.
+   * to build the document.
    *
    * @async
    * @returns {Promise<string>} Filename of the document.
@@ -413,6 +420,11 @@ class GPTDocx {
     }
   }
 
+  /** 
+   * @description
+   * Create a new document with the **Templater engine**.
+   * @returns file path of the new document.
+   */
   private _useTemplater() {
     return new DocxTemplater({
       docName: this.name,
@@ -422,6 +434,12 @@ class GPTDocx {
     }).create();
   }
 
+  /**
+   * @description
+   * Creates a new docuemnt with the **Docx** engine.
+   * 
+   * @returns file path of the docuemnt.
+   */
   private async _useDocx() {
     const wordDocument = new WordDocument({
       docName: this.name,

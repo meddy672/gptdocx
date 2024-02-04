@@ -52,7 +52,7 @@ export type ChatGPTArgs = {
       values: any;
     }
     styles?: any;
-    responseMapper?: ResponseMapper
+    // responseMapper?: ResponseMapper
 
   };
 

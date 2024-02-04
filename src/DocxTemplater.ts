@@ -8,24 +8,37 @@ const Docxtemplater = require("docxtemplater");
 const expressionParser = require("docxtemplater/expressions.js");
 
 /**
- * Class DocxTemplater
+ * @description
+ * Class DocxTemplater creates word documents using DocxTemplater
+ * see https://docxtemplater.com/
+ * ```javascript
+ * const filePath = new DocxTemplater({
+      docName: "My new document",
+      service: "basic",
+      response: ChatGPT response,
+      useAngularParser: false,
+    }).create();
+ * ```
  */
 export default class DocxTemplater {
-  /** */
+  /** The name of the document. */
   private docName: string;
 
-  /** */
+  /** The word file that will used as the template. */
   private service: string;
 
-  /** */
+  /** The response received from **ChatGPT** */
   private response: any;
 
-  /** */
+  /**The Docxtemplater object */
   private doc: any;
 
   /**
    * 
-   * @param param0 
+   * @param docName **Required** the name of the word file or docuement.
+   * @param service **Required** the word file that will be used as the template.  
+   * @param response **Required** the response recieved from ChatGPT object.
+   * @param useAngularParser **Optional** user the angular parse or not. 
    * @returns 
    */
   constructor({
@@ -44,7 +57,7 @@ export default class DocxTemplater {
     this.response = response;
     const filePath = path.resolve( __dirname, Static.DOCX_DIR, this.service + Static.DOCX_EXT)
     const content = fs.readFileSync(filePath, "binary");
-    
+
     const zip = new PizZip(content);
     this.doc = new Docxtemplater(zip, {
       paragraphLoop: true,
@@ -56,9 +69,11 @@ export default class DocxTemplater {
   }
 
   /**
+   * @description 
+   * Removes any illegal characters from the document name.
    * 
-   * @param name 
-   * @returns 
+   * @param name of the document that will be created.
+   * @returns string name.
    */
   _sanitize(name: string): string {
     const pattern = /[.:<>/*+?^${}' '()|[\]\\]/g;
@@ -66,22 +81,19 @@ export default class DocxTemplater {
   }
 
   /**
+   * @description
+   * Create a word docuemnt and saves it to the files directory.
    * 
-   * @returns 
+   * @returns file path of the word document.
    */
   create(): string {
     this.doc.render(this.response);
 
-    // Get the zip document and generate it as a nodebuffer
     const buf = this.doc.getZip().generate({
       type: "nodebuffer",
-      // compression: DEFLATE adds a compression step.
-      // For a 50MB output document, expect 500ms additional CPU time
       compression: "DEFLATE",
     });
 
-    // buf is a nodejs Buffer, you can either write it to a
-    // file or res.send it with express for example.
     const fileName = this._sanitize(this.docName);
     const filePath = path.resolve(process.cwd(),  Static.FILES, fileName + Static.DOCX_EXT)
     fs.writeFileSync(filePath, buf);
