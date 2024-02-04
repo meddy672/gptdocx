@@ -48,7 +48,7 @@ Before using `gptdocx`, ensure that you have the following prerequisites:
    const { GPTDocx, BASIC } = gptdocx;
 
    const filePath = await new GPTDocx({
-      format: BASIC, // format
+      format: BASIC, 
       prompt: "Write  Paper on coffee.",
     }).createFile();
    ```
@@ -129,7 +129,7 @@ In the example above, GPTDocx will send the prompt to ChatGPT with the property 
 
 ## Contributing
 
-Contributions are welcome! If you encounter any issues or have suggestions for improvements, please [open an issue](https://github.com/your-username/gptdocx/issues) on the GitHub repository. If you'd like to contribute directly, feel free to submit a pull request.
+Contributions are welcome! If you encounter any issues or have suggestions for improvements, please [open an issue](https://github.com/meddy672/gptdocx/issues) on the GitHub repository. If you'd like to contribute directly, feel free to submit a pull request.
 
 ## License
 
