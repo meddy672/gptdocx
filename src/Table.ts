@@ -13,7 +13,7 @@ import { DocxTableArgs } from "@models";
  * Class **DocxTable** creates a new table for the Docx engine.
  * ```javascript
  * const table = new DocxTable({
-        headers: ["name", "price"], 
+        headers: ["name", "price", "id"], 
         data: [
           {name: "iPhone 15", price: "$299.99", id: "123456789"},
           {name: "iPhone 14", price: "$259.99", id: "123456789"}, 
