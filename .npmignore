@@ -1,7 +1,6 @@
 test
 files
 examples
-assets
 jest.config.js
 jest.globalSetup.js
 .vscode
