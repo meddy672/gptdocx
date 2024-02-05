@@ -116,22 +116,22 @@ class GPTDocx {
 
   /**
    * @description
-   * Determines and returns the service to be used Templater or Docx.
+   * Determines and returns the format and determines the service: Templater or Docx.
    * If the format is a object the Docx is used, else it uses the Templater.
    *
    * @private
-   * @param {String} service of a service to be used in the request
+   * @param {String} format to be used in the request
    */
-  private _parseFormat(service: string | Format): Format {
-    let requestedService: Format;
-    if (typeof service === Static.string) {
-      requestedService = this._getFormat(service.toString());
+  private _parseFormat(format: string | Format): Format {
+    let requestedFormat: Format;
+    if (typeof format === Static.string) {
+      requestedFormat = this._getFormat(format.toString());
       this.service = Static.templater;
     } else {
-      requestedService = service as Format;
+      requestedFormat = format as Format;
       this.service = Static.docx;
     }
-    return this._prepareFormat(requestedService);
+    return this._prepareFormat(requestedFormat);
   }
 
   /**
