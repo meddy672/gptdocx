@@ -12,7 +12,6 @@
   "scripts": {
     "test": "nyc jest --runInBand",
     "stash": "git stash save 'stash changes'",
-    "dev": "git add . && git commit -m \"Automated commit message\"",
     "case": "nyc jest --runInBand ./test/GPTDocx.test.ts",
     "format": "prettier --write --config .prettierrc.json src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint ./src/**/*.ts",

@@ -1,6 +1,7 @@
 test
 files
 examples
+coverage
 jest.config.js
 jest.globalSetup.js
 .vscode
