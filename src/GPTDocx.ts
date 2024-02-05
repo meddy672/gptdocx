@@ -173,11 +173,11 @@ class GPTDocx {
    *
    * @private
    */
-  private _prepareService(requestedService: Format): Format {
-    if (this._isValid(requestedService)) {
-      this.name = requestedService.sys.name;
-      this.styles = requestedService.styles ? requestedService.styles : {};
-      return requestedService;
+  private _prepareService(requestedFormat: Format): Format {
+    if (this._isValid(requestedFormat)) {
+      this.name = requestedFormat.sys.name;
+      this.styles = requestedFormat.styles ? requestedFormat.styles : {};
+      return requestedFormat;
     } else {
       throw new Error("Service is not valid. PARSE_SERVICE_REQUEST_ERROR");
     }
