@@ -1,6 +1,6 @@
 # GPTDocx
 ### Create word documents with ChatGPT.
-![docxImage](./assets//gptdocxImage.png)
+![docxImage](./assets/gptdocxImage.png)
 
 # gptdocx
 

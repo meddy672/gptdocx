@@ -1,6 +1,6 @@
 {
   "name": "gptdocx",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create word documents with ChatGPT.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
