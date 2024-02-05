@@ -380,7 +380,7 @@ describe("GPTDocx", () => {
     let response: any;
     try {
       await new GPTDocx({
-        format: "basicExample",
+        format: "basic",
         prompt: "",
       }).createFile();
     } catch (error: any) {

@@ -27,7 +27,8 @@ describe("Word Document", () =>{
         expect(type).toEqual("string");
     });
     test('should trim the filename', () => { 
-        expect(filename).toEqual("NewDocument.docx");
+        const { name, ext } = path.parse(filename);
+        expect(name+ext).toEqual("NewDocument.docx");
     });
     test('should call writeFileSync once with arguments', () => { 
         const spyArgs = writeFileSpy.mock.calls[0];

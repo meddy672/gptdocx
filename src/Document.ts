@@ -71,7 +71,7 @@ class WordDocument {
     const arrayBuffer = await blob.arrayBuffer();
     const file = Buffer.from(arrayBuffer);
     writeFileSync(fileName, file);
-    return this._name + DOCUMENT.EXT;
+    return fileName;
   }
 
   /**
