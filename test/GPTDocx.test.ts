@@ -17,6 +17,7 @@ describe("GPTDocx", () => {
   let docTemplaterSpy: any;
   let docxSpy: any;
   beforeEach(() => {
+    process.env["OPENAI_API_KEY"] = "123456789";
     chatGptSpy = jest.spyOn(ChatGPT.prototype, "send");
     docTemplaterSpy = jest.spyOn(DocxTemplater.prototype, "create");
     docxSpy = jest.spyOn(WordDocument.prototype, "saveFile");
