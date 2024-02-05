@@ -131,7 +131,7 @@ class GPTDocx {
       requestedService = service as Format;
       this.service = Static.docx;
     }
-    return this._prepareService(requestedService);
+    return this._prepareFormat(requestedService);
   }
 
   /**
@@ -173,7 +173,7 @@ class GPTDocx {
    *
    * @private
    */
-  private _prepareService(requestedFormat: Format): Format {
+  private _prepareFormat(requestedFormat: Format): Format {
     if (this._isValid(requestedFormat)) {
       this.name = requestedFormat.sys.name;
       this.styles = requestedFormat.styles ? requestedFormat.styles : {};
