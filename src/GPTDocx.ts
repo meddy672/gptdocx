@@ -30,7 +30,7 @@ import {
  * @async
  * @param {*} format **Required**  A static constant which is the name of a service or a **Format**.
  * @param {String} prompt **Required** message sent to OpenAI to build the document context.
- * @param {Object} options **Optional** used to apply additional configuration word document. [see docx](https://example.com).
+ * @param {Object} options **Optional** used to apply additional configuration word document.
  */
 class GPTDocx {
   /**
