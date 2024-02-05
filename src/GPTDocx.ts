@@ -139,11 +139,11 @@ class GPTDocx {
    * Imports the format to be used in the request. **Templater Only**
    *
    *
-   * @param {String} service name of the service to use in the request
+   * @param {String} format name of the service to use in the request
    * @private
    * @returns {Object} an object with requestFormat and optional styles.
    */
-  private _getFormat(service: string): Format {
+  private _getFormat(format: string): Format {
     let requestedService: any;
     try {
       if (
@@ -151,15 +151,15 @@ class GPTDocx {
         process.env["NODE_ENV"] === "test"
       ) {
         requestedService = require(
-          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_TS),
+          join(__dirname, Static.FORMATS_DIR, format, Static.INDEX_TS),
         );
       } else {
         requestedService = require(
-          join(__dirname, Static.FORMATS_DIR, service, Static.INDEX_JS),
+          join(__dirname, Static.FORMATS_DIR, format, Static.INDEX_JS),
         );
       }
     } catch (error) {
-      console.error(`Unable to find service: ${service}`);
+      console.error(`Unable to find format: ${format}`);
     }
 
     return requestedService?.format;
