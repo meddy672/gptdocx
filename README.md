@@ -71,7 +71,7 @@ const gptdocx = require('gptdocx');
 const { GPTDocx, SIMPLE } = gptdocx;
 
 const filePath = await new GPTDocx({
-    format: SIMPLE, // format
+    format: SIMPLE,
     prompt: "Write a paragraph.",
 }).createFile();
 ```
