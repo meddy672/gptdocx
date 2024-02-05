@@ -167,7 +167,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Validates the format and retuns the format:
+   * Validates the format and retuns the format.
    *
    * Throws error if format is invalid.
    *
