@@ -12,7 +12,7 @@
   "scripts": {
     "test": "nyc jest --runInBand",
     "stash": "git stash save 'stash changes'",
-    "case": "nyc jest --runInBand ./test/GPTDocx.test.ts",
+    "case": "nyc jest --runInBand ./test/acceptance.test.ts",
     "format": "prettier --write --config .prettierrc.json src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint ./src/**/*.ts",
     "clean": "rimraf dist",

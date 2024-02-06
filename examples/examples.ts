@@ -21,7 +21,7 @@ async function main(){
     
       filePath = await new GPTDocx({
         format: BASIC,
-        prompt: "Write  Paper on coffee.",
+        prompt: "Write Paper on coffee.",
       }).createFile();
       console.log(filePath)
     
@@ -43,7 +43,7 @@ async function main(){
       }).createFile();
       console.log(filePath)
 
-    filePath = await new GPTDocx({
+      filePath = await new GPTDocx({
         format: UPDATE_NOTICE,
         prompt: "Create an update notice for a power outage that happen in Los Angelas two weeks ago.",
       }).createFile();
@@ -263,7 +263,7 @@ async function main(){
             },
           },
         },
-        prompt: "Write a paper research paper on Jerry Rice of the San Fransico 49ers.",
+        prompt: "Write a research paper on Jerry Rice of the San Fransico 49ers.",
       }).createFile();
       console.log(filePath)
 

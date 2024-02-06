@@ -17,6 +17,7 @@ const FILE_PATH = path.join(__dirname, '../files');
 
 describe("GPTDocx Package", () => {
   let openAISpy: any;
+  let filePath: string;
   beforeEach(() => {
     openAISpy = jest.spyOn(OpenAI.Chat.Completions.prototype, "create");
     process.env["OPENAI_API_KEY"] = "TEST1234";
@@ -26,7 +27,7 @@ describe("GPTDocx Package", () => {
     openAISpy.mockRestore();
   });
 
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a basic doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices:[
@@ -38,7 +39,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: BASIC,
       prompt: "Write A Paper on to type faster.",
     }).createFile();
@@ -46,7 +47,7 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a job appilcation doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -58,7 +59,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: JOB_APP,
       prompt: "Create a job application for a Platform Engineer.",
     }).createFile();
@@ -66,7 +67,7 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a cover letter doc in files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -78,7 +79,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: COVER_LETTER,
       prompt: "Write a cover letter for Matthew Eddy",
     }).createFile();
@@ -86,7 +87,7 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a simple doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -98,7 +99,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: SIMPLE,
       prompt: "Write a paragraph.",
     }).createFile();
@@ -106,7 +107,7 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a update notice doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -118,7 +119,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: UPDATE_NOTICE,
       prompt: "Create an Automatic DNS Adjustments for Enhanced Email Deliverability for Wordpress users.",
     }).createFile();
@@ -126,7 +127,7 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  test("should create a .docx file in the files directory", async () => {
+  test("should create a resume doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -138,7 +139,7 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: RESUME,
       prompt: "Create a resume for my buddy spock, who is a science officer aboard the USS Enterprise. Add the top companies and skills to his resume. Spock's email is test@email, phone number is 123456789, address 123 Vulcan Sarek Ln. Make him look good.",
     }).createFile();
@@ -146,404 +147,9 @@ describe("GPTDocx Package", () => {
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);
   });
-  // test("should create a .docx file in the files directory", async () => {
-  //   openAISpy.mockImplementation(() => {
-  //     return {
-  //       choices: [
-  //         {
-  //           message: {
-  //             content: JSON.stringify(responseFormats["documentary"])
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   })
-  //   const filePath = await new GPTDocx({
-  //     format: {
-  //       sys: {
-  //         format: "json",
-  //         name: "documentary",
-  //         values: {
-  //           pages: [
-  //             {
-  //               introduction: {
-  //                 title: "",
-  //                 body: "",
-  //               },
-  //               content: [
-  //                 {
-  //                   heading: "",
-  //                   paragraph1: "",
-  //                   paragraph2: "",
-  //                 },
-  //                 {
-  //                   heading: "",
-  //                   paragraph1: "",
-  //                   paragraph2: "",
-  //                 },
-  //                 {
-  //                   heading: "",
-  //                   paragraph1: "",
-  //                   paragraph2: "",
-  //                 },
-  //                 {
-  //                   heading: "",
-  //                   paragraph1: "",
-  //                   paragraph2: "",
-  //                 }
-  //               ],
-  //               conclusion: "",
-  //             }
-  //           ],
-  //         }
-  //       },
-  //       responseMapper: {
-  //         introduction: (config: any) => {
-  //           return [
-  //             new Paragraph({
-  //               heading: "Title",
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#000000',
-  //                   text: config.title
-  //                 })
-  //               ]
-  //             }),
-  //             new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   text: config.body
-  //                 })
-  //               ]
-  //             })
-  //           ]
-  //         },
-  //         content: (config: any) => {
-  //           const components: any[] = [];
-  //            config.forEach(({heading, paragraph1, paragraph2}: {heading: string, paragraph1: string, paragraph2: string}) => {
-  //             const h1 = new Paragraph({
-  //               heading: 'Heading1',
-  //               spacing: {
-  //                 before: 20,
-  //                 after: 20,
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   text: heading
-  //                 })
-  //               ]
-  //             });
-  //             const p1 = new Paragraph({
-  //               children:[
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: paragraph1
-  //                 })
-  //               ]
-  //             });
-  //             const p2 = new Paragraph({
-  //               children:[
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: paragraph2
-  //                 })
-  //               ]
-  //             });
-  //             components.push(h1)
-  //             components.push(p1)
-  //             components.push(p2)
-  //           })
-  //           return components;
-  //         },
-  //         conclusion: (config: any) => {
-  //           return new Paragraph({
-  //             text: config.conclusion
-  //           })
-  //         },
-  //       }
-  //     },
-  //     prompt: "Write a documentary on Michael Jordan.",
-  //   }).createFile();
-  //   const { name, ext } = path.parse(filePath);
-  //   const contents = fs.readdirSync(FILE_PATH);
-  //   expect(contents).toContain(name+ext);
-  // });
-  // test("should create a .docx file in the files directory", async () => {
-  //   openAISpy.mockImplementation(() => {
-  //     return {
-  //       choices: [
-  //         {
-  //           message: {
-  //             content: JSON.stringify(responseFormats["recipe"])
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   })
-  //   const filePath = await new GPTDocx({
-  //     format: {
-  //       sys: {
-  //         format: "json",
-  //         name: "recipe",
-  //         values: {
-  //           pages: [
-  //             {
-  //               title: "",
-  //               totalCookTime: {
-  //                 heading: "",
-  //                 totalTime: ""
-  //               },
-  //               prepareTime: {
-  //                 heading: "",
-  //                 preparation: "",
-  //               },
-  //               components: {
-  //                 heading: "",
-  //                 ingredients: [],
-  //               },
-  //               cookingTime: {
-  //                 heading: "",
-  //                 cookTime: "",
-  //               },
-  //               steps: {
-  //                 heading: "",
-  //                 cookingSteps: [],
-  //               },
-  //               serving: {
-  //                 heading: "",
-  //                 size: ""
-  //               }
-  //             },
-  //           ],
-  //         },
-  //       },
-  //       responseMapper: {
-  //         title: (text: string) => {
-  //           return new Paragraph({
-  //             heading: 'Title',
-  //             alignment: "center",
-  //             spacing: {
-  //               before: 100,
-  //               after: 30
-  //             },
-  //             children: [
-  //               new TextRun({
-  //                 color: '#000000',
-  //                 text
-  //               })
-  //             ]
-  //           })
-  //         },
-  //         totalCookTime: (context: any) => {
-  //           return [
-  //             new Paragraph({
-  //               heading: 'Heading2',
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   size: 32,
-  //                   bold: true,
-  //                   text: context.heading
-  //                 })
-  //               ]
-  //             }),
-  //             new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: context.totalTime
-  //                 })
-  //               ]
-  //             })
-  //           ]
-  //         },
-  //         prepareTime: (context: any) => {
-  //           return [
-  //             new Paragraph({
-  //               heading: 'Heading2',
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   size: 32,
-  //                   bold: true,
-  //                   text: context.heading
-  //                 })
-  //               ]
-  //             }),
-  //             new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: context.preparation
-  //                 })
-  //               ]
-  //             })
-  //           ]
-  //         },
-  //         components: (context: any) => {
-  //           const components: any[] = [];
-  //           const heading = new Paragraph({
-  //             heading: 'Heading1',
-  //             spacing: {
-  //               before: 100,
-  //               after: 10
-  //             },
-  //             children: [
-  //               new TextRun({
-  //                 color: '#333333',
-  //                 text: context.heading,
-  //                 size: 32,
-  //                 bold: true
-  //               })
-  //             ]
-  //           });
-  //           components.push(heading);
-  //           context.ingredients.forEach((text: string) => {
-  //             const paragraph = new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text
-  //                 })
-  //               ]
-  //             })
-  //             components.push(paragraph)
-  //           });
-            
-  //           return components;
-  //         },
-  //         cookingTime: (context: any) => {
-  //           return [
-  //             new Paragraph({
-  //               heading: 'Heading2',
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   size: 32,
-  //                   bold: true,
-  //                   text: context.heading
-  //                 })
-  //               ]
-  //             }),
-  //             new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: context.cookTime
-  //                 })
-  //               ]
-  //             })
-  //           ]
-  //         },
-  //         steps: (context: any) => {
-  //           const components: any[] = [];
-  //           const heading = new Paragraph({
-  //             heading: 'Heading2',
-  //             spacing: {
-  //               before: 100,
-  //               after: 10
-  //             },
-  //             children: [
-  //               new TextRun({
-  //                 color: '#333333',
-  //                 size: 32,
-  //                 bold: true,
-  //                 text: context.heading
-  //               })
-  //             ]
-  //           })
-  //           components.push(heading);
 
-  //           context.cookingSteps.forEach((text: string) => {
-  //             const paragraph = new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 30
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text
-  //                 })
-  //               ]
-  //             })
-  //             components.push(paragraph)
-  //           });
-            
-  //           return components;
-  //         },
-  //         serving: (context: any) => {
-  //           return [
-  //             new Paragraph({
-  //               heading: 'Heading2',
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 10
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   size: 32,
-  //                   bold: true,
-  //                   text: context.heading
-  //                 })
-  //               ]
-  //             }),
-  //             new Paragraph({
-  //               spacing: {
-  //                 before: 100,
-  //                 after: 100
-  //               },
-  //               children: [
-  //                 new TextRun({
-  //                   color: '#333333',
-  //                   text: context.size
-  //                 })
-  //               ]
-  //             })
-  //           ] 
-  //         },
-  //       },
-  //     },
-  //     prompt: "Create a recipe for homemade chicken nuggets.",
-  //   }).createFile();
-  //   const { name, ext } = path.parse(filePath);
-  //   const contents = fs.readdirSync(FILE_PATH);
-  //   expect(contents).toContain(name+ext);
-  // });
-  test("should create a .docx file in the files directory", async () => {
+
+  test("should create a sports doc in the files directory", async () => {
     openAISpy.mockImplementation(() => {
       return {
         choices: [
@@ -555,11 +161,11 @@ describe("GPTDocx Package", () => {
         ]
       }
     })
-    const filePath = await new GPTDocx({
+    filePath = await new GPTDocx({
       format: {
         sys: {
           format: "json",
-          name: "basicExample",
+          name: "historyOfSports",
           values: {
             pages: [
               {
@@ -647,6 +253,7 @@ describe("GPTDocx Package", () => {
       },
       prompt: "Write a paper on the history of sports.",
     }).createFile();
+    console.log(filePath)
     const { name, ext } = path.parse(filePath);
     const contents = fs.readdirSync(FILE_PATH);
     expect(contents).toContain(name+ext);

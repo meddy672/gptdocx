@@ -1,5 +1,5 @@
 .env
 node_modules
-files
+files/*.docx
 dist
 coverage

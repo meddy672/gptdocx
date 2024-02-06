@@ -48,7 +48,7 @@ class WordDocument {
    *
    * @param docName **Required** name of the document.
    * @param pages **Required** an array of document components to add to the document.
-   * @param options **Optional** an object add addtional styling and configuration the the document.
+   * @param options **Optional** an object to add addtional styling and configuration the the document.
    */
   constructor({ docName, pages, options }: WordDocumentArgs) {
     this.options = options || DOCUMENT.BASIC;
@@ -71,7 +71,7 @@ class WordDocument {
     const arrayBuffer = await blob.arrayBuffer();
     const file = Buffer.from(arrayBuffer);
     writeFileSync(fileName, file);
-    return this._name + DOCUMENT.EXT;
+    return fileName;
   }
 
   /**
