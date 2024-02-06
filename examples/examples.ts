@@ -263,7 +263,7 @@ async function main(){
             },
           },
         },
-        prompt: "Write a paper research paper on Jerry Rice of the San Fransico 49ers.",
+        prompt: "Write a research paper on Jerry Rice of the San Fransico 49ers.",
       }).createFile();
       console.log(filePath)
 
