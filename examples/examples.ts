@@ -43,7 +43,7 @@ async function main(){
       }).createFile();
       console.log(filePath)
 
-    filePath = await new GPTDocx({
+      filePath = await new GPTDocx({
         format: UPDATE_NOTICE,
         prompt: "Create an update notice for a power outage that happen in Los Angelas two weeks ago.",
       }).createFile();
