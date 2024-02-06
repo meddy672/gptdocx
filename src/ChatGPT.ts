@@ -23,7 +23,6 @@ import {
     }).send();
  * ```
  * @async
- * Class ChatGPT
  */
 class ChatGPT {
   /**
@@ -43,7 +42,7 @@ class ChatGPT {
    *
    * @param prompt **Required** a string that represents the prompt.
    * @param format **Required** sent to OpenAI to provide context to the prompt.
-   * @param apiKeyEnv: **Optional** a string used to represent the **apikey** used in the request. Defaults to OPENAI_API_KEY.
+   * @param apiKeyEnv: **Optional** a string used to represent the **apikeyEnv** used in the request. Defaults to OPENAI_API_KEY.
    * @param config **Optional** an object to apply additonal settings to openai.
    * @returns ChatGPT instance
    */
@@ -59,7 +58,7 @@ class ChatGPT {
 
   /**
    * @description
-   * Takes format and builds the openai request body for the request.
+   * Takes the format and builds the openai request body for the request.
    *
    * @param {Format} format - format used for context.
    * @returns ChatCompletionCreateParams
@@ -102,8 +101,8 @@ class ChatGPT {
       console.debug("Sending resquest...");
       const response: ChatCompletionResponse =
         await this.openai.chat.completions.create(this.requestBody);
-      const content = response.choices[0].message.content as string;
-      return JSON.parse(content);
+      const context = response.choices[0].message.content as string;
+      return JSON.parse(context);
     } catch (err) {
       console.error("Unable to complete Open A.I request: ", err);
       throw new Error("Error: OPENAI_REQUEST_ERROR");

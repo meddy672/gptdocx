@@ -27,7 +27,7 @@ export default class DocxTemplater {
   private docName: string;
 
   /**
-   * The word file that will used as the template.
+   * The word file that will be used as the template.
    */
   private service: string;
 
@@ -46,7 +46,7 @@ export default class DocxTemplater {
    * @param docName **Required** the name of the word file or docuement.
    * @param service **Required** the word file that will be used as the template.
    * @param response **Required** the response recieved from ChatGPT object.
-   * @param useAngularParser **Optional** user the angular parse or not.
+   * @param useAngularParser **Optional** use the angular parse or not.
    * @returns
    */
   constructor({

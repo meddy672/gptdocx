@@ -144,17 +144,17 @@ class GPTDocx {
    * @returns {Object} an object with requestFormat and optional styles.
    */
   private _getFormat(format: string): Format {
-    let requestedService: any;
+    let requestedFormat: any;
     try {
       if (
         process.env["NODE_ENV"] === "development" ||
         process.env["NODE_ENV"] === "test"
       ) {
-        requestedService = require(
+        requestedFormat = require(
           join(__dirname, Static.FORMATS_DIR, format, Static.INDEX_TS),
         );
       } else {
-        requestedService = require(
+        requestedFormat = require(
           join(__dirname, Static.FORMATS_DIR, format, Static.INDEX_JS),
         );
       }
@@ -162,14 +162,14 @@ class GPTDocx {
       console.error(`Unable to find format: ${format}`);
     }
 
-    return requestedService?.format;
+    return requestedFormat?.format;
   }
 
   /**
    * @description
    * Validates the format and retuns the format.
    *
-   * Throws error if format is invalid.
+   * Throws parse service error if format is invalid.
    *
    * @private
    */
@@ -350,7 +350,7 @@ class GPTDocx {
 
   /**
    * @description
-   * Handle use case when a in a format key is **links** .
+   * Handle use case when a format key is **links** .
    * Takes the **links** and applies the correct
    * wrapper class. Adds each link to the page's
    * container```this.children```. **Docx Only**.

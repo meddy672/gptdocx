@@ -21,7 +21,7 @@ async function main(){
     
       filePath = await new GPTDocx({
         format: BASIC,
-        prompt: "Write  Paper on coffee.",
+        prompt: "Write Paper on coffee.",
       }).createFile();
       console.log(filePath)
     
